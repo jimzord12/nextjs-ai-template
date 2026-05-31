@@ -1,0 +1,21 @@
+# Docs Index
+
+This index lists the files currently present under `docs/`.
+
+## Top Level
+
+- `.gitkeep`
+- `ARCHITECTURE.md`
+- `CONVENTIONS.md`
+- `ROUTINES.md`
+- `RULES.md`
+- `SUBAGENT-CONFIGURATION.md`
+- `WORKING_WITH_ME.md`
+- `index.md`
+
+## Nested
+
+- `agents/DECOMPOSTION.md`
+- `in-progress/Nextjs-Quality-Assurance-Guide.pdf`
+- `templates/DIARY.template.md`
+- `templates/LLD.template.md`
