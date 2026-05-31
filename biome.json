@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["**", "!!**/.agents"]
   },
   "formatter": {
     "enabled": true,
@@ -119,41 +120,6 @@
                 ]
               }
             }
-          }
-        }
-      }
-    },
-    {
-      "includes": [".agents/**"],
-      "formatter": {
-        "enabled": false
-      },
-      "linter": {
-        "rules": {
-          "complexity": {
-            "useOptionalChain": "off"
-          },
-          "correctness": {
-            "noUnusedFunctionParameters": "off",
-            "noUnusedImports": "off",
-            "noUnusedVariables": "off"
-          },
-          "style": {
-            "useTemplate": "off",
-            "noProcessEnv": "off"
-          },
-          "suspicious": {
-            "useIterableCallbackReturn": "off",
-            "noAssignInExpressions": "off",
-            "noControlCharactersInRegex": "off",
-            "noShadowRestrictedNames": "off"
-          }
-        }
-      },
-      "assist": {
-        "actions": {
-          "source": {
-            "organizeImports": "off"
           }
         }
       }
