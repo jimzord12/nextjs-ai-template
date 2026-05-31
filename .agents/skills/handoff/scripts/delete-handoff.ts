@@ -38,46 +38,46 @@ Examples:
 `.trim();
 
 function listFiles(): string[] {
-	if (!existsSync(TMP_DIR)) return [];
-	return readdirSync(TMP_DIR).filter(
-		(f) => f.endsWith(".md") && f.includes("-handoff-"),
-	);
+  if (!existsSync(TMP_DIR)) return [];
+  return readdirSync(TMP_DIR).filter(
+    (f) => f.endsWith(".md") && f.includes("-handoff-"),
+  );
 }
 
 function matchFiles(identifier: string, files: string[]): string[] {
-	const normalised = identifier.replace(/^tmp\//, "").replace(/\.md$/, "");
+  const normalised = identifier.replace(/^tmp\//, "").replace(/\.md$/, "");
 
-	return files.filter((f) => {
-		if (f === normalised || f === `${normalised}.md`) return true;
+  return files.filter((f) => {
+    if (f === normalised || f === `${normalised}.md`) return true;
 
-		const indexMatch = normalised.match(/^\d+$/);
-		if (indexMatch) {
-			const padded = indexMatch[0].padStart(3, "0");
-			if (f.startsWith(`${padded}-handoff-`)) return true;
-		}
+    const indexMatch = normalised.match(/^\d+$/);
+    if (indexMatch) {
+      const padded = indexMatch[0].padStart(3, "0");
+      if (f.startsWith(`${padded}-handoff-`)) return true;
+    }
 
-		if (f.includes(`-handoff-${normalised}`)) return true;
+    if (f.includes(`-handoff-${normalised}`)) return true;
 
-		return false;
-	});
+    return false;
+  });
 }
 
 function output(
-	result: { deleted: string[]; dryRun: boolean },
-	asJson: boolean,
+  result: { deleted: string[]; dryRun: boolean },
+  asJson: boolean,
 ): void {
-	if (asJson) {
-		console.log(JSON.stringify({ ...result, success: true }));
-		return;
-	}
-	if (result.deleted.length === 0) {
-		console.log(result.dryRun ? "No files match." : "No files deleted.");
-		return;
-	}
-	const verb = result.dryRun ? "Would delete" : "Deleted";
-	for (const f of result.deleted) {
-		console.log(`${verb}: ${f}`);
-	}
+  if (asJson) {
+    console.log(JSON.stringify({ ...result, success: true }));
+    return;
+  }
+  if (result.deleted.length === 0) {
+    console.log(result.dryRun ? "No files match." : "No files deleted.");
+    return;
+  }
+  const verb = result.dryRun ? "Would delete" : "Deleted";
+  for (const f of result.deleted) {
+    console.log(`${verb}: ${f}`);
+  }
 }
 
 // --- Parse args ---
@@ -88,86 +88,86 @@ let listOnly = false;
 const positional: string[] = [];
 
 for (const arg of args) {
-	if (arg === "--help" || arg === "-h") {
-		console.log(HELP);
-		process.exit(0);
-	}
-	if (arg === "--dry-run") {
-		dryRun = true;
-		continue;
-	}
-	if (arg === "--json") {
-		asJson = true;
-		continue;
-	}
-	if (arg === "--list") {
-		listOnly = true;
-		continue;
-	}
-	positional.push(arg);
+  if (arg === "--help" || arg === "-h") {
+    console.log(HELP);
+    process.exit(0);
+  }
+  if (arg === "--dry-run") {
+    dryRun = true;
+    continue;
+  }
+  if (arg === "--json") {
+    asJson = true;
+    continue;
+  }
+  if (arg === "--list") {
+    listOnly = true;
+    continue;
+  }
+  positional.push(arg);
 }
 
 if (listOnly) {
-	const files = listFiles();
-	if (asJson) {
-		console.log(JSON.stringify({ files }));
-	} else if (files.length === 0) {
-		console.log("No handoff files in tmp/.");
-	} else {
-		for (const f of files) console.log(`  ${f}`);
-	}
-	process.exit(0);
+  const files = listFiles();
+  if (asJson) {
+    console.log(JSON.stringify({ files }));
+  } else if (files.length === 0) {
+    console.log("No handoff files in tmp/.");
+  } else {
+    for (const f of files) console.log(`  ${f}`);
+  }
+  process.exit(0);
 }
 
 const identifier = positional[0]?.trim();
 if (!identifier) {
-	console.error(`Error: identifier is required.\n\n${HELP}`);
-	process.exit(1);
+  console.error(`Error: identifier is required.\n\n${HELP}`);
+  process.exit(1);
 }
 
 const files = listFiles();
 
 if (files.length === 0) {
-	const msg = "No handoff files found in tmp/.";
-	if (asJson) {
-		console.log(JSON.stringify({ success: false, error: msg, code: 2 }));
-	} else {
-		console.error(`Error: ${msg}`);
-	}
-	process.exit(2);
+  const msg = "No handoff files found in tmp/.";
+  if (asJson) {
+    console.log(JSON.stringify({ success: false, error: msg, code: 2 }));
+  } else {
+    console.error(`Error: ${msg}`);
+  }
+  process.exit(2);
 }
 
 const matches = matchFiles(identifier, files);
 
 if (matches.length === 0) {
-	const msg = `No handoff file matches "${identifier}".`;
-	const available = `Available:\n${files.map((f) => `  - ${f}`).join("\n")}`;
-	if (asJson) {
-		console.log(
-			JSON.stringify({ success: false, error: msg, available: files, code: 2 }),
-		);
-	} else {
-		console.error(`Error: ${msg}\n${available}`);
-	}
-	process.exit(2);
+  const msg = `No handoff file matches "${identifier}".`;
+  const available = `Available:\n${files.map((f) => `  - ${f}`).join("\n")}`;
+  if (asJson) {
+    console.log(
+      JSON.stringify({ success: false, error: msg, available: files, code: 2 }),
+    );
+  } else {
+    console.error(`Error: ${msg}\n${available}`);
+  }
+  process.exit(2);
 }
 
 if (matches.length > 1) {
-	const msg = `"${identifier}" matches multiple files. Use a more specific identifier.`;
-	const matched = matches.map((f) => `  - ${f}`).join("\n");
-	if (asJson) {
-		console.log(
-			JSON.stringify({ success: false, error: msg, matches, code: 3 }),
-		);
-	} else {
-		console.error(`Error: ${msg}\n${matched}`);
-	}
-	process.exit(3);
+  const msg = `"${identifier}" matches multiple files. Use a more specific identifier.`;
+  const matched = matches.map((f) => `  - ${f}`).join("\n");
+  if (asJson) {
+    console.log(
+      JSON.stringify({ success: false, error: msg, matches, code: 3 }),
+    );
+  } else {
+    console.error(`Error: ${msg}\n${matched}`);
+  }
+  process.exit(3);
 }
 
 const target = matches[0];
 if (!dryRun) {
-	rmSync(join(TMP_DIR, target));
+  rmSync(join(TMP_DIR, target));
 }
 
 output({ deleted: [target], dryRun }, asJson);

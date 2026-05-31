@@ -34,68 +34,68 @@ let dryRun = false;
 let asJson = false;
 
 for (const arg of args) {
-	if (arg === "--help" || arg === "-h") {
-		console.log(HELP);
-		process.exit(0);
-	}
-	if (arg === "--dry-run") {
-		dryRun = true;
-		continue;
-	}
-	if (arg === "--json") {
-		asJson = true;
-	}
+  if (arg === "--help" || arg === "-h") {
+    console.log(HELP);
+    process.exit(0);
+  }
+  if (arg === "--dry-run") {
+    dryRun = true;
+    continue;
+  }
+  if (arg === "--json") {
+    asJson = true;
+  }
 }
 
 if (!existsSync(TMP_DIR)) {
-	const msg = "tmp/ directory does not exist — nothing to delete.";
-	if (asJson) {
-		console.log(JSON.stringify({ deleted: [], dryRun, message: msg }));
-	} else {
-		console.log(msg);
-	}
-	process.exit(0);
+  const msg = "tmp/ directory does not exist — nothing to delete.";
+  if (asJson) {
+    console.log(JSON.stringify({ deleted: [], dryRun, message: msg }));
+  } else {
+    console.log(msg);
+  }
+  process.exit(0);
 }
 
 const stat = statSync(TMP_DIR);
 if (!stat.isDirectory()) {
-	const msg = "tmp/ exists but is not a directory.";
-	if (asJson) {
-		console.log(JSON.stringify({ success: false, error: msg }));
-	} else {
-		console.error(`Error: ${msg}`);
-	}
-	process.exit(1);
+  const msg = "tmp/ exists but is not a directory.";
+  if (asJson) {
+    console.log(JSON.stringify({ success: false, error: msg }));
+  } else {
+    console.error(`Error: ${msg}`);
+  }
+  process.exit(1);
 }
 
 const files = readdirSync(TMP_DIR).filter(
-	(f) => f.endsWith(".md") && f.includes("-handoff-"),
+  (f) => f.endsWith(".md") && f.includes("-handoff-"),
 );
 
 if (files.length === 0) {
-	const msg = "No handoff files found in tmp/.";
-	if (asJson) {
-		console.log(JSON.stringify({ deleted: [], dryRun, message: msg }));
-	} else {
-		console.log(msg);
-	}
-	process.exit(0);
+  const msg = "No handoff files found in tmp/.";
+  if (asJson) {
+    console.log(JSON.stringify({ deleted: [], dryRun, message: msg }));
+  } else {
+    console.log(msg);
+  }
+  process.exit(0);
 }
 
 if (!dryRun) {
-	for (const file of files) {
-		rmSync(join(TMP_DIR, file));
-	}
+  for (const file of files) {
+    rmSync(join(TMP_DIR, file));
+  }
 }
 
 if (asJson) {
-	console.log(JSON.stringify({ deleted: files, dryRun, count: files.length }));
+  console.log(JSON.stringify({ deleted: files, dryRun, count: files.length }));
 } else {
-	const verb = dryRun ? "Would delete" : "Deleted";
-	console.log(
-		`${verb} ${files.length} handoff file${files.length === 1 ? "" : "s"}:`,
-	);
-	for (const file of files) {
-		console.log(`  - ${file}`);
-	}
+  const verb = dryRun ? "Would delete" : "Deleted";
+  console.log(
+    `${verb} ${files.length} handoff file${files.length === 1 ? "" : "s"}:`,
+  );
+  for (const file of files) {
+    console.log(`  - ${file}`);
+  }
 }
