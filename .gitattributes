@@ -1,0 +1,61 @@
+# ─── Line endings: enforce LF everywhere ───
+# Prevents CRLF/LF diffs across Windows/macOS/Linux
+* text=auto eol=lf
+
+# ─── Source code ───
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.mts text eol=lf
+*.cjs text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.mdx text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+
+# ─── Config files (no BOM, no trailing whitespace surprises) ───
+.gitattributes text eol=lf
+.gitignore text eol=lf
+.eslint* text eol=lf
+.prettierrc* text eol=lf
+.editorconfig text eol=lf
+tsconfig*.json text eol=lf
+vitest.config.* text eol=lf
+playwright.config.* text eol=lf
+next.config.* text eol=lf
+postcss.config.* text eol=lf
+components.json text eol=lf
+bun.lock text eol=lf
+
+# ─── Shell scripts (must be LF on all platforms) ───
+*.sh text eol=lf
+
+# ─── Binary files (no text normalization) ───
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.mp4 binary
+*.webm binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
