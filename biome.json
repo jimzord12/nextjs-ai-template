@@ -123,6 +123,21 @@
           }
         }
       }
+    },
+    {
+      "includes": ["scripts/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noProcessEnv": "off",
+            "noNonNullAssertion": "off",
+            "useTemplate": "off"
+          },
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
     }
   ],
   "javascript": {
