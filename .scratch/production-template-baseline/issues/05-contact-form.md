@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: tdd
+Complexity: 3
 
 # Contact Form (TanStack Form + Web3Forms)
 
@@ -14,18 +16,18 @@ This slice does NOT depend on the Local CMS — it only needs the i18n routing f
 
 ## Acceptance criteria
 
-- [ ] TanStack Form installed and configured
-- [ ] Contact form built with fields: name (required), email (required, validated), message (required, min length)
-- [ ] Zod schema validates form inputs — shared validation pattern with CMS
-- [ ] Form submits to Web3Forms via `NEXT_PUBLIC_FORM_ENDPOINT` env var
-- [ ] `.env.example` includes `NEXT_PUBLIC_FORM_ENDPOINT` with a placeholder
-- [ ] Success state shows confirmation feedback to the user
-- [ ] Error state shows failure feedback to the user
-- [ ] Contact page renders at `/en/contact`, `/el/contact`, `/de/contact`
-- [ ] Form labels and error messages are localized (use message files from i18n setup)
-- [ ] Component tests verify: form validates inputs, shows errors on invalid submit, calls endpoint on valid submit
-- [ ] `pnpm test` passes
-- [ ] `next build` succeeds
+- [x] TanStack Form installed and configured
+- [x] Contact form built with fields: name (required), email (required, validated), message (required, min length)
+- [x] Zod schema validates form inputs — shared validation pattern with CMS
+- [x] Form submits to Web3Forms via `NEXT_PUBLIC_FORM_ENDPOINT` env var
+- [x] `.env.example` includes `NEXT_PUBLIC_FORM_ENDPOINT` with a placeholder
+- [x] Success state shows confirmation feedback to the user
+- [x] Error state shows failure feedback to the user
+- [x] Contact page renders at `/en/contact`, `/el/contact`, `/de/contact`
+- [x] Form labels and error messages are localized (use message files from i18n setup)
+- [x] Component tests verify: form validates inputs, shows errors on invalid submit, calls endpoint on valid submit
+- [x] `pnpm test` passes
+- [x] `next build` succeeds
 
 ## Blocked by
 

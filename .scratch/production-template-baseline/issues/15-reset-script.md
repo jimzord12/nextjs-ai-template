@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: scaffold
+Complexity: 3
 
 # Reset Script
 

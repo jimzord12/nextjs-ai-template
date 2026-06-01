@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: chore
+Complexity: 4
 
 # QA Gate 4 — Cross-Browser + Reporting
 
@@ -12,14 +14,16 @@ Add responsive viewport smoke tests at 320px, 375px, 768px, 1280px, and 1440px. 
 
 ## Acceptance criteria
 
-- [ ] Responsive viewport smoke tests at 320px, 375px, 768px, 1280px, 1440px pass
-- [ ] `pnpm qa:cross-browser` runs full Playwright suite across Chromium, Firefox, WebKit
-- [ ] `pnpm qa` umbrella script runs all `qa:*` scripts (`qa:performance`, `qa:a11y`, `qa:seo`, `qa:security`, `qa:bundle`, `qa:cross-browser`)
-- [ ] `pnpm qa` exits non-zero on any failure — suitable as CI gate
-- [ ] `scripts/qa-report.sh` collects all reports into `.qa/` directory
-- [ ] QA delivery package format documented: what to capture, how to present, conventions
-- [ ] Manual cross-browser testing checklist documented
+- [x] Responsive viewport smoke tests at 320px, 375px, 768px, 1280px, 1440px pass
+- [x] `pnpm qa:cross-browser` runs full Playwright suite across Chromium, Firefox, WebKit
+- [x] `pnpm qa` umbrella script runs all `qa:*` scripts (`qa:performance`, `qa:a11y`, `qa:seo`, `qa:security`, `qa:bundle`, `qa:cross-browser`)
+- [x] `pnpm qa` exits non-zero on any failure — suitable as CI gate
+- [x] `scripts/qa-report.sh` collects all reports into `.qa/` directory
+- [x] QA delivery package format documented: what to capture, how to present, conventions
+- [x] Manual cross-browser testing checklist documented
 - [ ] `pnpm qa` passes against the Hotel Example
+
+**Note**: `pnpm qa` does not yet pass end-to-end because `qa:seo` and `qa:bundle` scripts don't exist yet (issues 14 and 12 respectively). The umbrella script gracefully skips them. Additionally, `qa:security` correctly exits non-zero due to a pre-existing CVE in `tmp` (transitive dep of `@lhci/cli`). These will resolve when their respective issues are implemented.
 
 ## Blocked by
 

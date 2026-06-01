@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+# lighthouse CI reports
+/lhci-reports
 
 # next.js
 /.next/
@@ -39,4 +41,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.qa/
+test-results/
 tmp/

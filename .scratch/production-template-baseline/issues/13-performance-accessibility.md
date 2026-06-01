@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: scaffold
+Complexity: 4
 
 # QA Gate 1 — Performance + Accessibility
 

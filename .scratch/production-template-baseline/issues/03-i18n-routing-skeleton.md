@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: scaffold
+Complexity: 3
 
 # i18n Routing + Skeleton Page
 
@@ -14,18 +16,18 @@ This is the routing foundation that all subsequent page slices depend on.
 
 ## Acceptance criteria
 
-- [ ] `next-intl` installed and configured for App Router
-- [ ] Three locales configured: `en` (default), `el`, `de`
-- [ ] All locales URL-prefixed including default: `/en/`, `/el/`, `/de/`
-- [ ] Root `/` redirects to `/en/`
-- [ ] Route structure is `src/app/[locale]/(marketing)/...`
-- [ ] Per-locale message files created for UI strings
-- [ ] Locale-aware Link, useRouter, and getPathname helpers available
-- [ ] Explicit fallback: missing translation key produces a visible warning, not silent English fallback
-- [ ] Skeleton `(marketing)/page.tsx` renders "Welcome." in all three locales
-- [ ] Language switching works: clicking a locale link changes URL and renders content in that locale
-- [ ] `next build` succeeds and produces static pages for all locales
-- [ ] Existing header/footer/layout components still render correctly in the new structure
+- [x] `next-intl` installed and configured for App Router
+- [x] Three locales configured: `en` (default), `el`, `de`
+- [x] All locales URL-prefixed including default: `/en/`, `/el/`, `/de/`
+- [x] Root `/` redirects to `/en/`
+- [x] Route structure is `src/app/[locale]/(marketing)/...`
+- [x] Per-locale message files created for UI strings
+- [x] Locale-aware Link, useRouter, and getPathname helpers available
+- [x] Explicit fallback: missing translation key produces a visible warning, not silent English fallback
+- [x] Skeleton `(marketing)/page.tsx` renders "Welcome." in all three locales
+- [x] Language switching works: clicking a locale link changes URL and renders content in that locale
+- [x] `next build` succeeds and produces static pages for all locales
+- [x] Existing header/footer/layout components still render correctly in the new structure
 
 ## Blocked by
 

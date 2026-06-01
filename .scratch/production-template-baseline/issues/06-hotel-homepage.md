@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: scaffold
+Complexity: 3
 
 # Hotel Homepage (Single Types + Media + Components)
 
@@ -14,19 +16,19 @@ This is a vertical tracer bullet: JSON content → Zod-validated loader → Reac
 
 ## Acceptance criteria
 
-- [ ] Homepage Single Type content populated for `en`, `el`, `de` locales
-- [ ] Site Settings Single Type content populated for `en`, `el`, `de` locales
-- [ ] Media Records created for homepage images (hero background, featured room images) with localized alt/caption
-- [ ] Example media files placed in `src/content/media/files/`
-- [ ] Hero Section component renders headline, subheadline, background image, CTA
-- [ ] CTA Section component renders headline, body, button
-- [ ] Featured Rooms section renders room cards (using Room Collection Type data via loader)
-- [ ] Homepage page at `/en`, `/el`, `/de` renders all sections from Content Loader output
-- [ ] `generateMetadata` produces correct title, description, open graph, twitter cards from SEO Content Component
-- [ ] Images render using `next/image` with Media Record metadata (width, height, alt)
-- [ ] Component tests verify sections render correctly given mock loader output
-- [ ] `pnpm test` passes
-- [ ] `next build` succeeds and produces static pages for all locales
+- [x] Homepage Single Type content populated for `en`, `el`, `de` locales
+- [x] Site Settings Single Type content populated for `en`, `el`, `de` locales
+- [x] Media Records created for homepage images (hero background, featured room images) with localized alt/caption
+- [x] Example media files placed in `src/content/media/files/`
+- [x] Hero Section component renders headline, subheadline, background image, CTA
+- [x] CTA Section component renders headline, body, button
+- [x] Featured Rooms section renders room cards (using Room Collection Type data via loader)
+- [x] Homepage page at `/en`, `/el`, `/de` renders all sections from Content Loader output
+- [x] `generateMetadata` produces correct title, description, open graph, twitter cards from SEO Content Component
+- [x] Images render using `next/image` with Media Record metadata (width, height, alt)
+- [x] Component tests verify sections render correctly given mock loader output
+- [x] `pnpm test` passes
+- [x] `next build` succeeds and produces static pages for all locales
 
 ## Blocked by
 

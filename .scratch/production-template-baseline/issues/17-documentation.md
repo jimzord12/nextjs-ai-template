@@ -1,4 +1,6 @@
 Status: ready-for-agent
+Method: chore
+Complexity: 3
 
 # Documentation
 

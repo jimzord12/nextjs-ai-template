@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: scaffold
+Complexity: 3
 
 # Hotel Rooms (Collection Types + Dynamic Routes)
 
@@ -14,21 +16,21 @@ This is independent of the Homepage slice (S4) — they consume different conten
 
 ## Acceptance criteria
 
-- [ ] Room Collection Type records populated for `en`, `el`, `de` locales (at least 3 rooms)
-- [ ] Each room has localized slugs (different per locale where appropriate)
-- [ ] Review Collection Type records populated for at least some rooms
-- [ ] Room card component renders title, price, featured image, short description
-- [ ] Amenity list component renders amenity names with icons
-- [ ] Gallery component renders room images from Media Record relations
-- [ ] Room listing page at `/en/rooms`, `/el/rooms`, `/de/rooms` renders all rooms
-- [ ] Room detail page at `/en/rooms/deluxe-suite` (and localized equivalents) renders full room details
-- [ ] `generateStaticParams` produces paths for all room slugs across all locales
-- [ ] `generateMetadata` produces correct metadata from SEO Content Component per room
-- [ ] Navigating from listing to detail works in all locales
-- [ ] 404 renders for non-existent room slugs
-- [ ] Component tests verify room card and detail rendering given mock loader output
-- [ ] `pnpm test` passes
-- [ ] `next build` succeeds and produces static pages for all rooms × all locales
+- [x] Room Collection Type records populated for `en`, `el`, `de` locales (at least 3 rooms)
+- [x] Each room has localized slugs (different per locale where appropriate)
+- [x] Review Collection Type records populated for at least some rooms
+- [x] Room card component renders title, price, featured image, short description
+- [x] Amenity list component renders amenity names with icons
+- [x] Gallery component renders room images from Media Record relations
+- [x] Room listing page at `/en/rooms`, `/el/rooms`, `/de/rooms` renders all rooms
+- [x] Room detail page at `/en/rooms/deluxe-suite` (and localized equivalents) renders full room details
+- [x] `generateStaticParams` produces paths for all room slugs across all locales
+- [x] `generateMetadata` produces correct metadata from SEO Content Component per room
+- [x] Navigating from listing to detail works in all locales
+- [x] 404 renders for non-existent room slugs
+- [x] Component tests verify room card and detail rendering given mock loader output
+- [x] `pnpm test` passes
+- [x] `next build` succeeds and produces static pages for all rooms × all locales
 
 ## Blocked by
 

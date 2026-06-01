@@ -1,4 +1,6 @@
 Status: ready-for-agent
+Method: chore
+Complexity: 2
 
 # QA Gate 3 — Security + Bundle
 

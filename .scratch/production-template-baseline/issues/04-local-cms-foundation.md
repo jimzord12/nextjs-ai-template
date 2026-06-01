@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: tdd
+Complexity: 4
 
 # Local CMS Foundation (Schemas + Loaders + Tests)
 
@@ -22,17 +24,17 @@ Create the full Local CMS infrastructure: content directory structure, Zod schem
 
 ## Acceptance criteria
 
-- [ ] `src/content/` directory structure created: `collection-types/`, `single-types/`, `media/files/`, `media/records/`
-- [ ] Zod schemas defined for Rooms, Reviews, Homepage, Site Settings, and Media Record
-- [ ] Content Component schemas defined: SEO, Amenities, Hero Section, CTA Section, Rich Text Block
-- [ ] Content Loaders implemented: `getRoom(slug, locale)`, `getAllRooms(locale)`, `getReview(slug, locale)`, `getHomepage(locale)`, `getSiteSettings(locale)`, `getMediaRecord(id)`
-- [ ] Each loader reads JSON, validates through Zod, returns typed object
-- [ ] Content Component schemas compose into type schemas (not standalone files)
-- [ ] Test fixture JSON files exist for at least one content type
-- [ ] Content Loader tests pass: valid JSON → typed output, invalid JSON → Zod error, missing locale → explicit error, missing slug → not-found
-- [ ] `pnpm test` passes
-- [ ] `next build` succeeds (schemas loaded but no pages consume them yet)
-- [ ] No direct JSON imports exist — all content access goes through loaders
+- [x] `src/content/` directory structure created: `collection-types/`, `single-types/`, `media/files/`, `media/records/`
+- [x] Zod schemas defined for Rooms, Reviews, Homepage, Site Settings, and Media Record
+- [x] Content Component schemas defined: SEO, Amenities, Hero Section, CTA Section, Rich Text Block
+- [x] Content Loaders implemented: `getRoom(slug, locale)`, `getAllRooms(locale)`, `getReview(slug, locale)`, `getHomepage(locale)`, `getSiteSettings(locale)`, `getMediaRecord(id)`
+- [x] Each loader reads JSON, validates through Zod, returns typed object
+- [x] Content Component schemas compose into type schemas (not standalone files)
+- [x] Test fixture JSON files exist for at least one content type
+- [x] Content Loader tests pass: valid JSON → typed output, invalid JSON → Zod error, missing locale → explicit error, missing slug → not-found
+- [x] `pnpm test` passes
+- [x] `next build` succeeds (schemas loaded but no pages consume them yet)
+- [x] No direct JSON imports exist — all content access goes through loaders
 
 ## Blocked by
 

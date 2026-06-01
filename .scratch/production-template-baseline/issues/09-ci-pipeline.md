@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: chore
+Complexity: 2
 
 # CI Pipeline
 
@@ -12,11 +14,11 @@ Create a GitHub Actions CI pipeline that runs on every pull request. The pipelin
 
 ## Acceptance criteria
 
-- [ ] `.github/workflows/ci.yml` exists and triggers on PRs
-- [ ] Pipeline runs `pnpm lint`, `pnpm test`, `pnpm build`, and `pnpm audit:ci`
-- [ ] Pipeline fails on any non-zero exit code from any step
-- [ ] Pipeline uses the correct Node.js and pnpm versions matching the project
-- [ ] Pipeline caches `node_modules` or uses pnpm store cache for performance
+- [x] `.github/workflows/ci.yml` exists and triggers on PRs
+- [x] Pipeline runs `pnpm lint`, `pnpm test`, `pnpm build`, and `pnpm audit:ci`
+- [x] Pipeline fails on any non-zero exit code from any step
+- [x] Pipeline uses the correct Node.js and pnpm versions matching the project
+- [x] Pipeline caches `node_modules` or uses pnpm store cache for performance
 
 ## Blocked by
 

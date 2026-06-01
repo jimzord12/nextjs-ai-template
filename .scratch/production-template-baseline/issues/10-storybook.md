@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: chore
+Complexity: 2
 
 # Storybook
 
@@ -12,11 +14,11 @@ Install and configure Storybook for Next.js App Router. Add a `pnpm storybook` s
 
 ## Acceptance criteria
 
-- [ ] Storybook installed and configured for Next.js App Router
-- [ ] `pnpm storybook` script launches Storybook dev server
-- [ ] At least one example story renders a Hotel Example component correctly
-- [ ] Storybook can find and render shadcn components
-- [ ] `pnpm build-storybook` succeeds (produces a static Storybook build)
+- [x] Storybook installed and configured for Next.js App Router
+- [x] `pnpm storybook` script launches Storybook dev server
+- [x] At least one example story renders a Hotel Example component correctly
+- [x] Storybook can find and render shadcn components
+- [x] `pnpm build-storybook` succeeds (produces a static Storybook build)
 
 ## Blocked by
 

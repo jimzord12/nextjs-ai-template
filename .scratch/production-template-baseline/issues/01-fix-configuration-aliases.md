@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: chore
+Complexity: 1
 
 # Fix Configuration Aliases
 
@@ -14,13 +16,13 @@ Additionally, `ARCHITECTURE.md` shows an example at the bottom with `src/compone
 
 ## Acceptance criteria
 
-- [ ] `components.json` aliases point to `src/components/ui/` (not `src/shared/components/ui/`)
-- [ ] Running `pnpm dlx shadcn add <component>` places the file in `src/components/ui/`
-- [ ] Empty `src/shared/components/ui/` directory removed
-- [ ] `ARCHITECTURE.md` example diagram matches the actual file structure
-- [ ] `ARCHITECTURE.md` notes `(app)` route group as v2 scope
-- [ ] `next build` succeeds after changes
-- [ ] All existing imports still resolve correctly
+- [x] `components.json` aliases point to `src/components/ui/` (not `src/shared/components/ui/`)
+- [x] Running `pnpm dlx shadcn add <component>` places the file in `src/components/ui/`
+- [x] Empty `src/shared/components/ui/` directory removed
+- [x] `ARCHITECTURE.md` example diagram matches the actual file structure
+- [x] `ARCHITECTURE.md` notes `(app)` route group as v2 scope
+- [x] `next build` succeeds after changes
+- [x] All existing imports still resolve correctly
 
 ## Blocked by
 

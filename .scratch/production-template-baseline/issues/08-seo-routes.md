@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: scaffold
+Complexity: 2
 
 # SEO Routes (robots, sitemap, JSON-LD, hreflang)
 
@@ -12,14 +14,14 @@ Add SEO infrastructure that covers all Hotel Example pages: `robots.ts` and `sit
 
 ## Acceptance criteria
 
-- [ ] `robots.ts` generates a correct `robots.txt` static file
-- [ ] `sitemap.ts` generates a correct `sitemap.xml` including all pages across all locales
-- [ ] JSON-LD structured data present on Homepage: Organization and WebSite schemas
-- [ ] JSON-LD structured data present on Room detail: BreadcrumbList schema
-- [ ] `hreflang` link tags present in all page `<head>` sections pointing to all locale variants
-- [ ] Canonical URLs include the locale prefix
-- [ ] `generateMetadata` on all pages includes alternate language links
-- [ ] `next build` succeeds and produces `robots.txt` and `sitemap.xml`
+- [x] `robots.ts` generates a correct `robots.txt` static file
+- [x] `sitemap.ts` generates a correct `sitemap.xml` including all pages across all locales
+- [x] JSON-LD structured data present on Homepage: Organization and WebSite schemas
+- [x] JSON-LD structured data present on Room detail: BreadcrumbList schema
+- [x] `hreflang` link tags present in all page `<head>` sections pointing to all locale variants
+- [x] Canonical URLs include the locale prefix
+- [x] `generateMetadata` on all pages includes alternate language links
+- [x] `next build` succeeds and produces `robots.txt` and `sitemap.xml`
 
 ## Blocked by
 

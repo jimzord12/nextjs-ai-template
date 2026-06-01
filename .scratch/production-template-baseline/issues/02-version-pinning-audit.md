@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: done
+Method: chore
+Complexity: 2
 
 # Version Pinning + Audit Script
 
@@ -12,12 +14,12 @@ Pin critical dependencies (Next.js, React, TypeScript, Tailwind) to exact versio
 
 ## Acceptance criteria
 
-- [ ] Next.js, React, React DOM, TypeScript, Tailwind CSS pinned to exact versions in `package.json`
-- [ ] `pnpm.overrides` added for transitive deps where needed
-- [ ] `pnpm audit:ci` script exists and fails on critical/high CVEs
-- [ ] `pnpm audit:ci` exits 0 when no critical/high CVEs found
-- [ ] Pinning rationale documented (location to be determined by implementer — likely `docs/TECH_STACK.md` or `docs/CONVENTIONS.md`)
-- [ ] `pnpm install` and `pnpm build` succeed after pinning
+- [x] Next.js, React, React DOM, TypeScript, Tailwind CSS pinned to exact versions in `package.json`
+- [x] Overrides added for transitive deps in `pnpm-workspace.yaml` (pnpm 11 syntax)
+- [x] `pnpm audit:ci` script exists and fails on critical/high CVEs
+- [x] `pnpm audit:ci` exits 0 when no critical/high CVEs found
+- [x] Pinning rationale documented in `docs/CONVENTIONS.md`
+- [x] `pnpm install` and `pnpm build` succeed after pinning
 
 ## Blocked by
 
