@@ -46,15 +46,15 @@ Folders wrapped in `()` create route groups — shared layouts without URL segme
 
 ```
 src/app/
-  (marketing)/          # Public pages: home, rooms, about, contact
-    layout.tsx
-    page.tsx
-    rooms/[slug]/...
-    about/...
-  (app)/                # Authenticated pages: dashboard, bookings, settings
-    layout.tsx
-    dashboard/...
-    bookings/...
+  [locale]/                 # i18n locale segment (en, el, de)
+    (marketing)/            # Public pages: home, rooms, contact (v1 scope)
+      layout.tsx
+      page.tsx              # Homepage
+      rooms/[slug]/...
+      contact/...
+    (app)/                  # Authenticated pages (v2 scope — not yet implemented)
+      layout.tsx
+      dashboard/...
 ```
 
 ---
@@ -140,32 +140,26 @@ src/
 ├── app/                          # Layer 1: App Router & Colocation
 │   ├── layout.tsx                # Root layout (fonts, providers)
 │   ├── globals.css
-│   ├── (marketing)/              # Public pages route group
-│   │   ├── layout.tsx            # Public layout (header, footer)
-│   │   ├── page.tsx              # Homepage
-│   │   ├── rooms/
-│   │   │   └── [slug]/           # Room detail
-│   │   │       ├── components/
-│   │   │       └── lib/
-│   │   ├── about/
-│   │   └── contact/
-│   └── (app)/                    # Authenticated route group
-│       ├── layout.tsx            # App shell (sidebar, nav)
-│       ├── dashboard/
-│       │   ├── components/
-│       │   └── lib/
-│       ├── bookings/
-│       │   └── [id]/
-│       │       ├── components/
-│       └── settings/
-│           ├── components/
+│   └── [locale]/                 # i18n locale segment (en, el, de)
+│       ├── (marketing)/          # Public pages route group (v1 scope)
+│       │   ├── layout.tsx        # Public layout (header, footer)
+│       │   ├── page.tsx          # Homepage
+│       │   ├── rooms/
+│       │   │   └── [slug]/       # Room detail
+│       │   │       ├── components/
+│       │   │       └── lib/
+│       │   └── contact/
+│       └── (app)/                # Authenticated route group (v2 scope — not yet implemented)
+│           ├── layout.tsx        # App shell (sidebar, nav)
+│           └── dashboard/
 │
 ├── features/                     # Layer 2: Feature Modules
-│   ├── auth/                     # Login, registration, session
-│   ├── rooms/                    # Room listings, search, detail
-│   ├── bookings/                 # Reservation management
-│   ├── reviews/                  # Guest reviews & ratings
-│   └── notifications/            # Booking confirmations
+│   └── rooms/                    # Room listings, detail
+│       ├── components/
+│       ├── hooks/
+│       ├── lib/
+│       ├── types.ts
+│       └── index.ts              # Barrel export
 │
 ├── content/                      # Layer 3: Local Strapi-like JSON CMS
 │   ├── collection-types/
@@ -175,13 +169,15 @@ src/
 │       ├── files/
 │       └── records/
 │
-├── shared/                       # Cross-cutting shared utilities
-│   ├── components/               # Generic UI (Spinner, etc.)
-│   ├── hooks/                    # Generic hooks (useDebounce)
-│   └── lib/                      # http client, formatters
+├── components/                   # App-level component directories
+│   ├── ui/                       # shadcn/ui design system
+│   ├── layout/                   # Layout components (Header, Footer)
+│   └── shared/                   # Shared example components
 │
-├── components/ui/                # shadcn/ui design system
-├── lib/utils.ts                  # cn() utility
+├── shared/                       # Cross-cutting shared utilities
+│   ├── hooks/                    # Generic hooks (useDebounce)
+│   └── lib/                      # cn() helper, formatters
+│
 └── test/                         # Test helpers & setup
 ```
 
