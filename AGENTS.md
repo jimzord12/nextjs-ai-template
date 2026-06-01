@@ -53,3 +53,17 @@ Installed skills live in `.agents/skills/`. Invoke with `/skill-name`.
 | `vercel-optimize`               | Deep cost and performance optimization for Vercel projects, grounded in metrics and docs            |
 
 <!-- END:project-skills -->
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as local markdown files under `.scratch/<feature>/`. No external issue tracker is used. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Triage uses the default five-role label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: one `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

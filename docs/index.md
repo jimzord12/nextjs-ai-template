@@ -15,7 +15,10 @@ This index lists the files currently present under `docs/`.
 
 ## Nested
 
+- `agents/domain.md`
 - `agents/DECOMPOSTION.md`
+- `agents/issue-tracker.md`
+- `agents/triage-labels.md`
 - `in-progress/Nextjs-Quality-Assurance-Guide.pdf`
 - `templates/DIARY.template.md`
 - `templates/LLD.template.md`
