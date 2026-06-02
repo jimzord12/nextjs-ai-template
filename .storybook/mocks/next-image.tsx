@@ -9,8 +9,16 @@ const MockedImage = (
     sizes?: string;
   },
 ) => {
-  const { fill, priority, placeholder, blurDataURL, sizes, ...imgProps } = props;
-  return <img {...imgProps} />;
+  const {
+    alt = "",
+    fill,
+    priority,
+    placeholder,
+    blurDataURL,
+    sizes,
+    ...imgProps
+  } = props;
+  return <img alt={alt} {...imgProps} />;
 };
 
 export default MockedImage;
