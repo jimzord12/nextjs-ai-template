@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: done
 Method: tdd
 Complexity: 3
 
@@ -18,14 +18,14 @@ The result is a reliable end-to-end path for validating scope, reading feature i
 
 ## Acceptance criteria
 
-- [ ] A list command returns all issues for the current feature by default
-- [ ] The same command accepts an explicit feature target and works regardless of that feature's workflow status
-- [ ] Explicit feature targeting does not depend on current-feature resolution
-- [ ] Read output includes feature metadata, issue summaries, and issue file paths
-- [ ] The command reads from the derived issue read model rather than reparsing issue markdown on every call
-- [ ] The command fails descriptively when the derived issue read model is missing or malformed
-- [ ] Focused domain tests cover current-feature reads, explicit-feature reads, and invalid derived-state cases
-- [ ] CLI smoke coverage verifies representative list output for both implicit and explicit feature modes
+- [x] A list command returns all issues for the current feature by default
+- [x] The same command accepts an explicit feature target and works regardless of that feature's workflow status
+- [x] Explicit feature targeting does not depend on current-feature resolution
+- [x] Read output includes feature metadata, issue summaries, and issue file paths
+- [x] The command reads from the derived issue read model rather than reparsing issue markdown on every call
+- [x] The command fails descriptively when the derived issue read model is missing or malformed
+- [x] Focused domain tests cover current-feature reads, explicit-feature reads, and invalid derived-state cases
+- [x] CLI smoke coverage verifies representative list output for both implicit and explicit feature modes
 
 ## Blocked by
 

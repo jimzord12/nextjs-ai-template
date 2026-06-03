@@ -5,6 +5,11 @@ import {
   resolveCurrentFeature,
   updateFeatureStatus,
 } from "./features-state";
+import {
+  IssueStateError,
+  readIssuesState,
+  resolveFeatureForIssueRead,
+} from "./issues-state";
 
 export type CliResult = {
   exitCode: number;
@@ -17,6 +22,42 @@ export async function runIssuesManagerCli(
   options: { cwd: string },
 ): Promise<CliResult> {
   try {
+    if (args[0] === "list-issues") {
+      const featureFlagIndex = args.indexOf("--feature");
+      const state = await readFeaturesState(options.cwd);
+      const featureSlug = resolveFeatureForIssueRead(
+        state,
+        featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
+      ).slug;
+
+      if (!featureSlug) {
+        throw new FeatureStateError(
+          "Usage: list-issues [--feature <slug>]",
+        );
+      }
+
+      const issuesState = await readIssuesState(options.cwd, featureSlug);
+
+      return {
+        exitCode: 0,
+        stderr: "",
+        stdout: [
+          "Feature issues",
+          `id: ${issuesState.featureId}`,
+          `slug: ${issuesState.featureSlug}`,
+          `status: ${issuesState.featureStatus ?? "unknown"}`,
+          ...issuesState.issues.flatMap((issue) => [
+            "",
+            `${issue.id}. ${issue.title}`,
+            `status: ${issue.status}`,
+            `method: ${issue.method}`,
+            `complexity: ${issue.complexity}`,
+            `path: ${issue.filePath}`,
+          ]),
+        ].join("\n"),
+      };
+    }
+
     if (args[0] === "get-feature") {
       const state = await readFeaturesState(options.cwd);
       const feature = resolveCurrentFeature(state);
@@ -45,9 +86,7 @@ export async function runIssuesManagerCli(
         );
       }
 
-      if (
-        !FEATURE_STATUSES.includes(status as (typeof FEATURE_STATUSES)[number])
-      ) {
+      if (!FEATURE_STATUSES.includes(status as (typeof FEATURE_STATUSES)[number])) {
         throw new FeatureStateError(
           `Invalid feature status "${status}". Expected one of: ${FEATURE_STATUSES.join(", ")}.`,
         );
@@ -74,11 +113,11 @@ export async function runIssuesManagerCli(
     return {
       exitCode: 1,
       stderr:
-        "Unknown command. Supported commands: get-feature, update-feature.",
+        "Unknown command. Supported commands: list-issues, get-feature, update-feature.",
       stdout: "",
     };
   } catch (error) {
-    if (error instanceof FeatureStateError) {
+    if (error instanceof FeatureStateError || error instanceof IssueStateError) {
       return {
         exitCode: 1,
         stderr: error.message,
