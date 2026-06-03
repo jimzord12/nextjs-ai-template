@@ -21,13 +21,13 @@ Add responsive viewport smoke tests at 320px, 375px, 768px, 1280px, and 1440px. 
 - [x] `scripts/qa-report.sh` collects all reports into `.qa/` directory
 - [x] QA delivery package format documented: what to capture, how to present, conventions
 - [x] Manual cross-browser testing checklist documented
-- [ ] `pnpm qa` passes against the Hotel Example
+- [x] `pnpm qa` passes against the Hotel Example
 
-**Note**: `pnpm qa` does not yet pass end-to-end because `qa:seo` and `qa:bundle` scripts don't exist yet (issues 14 and 12 respectively). The umbrella script gracefully skips them. Additionally, `qa:security` correctly exits non-zero due to a pre-existing CVE in `tmp` (transitive dep of `@lhci/cli`). These will resolve when their respective issues are implemented.
+**Note**: `pnpm qa` now passes end-to-end. `qa:seo` and `qa:bundle` are still intentionally skipped when scripts are not present, and the umbrella script handles those skips gracefully.
 
 ## Blocked by
 
-- `13-performance-accessibility` — needs Playwright axe integration and Lighthouse CI as foundation
+- `13-performance-accessibility` — completed and provides Playwright axe integration plus Unlighthouse performance checks
 
 ## Further Notes
 

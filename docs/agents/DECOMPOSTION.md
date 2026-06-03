@@ -74,7 +74,7 @@ Examples: adding a `pnpm` script alias, moving a file, adding a cross-reference 
 Specification is complete, but there is a minor integration or one non-obvious detail:
 
 - Task is mostly specified — may need one small decision (e.g., which config format).
-- Integration with one well-documented tool (e.g., `@next/bundle-analyzer`, Lighthouse CI).
+- Integration with one well-documented tool (e.g., `@next/bundle-analyzer`, Unlighthouse).
 - Verification is mechanical (command + inspect output).
 - Failure is visible within one iteration.
 

@@ -48,7 +48,7 @@ run_qa_script "cross-browser" "pnpm qa:cross-browser"
 
 # Copy report artifacts
 cp -r playwright-report/ "${REPORT_DIR}/playwright-report" 2>/dev/null || true
-cp -r lhci-reports/ "${REPORT_DIR}/lhci-reports" 2>/dev/null || true
+cp -r .unlighthouse/ "${REPORT_DIR}/unlighthouse-report" 2>/dev/null || true
 
 # Summary
 printf '\n================================\n'

@@ -12,8 +12,14 @@
 
 # testing
 /coverage
-# lighthouse CI reports
-/lhci-reports
+# Unlighthouse reports
+/.unlighthouse
+# Legacy Lighthouse CI artifacts (unused)
+/.lighthouseci/
+/lhci-reports/
+# Playwright HTML report output
+/playwright-report/
+/playwright-reports/
 
 # next.js
 /.next/

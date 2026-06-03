@@ -7,7 +7,9 @@ allowBuilds:
   esbuild: true
   msgpackr-extract: set this to true or false
   msw: true
+  puppeteer: true
   sharp: true
+  vue-demi: true
 
 overrides:
   react: "19.2.4"

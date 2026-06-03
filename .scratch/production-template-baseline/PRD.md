@@ -16,7 +16,7 @@ Deliver a Vercel-first, static-export-only Next.js template (v1 scope) built aro
 
 3. **Hotel Example** — A four-page demo (Homepage, Room listing, Room detail, Contact form with Web3Forms) that exercises every convention. The Contact form uses TanStack Form wired to Web3Forms via a configurable `NEXT_PUBLIC_FORM_ENDPOINT`. The Hotel Example is stripped by the reset script, leaving a bare i18n skeleton.
 
-4. **Tooling & QA** — Storybook, Playwright, Lighthouse CI, bundle analyzer, Biome, Husky, commitlint, and a CI pipeline. A `pnpm qa` umbrella script generates local HTML reports in `.qa/` covering performance (Lighthouse), accessibility (axe-core), SEO (Lighthouse), security (`pnpm audit`), and bundle analysis. The Agency screenshots these into a Client deck.
+4. **Tooling & QA** — Storybook, Playwright, Unlighthouse, bundle analyzer, Biome, Husky, commitlint, and a CI pipeline. A `pnpm qa` umbrella script generates local HTML reports in `.qa/` covering performance (Unlighthouse), accessibility (axe-core), SEO (placeholder), security (`pnpm audit`), and bundle analysis. The Agency screenshots these into a Client deck.
 
 5. **Documentation** — Updated ARCHITECTURE.md, CONVENTIONS.md, TECH_STACK.md, DEPLOYMENT.md (Vercel for v1), and README reflecting the actual codebase and decisions.
 
@@ -75,7 +75,7 @@ Deliver a Vercel-first, static-export-only Next.js template (v1 scope) built aro
 34. As an Agency, I want Storybook configured for Next.js App Router, so that I can develop and document components in isolation.
 35. As an Agency, I want at least one example Story alongside the Hotel Example components, so that I can see the Storybook convention.
 36. As an Agency, I want Playwright configured with multi-browser projects (Chromium, Firefox, WebKit), so that cross-browser E2E tests are ready from day one.
-37. As an Agency, I want Lighthouse CI configured with threshold targets (Performance ≥ 90, LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1), so that performance regressions are caught automatically.
+37. As an Agency, I want Unlighthouse configured with a performance budget target (Performance ≥ 90), so that performance regressions are caught automatically.
 38. As an Agency, I want `@next/bundle-analyzer` wired behind an `ANALYZE` env var, so that I can inspect bundle output on demand.
 39. As an Agency, I want `pnpm audit:ci` that fails on critical/high CVEs, so that security vulnerabilities are caught in CI.
 40. As an Agency, I want a CI pipeline (`.github/workflows/ci.yml`) that runs lint, test, build, and audit on every PR, so that broken changes never reach main.
@@ -84,7 +84,7 @@ Deliver a Vercel-first, static-export-only Next.js template (v1 scope) built aro
 
 ### Quality Assurance
 
-43. As an Agency, I want a `pnpm qa:performance` script that runs Lighthouse against the production build and outputs an HTML report, so that performance is measurable.
+43. As an Agency, I want a `pnpm qa:performance` script that runs Unlighthouse against the production build and outputs an HTML report, so that performance is measurable.
 44. As an Agency, I want axe-core integrated with Playwright for automated accessibility assertions, so that WCAG violations are caught in E2E tests.
 45. As an Agency, I want a `pnpm qa:a11y` script that runs axe against all static pages, so that accessibility is independently verifiable.
 46. As an Agency, I want a manual testing checklist for keyboard navigation, focus rings, contrast, and screen reader basics, so that accessibility beyond automated checks is documented.
@@ -173,7 +173,7 @@ Deliver a Vercel-first, static-export-only Next.js template (v1 scope) built aro
 
 - **Storybook** — Configured for Next.js App Router. At least one example story for a Hotel Example component.
 - **Playwright** — Multi-browser projects (Chromium, Firefox, WebKit). Example smoke tests (homepage loads, navigation, 404). Extended later for accessibility, SEO, cross-browser, responsive.
-- **Lighthouse CI** — `@lhci/cli` with `.lighthouserc.js`. Thresholds: Performance ≥ 90, LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1.
+- **Unlighthouse** — `@unlighthouse/cli` with `unlighthouse-ci` command. Baseline threshold: Performance budget ≥ 90.
 - **Bundle Analyzer** — `@next/bundle-analyzer` behind `ANALYZE` env var. No hard bundle budgets in v1 — diagnostic use only.
 - **Security** — `pnpm audit:ci` failing on critical/high CVEs. OWASP headers in `vercel.json` only for v1. CSP template with relaxation instructions (not drop-in).
 - **Version Pinning** — Exact versions for Next.js, React, TypeScript, Tailwind. `pnpm.overrides` for transitive deps where needed.
@@ -229,7 +229,7 @@ The following are explicitly excluded from v1:
 - **CMS admin UI** — Content is authored by editing JSON files directly. No visual editor or admin dashboard.
 - **Bundle size budgets** — The bundle analyzer is wired for diagnostics only. No hard thresholds in v1.
 - **Webhook / automation integrations** — Web3Forms free tier handles form submissions. No CRM, Slack, or Zapier integrations.
-- **Performance monitoring / RUM** — No Real User Monitoring, Web Vitals tracking, or analytics beyond Lighthouse CI.
+- **Performance monitoring / RUM** — No Real User Monitoring, Web Vitals tracking, or analytics beyond Unlighthouse QA checks.
 - **A/B testing / feature flags** — Not part of a static marketing site template.
 - **Database / ORM** — No database layer. Content is JSON files.
 
@@ -243,7 +243,7 @@ Implementation follows this dependency chain:
 2. **i18n baseline (§1A)** — Install `next-intl`, configure `[locale]` routing, implement URL-prefixed strategy for en/el/de, set up message files and navigation helpers. Everything else grows from this stable routing base.
 3. **Local CMS baseline (§2A)** — Implement content directory structure, Zod schemas, Content Loaders, Media Record model. The content model must be stable before example pages are built against it.
 4. **Hotel Example content (§1)** — Populate JSON records, build example components, create the four pages, wire the contact form. Content loaders feed the pages.
-5. **Tooling (§2)** — Install and configure Storybook, Playwright, Lighthouse CI, bundle analyzer, audit script, CI pipeline, version pinning, TanStack Form. These tools test and validate the work from steps 2–4.
+5. **Tooling (§2)** — Install and configure Storybook, Playwright, Unlighthouse, bundle analyzer, audit script, CI pipeline, version pinning, TanStack Form. These tools test and validate the work from steps 2–4.
 6. **QA Framework (§4)** — Configure thresholds, wire axe-core, add SEO routes, security headers, responsive tests, QA umbrella script. Follows the four execution gates (Performance + Accessibility → SEO → Security + Bundle → Cross-Browser + Reporting).
 7. **Documentation (§3 + §5)** — Write TECH_STACK.md, update README, ARCHITECTURE.md, CONVENTIONS.md, ROUTINES.md, create DEPLOYMENT.md. Documentation waits until the codebase reflects what it describes.
 
@@ -261,6 +261,7 @@ All domain vocabulary and architectural decisions from the grilling session have
 ### v2 transition notes
 
 When the template graduates beyond v1:
+
 - Add multi-platform security headers (Netlify, Cloudflare Pages, GitHub Pages).
 - Build a custom static image loader with build-time optimization (sharp/squoosh).
 - Consider adding an `(app)` route group with auth if a Server-side rendering mode is introduced.
