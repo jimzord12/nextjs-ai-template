@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: done
 Method: tdd
 Complexity: 3
 
@@ -18,16 +18,16 @@ The result is a stable end-to-end path for validating tracker state, inspecting 
 
 ## Acceptance criteria
 
-- [ ] The CLI validates feature workflow state before any command that depends on implicit current-feature resolution
-- [ ] The current feature is derived from the single feature marked `in-progress`
-- [ ] Commands that depend on the current feature fail with a descriptive error when zero features are `in-progress`
-- [ ] Commands that depend on the current feature fail with a descriptive error when more than one feature is `in-progress`
-- [ ] A narrow feature inspection command returns self-contained human-readable output
-- [ ] A narrow feature update command can explicitly change feature workflow state without auto-demoting another active feature
-- [ ] Setting a feature to `in-progress` fails if another feature is already `in-progress`
-- [ ] Focus-changing guidance in errors directs the operator to either activate a feature explicitly or use explicit feature targeting on supported read commands
-- [ ] Focused domain tests cover valid state, no-current-feature, and ambiguous-current-feature cases
-- [ ] CLI smoke coverage verifies representative success and failure output for feature inspection and feature updates
+- [x] The CLI validates feature workflow state before any command that depends on implicit current-feature resolution
+- [x] The current feature is derived from the single feature marked `in-progress`
+- [x] Commands that depend on the current feature fail with a descriptive error when zero features are `in-progress`
+- [x] Commands that depend on the current feature fail with a descriptive error when more than one feature is `in-progress`
+- [x] A narrow feature inspection command returns self-contained human-readable output
+- [x] A narrow feature update command can explicitly change feature workflow state without auto-demoting another active feature
+- [x] Setting a feature to `in-progress` fails if another feature is already `in-progress`
+- [x] Focus-changing guidance in errors directs the operator to explicitly activate a feature before current-feature-dependent commands run
+- [x] Focused domain tests cover valid state, no-current-feature, and ambiguous-current-feature cases
+- [x] CLI smoke coverage verifies representative success and failure output for feature inspection and feature updates
 
 ## Blocked by
 
