@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 const Link = ({
   href,
@@ -35,4 +35,4 @@ function useSearchParams() {
   return new URLSearchParams();
 }
 
-export { Link, useRouter, usePathname, useSearchParams };
+export { Link, usePathname, useRouter, useSearchParams };

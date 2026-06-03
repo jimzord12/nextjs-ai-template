@@ -7,7 +7,19 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!!**/.agents/skills/vercel-*"]
+    "includes": [
+      "**",
+      "!!**/.agents/skills/vercel-*",
+      "!storybook-static",
+      "!playwright-report",
+      "!lhci-reports",
+      "!.lighthouseci",
+      "!test-results",
+      "!.qa",
+      "!.next",
+      "!out",
+      "!coverage"
+    ]
   },
   "formatter": {
     "enabled": true,

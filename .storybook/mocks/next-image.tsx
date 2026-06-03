@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 const MockedImage = (
   props: React.ImgHTMLAttributes<HTMLImageElement> & {
@@ -18,6 +18,7 @@ const MockedImage = (
     sizes,
     ...imgProps
   } = props;
+  // biome-ignore lint/performance/noImgElement: Storybook mock intentionally renders a raw img element.
   return <img alt={alt} {...imgProps} />;
 };
 

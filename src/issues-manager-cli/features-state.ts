@@ -225,5 +225,15 @@ export async function updateFeatureStatus(options: {
     "utf8",
   );
 
-  return nextState.features.find((entry) => entry.slug === options.slug)!;
+  const updatedFeature = nextState.features.find(
+    (entry) => entry.slug === options.slug,
+  );
+
+  if (!updatedFeature) {
+    throw new FeatureStateError(
+      `Failed to find updated feature "${options.slug}" in state after update.`,
+    );
+  }
+
+  return updatedFeature;
 }

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { Inter } from "next/font/google";
-import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import type { ReactNode } from "react";
 import { IntlErrorHandlingProvider } from "@/components/providers/intl-error-provider";
 import { env } from "@/env";
+import { routing } from "@/i18n/routing";
 
 const inter = Inter({
   variable: "--font-sans",
