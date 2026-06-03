@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "issues-manager": "node --no-warnings --experimental-strip-types src/issues-manager-cli/bin.mjs",
+    "issues-manager": "bun src/issues-manager-cli/bin.ts",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
     "check": "pnpm lint && pnpm typecheck",

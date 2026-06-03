@@ -10,7 +10,7 @@ import { runIssuesManagerCli } from "@/issues-manager-cli/cli";
 
 const workspaces: string[] = [];
 const execFileAsync = promisify(execFile);
-const binPath = join(process.cwd(), "src", "issues-manager-cli", "bin.mjs");
+const binPath = join(process.cwd(), "src", "issues-manager-cli", "bin.ts");
 
 async function createWorkspace(featuresStatus: object) {
   const workspacePath = await mkdtemp(join(tmpdir(), "issues-manager-cli-"));
@@ -32,12 +32,33 @@ async function createWorkspace(featuresStatus: object) {
 async function writeIssuesState(
   workspacePath: string,
   featureSlug: string,
-  issuesState: object,
+  issuesState: {
+    featureId: number;
+    featureSlug: string;
+    featureStatus?: string;
+    issues: Array<{
+      id: number;
+      title: string;
+      status: string;
+      method: string;
+      complexity: number;
+      filePath: string;
+      blockedBy?: number[];
+    }>;
+  },
 ) {
+  const normalizedIssuesState = {
+    ...issuesState,
+    issues: issuesState.issues.map((issue) => ({
+      ...issue,
+      blockedBy: issue.blockedBy ?? [],
+    })),
+  };
+
   await writeIssuesStateFile(
     workspacePath,
     featureSlug,
-    JSON.stringify(issuesState, null, 2),
+    JSON.stringify(normalizedIssuesState, null, 2),
   );
 }
 
@@ -52,8 +73,24 @@ async function writeIssuesStateFile(
   await writeFile(join(featurePath, "issues-status.json"), contents, "utf8");
 }
 
+async function writeIssueMarkdown(
+  workspacePath: string,
+  featureSlug: string,
+  fileName: string,
+  contents: string,
+) {
+  const issuesDir = join(workspacePath, ".scratch", featureSlug, "issues");
+
+  await mkdir(issuesDir, { recursive: true });
+  await writeFile(join(issuesDir, fileName), contents, "utf8");
+}
+
 afterEach(async () => {
-  await Promise.all(workspaces.splice(0).map((path) => rm(path, { recursive: true, force: true })));
+  await Promise.all(
+    workspaces
+      .splice(0)
+      .map((path) => rm(path, { recursive: true, force: true })),
+  );
 });
 
 describe("runIssuesManagerCli", () => {
@@ -131,7 +168,8 @@ describe("runIssuesManagerCli", () => {
           status: "ready-for-agent",
           method: "chore",
           complexity: 3,
-          filePath: ".scratch/production-template-baseline/issues/17-documentation.md",
+          filePath:
+            ".scratch/production-template-baseline/issues/17-documentation.md",
         },
       ],
     });
@@ -152,6 +190,242 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain(
       ".scratch/production-template-baseline/issues/17-documentation.md",
     );
+  });
+
+  it("filters list output to actionable issues when --actionable is provided", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesState(workspacePath, "issues-manager-cli", {
+      featureId: 1,
+      featureSlug: "issues-manager-cli",
+      featureStatus: "in-progress",
+      issues: [
+        {
+          id: 1,
+          title: "Should be filtered in",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [3],
+          filePath: ".scratch/issues-manager-cli/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Blocked by unresolved issue",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 3,
+          blockedBy: [4],
+          filePath: ".scratch/issues-manager-cli/issues/02.md",
+        },
+        {
+          id: 3,
+          title: "Finished blocker",
+          status: "done",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/03.md",
+        },
+        {
+          id: 4,
+          title: "Non-terminal blocker",
+          status: "wontfix",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/04.md",
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["list-issues", "--actionable"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("Feature issues (actionable)");
+    expect(result.stdout).toContain("Should be filtered in");
+    expect(result.stdout).not.toContain("Blocked by unresolved issue");
+    expect(result.stdout).not.toContain("Finished blocker");
+    expect(result.stdout).not.toContain("Non-terminal blocker");
+  });
+
+  it("fails descriptively on blocker-aware reads when canonical blocker data is missing", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesStateFile(
+      workspacePath,
+      "issues-manager-cli",
+      JSON.stringify(
+        {
+          featureId: 1,
+          featureSlug: "issues-manager-cli",
+          featureStatus: "in-progress",
+          issues: [
+            {
+              id: 1,
+              title: "Legacy blockers only",
+              status: "ready-for-agent",
+              method: "tdd",
+              complexity: 3,
+              filePath: ".scratch/issues-manager-cli/issues/01.md",
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    );
+
+    const result = await runIssuesManagerCli(["list-issues", "--actionable"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toContain("Missing canonical BlockedBy field");
+    expect(result.stderr).toContain("legacy prose-only blockers");
+  });
+
+  it("updates blockers and normalizes a legacy issue through the explicit write flow", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "01-legacy.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "",
+        "# Legacy issue",
+        "",
+        "## Blocked by",
+        "",
+        "- `02-done`",
+        "",
+      ].join("\n"),
+    );
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-done.md",
+      [
+        "Status: done",
+        "Method: tdd",
+        "Complexity: 2",
+        "BlockedBy: none",
+        "",
+        "# Done dependency",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await runIssuesManagerCli(
+      ["update-blockers", "1", "--blockers", "2"],
+      {
+        cwd: workspacePath,
+      },
+    );
+
+    const updatedIssue = await readFile(
+      join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+        "01-legacy.md",
+      ),
+      "utf8",
+    );
+    const regenerated = JSON.parse(
+      await readFile(
+        join(
+          workspacePath,
+          ".scratch",
+          "issues-manager-cli",
+          "issues-status.json",
+        ),
+        "utf8",
+      ),
+    ) as {
+      issues: Array<{ id: number; blockedBy: number[] }>;
+    };
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("Updated blockers");
+    expect(result.stdout).toContain("issue: 1");
+    expect(result.stdout).toContain("blockedBy: 2");
+    expect(updatedIssue).toContain("BlockedBy: 2");
+    expect(updatedIssue).not.toContain("## Blocked by");
+    expect(
+      regenerated.issues.find((issue) => issue.id === 1)?.blockedBy,
+    ).toEqual([2]);
+  });
+
+  it("fails update-blockers when feature-wide regeneration finds another non-canonical issue", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "01-target.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "",
+        "# Target issue",
+        "",
+        "## Blocked by",
+        "",
+        "- `02-other`",
+        "",
+      ].join("\n"),
+    );
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-still-legacy.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 2",
+        "",
+        "# Still legacy",
+        "",
+        "## Blocked by",
+        "",
+        "- none",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await runIssuesManagerCli(
+      ["update-blockers", "1", "--blockers", "none"],
+      {
+        cwd: workspacePath,
+      },
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toContain("legacy prose-only blocker section");
+    expect(result.stderr).toContain("02-still-legacy.md");
   });
 
   it("fails descriptively when the derived issue state is missing", async () => {
@@ -176,7 +450,11 @@ describe("runIssuesManagerCli", () => {
       features: [{ id: 1, slug: "issues-manager-cli", status: "todo" }],
     });
 
-    await writeIssuesStateFile(workspacePath, "issues-manager-cli", "not json\n");
+    await writeIssuesStateFile(
+      workspacePath,
+      "issues-manager-cli",
+      "not json\n",
+    );
 
     const result = await runIssuesManagerCli(
       ["list-issues", "--feature", "issues-manager-cli"],
@@ -263,7 +541,9 @@ describe("runIssuesManagerCli", () => {
     expect(result.exitCode).toBe(1);
     expect(result.stdout).toBe("");
     expect(result.stderr).toContain("Ambiguous current feature");
-    expect(result.stderr).toContain("issues-manager-cli, production-template-baseline");
+    expect(result.stderr).toContain(
+      "issues-manager-cli, production-template-baseline",
+    );
     expect(result.stderr).toContain("update-feature");
     expect(result.stderr).toContain(
       "before running commands that depend on the current feature",
@@ -288,7 +568,10 @@ describe("runIssuesManagerCli", () => {
     );
 
     const persistedState = JSON.parse(
-      await readFile(join(workspacePath, ".scratch", "features-status.json"), "utf8"),
+      await readFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        "utf8",
+      ),
     ) as {
       features: Array<{ slug: string; status: string; lastUpdated?: string }>;
       lastUpdated?: string;
@@ -300,8 +583,9 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("issues-manager-cli");
     expect(result.stdout).toContain("in-progress");
     expect(
-      persistedState.features.find((feature) => feature.slug === "issues-manager-cli")
-        ?.status,
+      persistedState.features.find(
+        (feature) => feature.slug === "issues-manager-cli",
+      )?.status,
     ).toBe("in-progress");
     expect(persistedState.lastUpdated).toEqual(expect.any(String));
   });
@@ -331,7 +615,9 @@ describe("runIssuesManagerCli", () => {
     expect(result.stderr).toContain(
       'Cannot activate "production-template-baseline" while "issues-manager-cli" is already in-progress.',
     );
-    expect(result.stderr).toContain("First move the active feature out of in-progress");
+    expect(result.stderr).toContain(
+      "First move the active feature out of in-progress",
+    );
   });
 
   it("supports the real CLI entrypoint for feature inspection", async () => {
@@ -339,18 +625,9 @@ describe("runIssuesManagerCli", () => {
       features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
     });
 
-    const result = await execFileAsync(
-      "node",
-      [
-        "--no-warnings",
-        "--experimental-strip-types",
-        binPath,
-        "get-feature",
-      ],
-      {
-        cwd: workspacePath,
-      },
-    );
+    const result = await execFileAsync("bun", [binPath, "get-feature"], {
+      cwd: workspacePath,
+    });
 
     expect(result.stdout).toContain("Current feature");
     expect(result.stdout).toContain("issues-manager-cli");
@@ -363,10 +640,8 @@ describe("runIssuesManagerCli", () => {
     });
 
     const result = await execFileAsync(
-      "node",
+      "bun",
       [
-        "--no-warnings",
-        "--experimental-strip-types",
         binPath,
         "update-feature",
         "issues-manager-cli",
@@ -379,7 +654,10 @@ describe("runIssuesManagerCli", () => {
     );
 
     const persistedState = JSON.parse(
-      await readFile(join(workspacePath, ".scratch", "features-status.json"), "utf8"),
+      await readFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        "utf8",
+      ),
     ) as {
       features: Array<{ slug: string; status: string }>;
     };
@@ -388,8 +666,9 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("in-progress");
     expect(result.stderr).toBe("");
     expect(
-      persistedState.features.find((feature) => feature.slug === "issues-manager-cli")
-        ?.status,
+      persistedState.features.find(
+        (feature) => feature.slug === "issues-manager-cli",
+      )?.status,
     ).toBe("in-progress");
   });
 
@@ -415,18 +694,9 @@ describe("runIssuesManagerCli", () => {
       ],
     });
 
-    const result = await execFileAsync(
-      "node",
-      [
-        "--no-warnings",
-        "--experimental-strip-types",
-        binPath,
-        "list-issues",
-      ],
-      {
-        cwd: workspacePath,
-      },
-    );
+    const result = await execFileAsync("bun", [binPath, "list-issues"], {
+      cwd: workspacePath,
+    });
 
     expect(result.stdout).toContain("Feature issues");
     expect(result.stdout).toContain("slug: issues-manager-cli");
@@ -457,21 +727,15 @@ describe("runIssuesManagerCli", () => {
           status: "ready-for-agent",
           method: "chore",
           complexity: 3,
-          filePath: ".scratch/production-template-baseline/issues/17-documentation.md",
+          filePath:
+            ".scratch/production-template-baseline/issues/17-documentation.md",
         },
       ],
     });
 
     const result = await execFileAsync(
-      "node",
-      [
-        "--no-warnings",
-        "--experimental-strip-types",
-        binPath,
-        "list-issues",
-        "--feature",
-        "production-template-baseline",
-      ],
+      "bun",
+      [binPath, "list-issues", "--feature", "production-template-baseline"],
       {
         cwd: workspacePath,
       },
@@ -484,6 +748,103 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain(
       ".scratch/production-template-baseline/issues/17-documentation.md",
     );
+    expect(result.stderr).toBe("");
+  });
+
+  it("supports the real CLI entrypoint for actionable issue inventory reads", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesState(workspacePath, "issues-manager-cli", {
+      featureId: 1,
+      featureSlug: "issues-manager-cli",
+      featureStatus: "in-progress",
+      issues: [
+        {
+          id: 1,
+          title: "Actionable issue",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [2],
+          filePath: ".scratch/issues-manager-cli/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Done blocker",
+          status: "done",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/02.md",
+        },
+      ],
+    });
+
+    const result = await execFileAsync(
+      "bun",
+      [binPath, "list-issues", "--actionable"],
+      {
+        cwd: workspacePath,
+      },
+    );
+
+    expect(result.stdout).toContain("Feature issues (actionable)");
+    expect(result.stdout).toContain("Actionable issue");
+    expect(result.stdout).not.toContain("Done blocker");
+    expect(result.stderr).toBe("");
+  });
+
+  it("supports the real CLI entrypoint for blocker updates", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "01-legacy.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "",
+        "# Legacy issue",
+        "",
+        "## Blocked by",
+        "",
+        "- `02-done`",
+        "",
+      ].join("\n"),
+    );
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-done.md",
+      [
+        "Status: done",
+        "Method: tdd",
+        "Complexity: 2",
+        "BlockedBy: none",
+        "",
+        "# Done dependency",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await execFileAsync(
+      "bun",
+      [binPath, "update-blockers", "1", "--blockers", "2"],
+      {
+        cwd: workspacePath,
+      },
+    );
+
+    expect(result.stdout).toContain("Updated blockers");
+    expect(result.stdout).toContain("issue: 1");
+    expect(result.stdout).toContain("blockedBy: 2");
     expect(result.stderr).toBe("");
   });
 });

@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: done
 Method: tdd
 Complexity: 5
 
@@ -18,19 +18,19 @@ The result is a dependable end-to-end path from canonical issue metadata through
 
 ## Acceptance criteria
 
-- [ ] The canonical blocker field is `BlockedBy: none` or `BlockedBy: <id list>`
-- [ ] Blocker references are validated against issues in the same feature
-- [ ] Self-dependencies are rejected with a descriptive error
-- [ ] Duplicate blocker IDs are rejected with a descriptive error
-- [ ] Blockedness is derived from unresolved blockers rather than stored as a separate status
-- [ ] Downstream issues unblock only when blocker issues reach `done`
-- [ ] A blocker on an issue in `wontfix` does not auto-unblock dependent work
-- [ ] Blocker-aware commands fail descriptively when they encounter legacy prose-only blocker sections
-- [ ] The explicit blocker update flow can normalize a legacy issue when canonical blocker data is supplied
-- [ ] Feature-wide regeneration fails if any issue remains outside the canonical blocker contract
-- [ ] The actionable issue filter excludes blocked issues automatically
-- [ ] Focused domain tests cover normalization, invalid references, duplicate blockers, self-dependencies, blockedness derivation, and actionable filtering
-- [ ] CLI smoke coverage verifies representative blocker-update output and actionable filtering behavior
+- [x] The canonical blocker field is `BlockedBy: none` or `BlockedBy: <id list>`
+- [x] Blocker references are validated against issues in the same feature
+- [x] Self-dependencies are rejected with a descriptive error
+- [x] Duplicate blocker IDs are rejected with a descriptive error
+- [x] Blockedness is derived from unresolved blockers rather than stored as a separate status
+- [x] Downstream issues unblock only when blocker issues reach `done`
+- [x] A blocker on an issue in `wontfix` does not auto-unblock dependent work
+- [x] Blocker-aware commands fail descriptively when they encounter legacy prose-only blocker sections
+- [x] The explicit blocker update flow can normalize a legacy issue when canonical blocker data is supplied
+- [x] Feature-wide regeneration fails if any issue remains outside the canonical blocker contract
+- [x] The actionable issue filter excludes blocked issues automatically
+- [x] Focused domain tests cover normalization, invalid references, duplicate blockers, self-dependencies, blockedness derivation, and actionable filtering
+- [x] CLI smoke coverage verifies representative blocker-update output and actionable filtering behavior
 
 ## Blocked by
 
@@ -48,9 +48,9 @@ Parse `BlockedBy: none` and `BlockedBy: <id list>` into one normalized internal 
 
 **Acceptance criteria**
 
-- [ ] Canonical blocker headers parse into a normalized internal blocker shape
-- [ ] Missing or malformed canonical blocker headers fail with a descriptive error
-- [ ] Legacy prose-only blocker sections are detected explicitly
+- [x] Canonical blocker headers parse into a normalized internal blocker shape
+- [x] Missing or malformed canonical blocker headers fail with a descriptive error
+- [x] Legacy prose-only blocker sections are detected explicitly
 
 **Blocked by**
 
@@ -68,12 +68,12 @@ Validate blocker references against issues in the same feature, reject duplicate
 
 **Acceptance criteria**
 
-- [ ] Missing blocker references fail descriptively
-- [ ] Cross-feature blocker references fail descriptively
-- [ ] Self-dependencies are rejected
-- [ ] Duplicate blocker IDs are rejected
-- [ ] Blockedness depends only on unresolved blockers
-- [ ] A blocker in `wontfix` does not unblock downstream work
+- [x] Missing blocker references fail descriptively
+- [x] Cross-feature blocker references fail descriptively
+- [x] Self-dependencies are rejected
+- [x] Duplicate blocker IDs are rejected
+- [x] Blockedness depends only on unresolved blockers
+- [x] A blocker in `wontfix` does not unblock downstream work
 
 **Blocked by**
 
@@ -91,9 +91,9 @@ Implement the explicit blocker update write path that can normalize a legacy iss
 
 **Acceptance criteria**
 
-- [ ] `update-blockers` rewrites canonical issue metadata
-- [ ] Legacy issues can be normalized only through the explicit blocker-update flow
-- [ ] `BlockedBy: none` is written explicitly when an issue has no blockers
+- [x] `update-blockers` rewrites canonical issue metadata
+- [x] Legacy issues can be normalized only through the explicit blocker-update flow
+- [x] `BlockedBy: none` is written explicitly when an issue has no blockers
 
 **Blocked by**
 
@@ -111,10 +111,10 @@ Regenerate derived issue state after blocker updates and expose actionable filte
 
 **Acceptance criteria**
 
-- [ ] Feature-wide regeneration fails if any issue remains outside the canonical blocker contract
-- [ ] Derived state reflects blockedness correctly after blocker changes
-- [ ] Actionable filtering excludes blocked issues automatically
-- [ ] CLI smoke tests cover blocker-update output and actionable filtering behavior
+- [x] Feature-wide regeneration fails if any issue remains outside the canonical blocker contract
+- [x] Derived state reflects blockedness correctly after blocker changes
+- [x] Actionable filtering excludes blocked issues automatically
+- [x] CLI smoke tests cover blocker-update output and actionable filtering behavior
 
 **Blocked by**
 
