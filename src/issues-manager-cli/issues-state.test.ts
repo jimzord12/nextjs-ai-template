@@ -34,7 +34,9 @@ describe("resolveFeatureForIssueRead", () => {
       ],
     });
 
-    expect(resolveFeatureForIssueRead(state, "production-template-baseline")).toEqual({
+    expect(
+      resolveFeatureForIssueRead(state, "production-template-baseline"),
+    ).toEqual({
       id: 2,
       slug: "production-template-baseline",
       status: "archived",

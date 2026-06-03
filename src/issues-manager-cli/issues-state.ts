@@ -1,8 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
-  FeatureStateError,
   type FeatureRecord,
+  FeatureStateError,
   type FeaturesState,
   resolveCurrentFeature,
 } from "./features-state";
@@ -40,7 +40,9 @@ export function resolveFeatureForIssueRead(
   explicitFeatureSlug?: string,
 ): FeatureRecord {
   if (explicitFeatureSlug) {
-    const feature = state.features.find((entry) => entry.slug === explicitFeatureSlug);
+    const feature = state.features.find(
+      (entry) => entry.slug === explicitFeatureSlug,
+    );
 
     if (!feature) {
       throw new FeatureStateError(
@@ -94,7 +96,10 @@ export function validateIssuesState(
 
   const candidate = value as Record<string, unknown>;
 
-  if (!Number.isInteger(candidate.featureId) || Number(candidate.featureId) <= 0) {
+  if (
+    !Number.isInteger(candidate.featureId) ||
+    Number(candidate.featureId) <= 0
+  ) {
     throw new IssueStateError(
       `Invalid derived issue state in ${sourceLabel}. Expected a positive integer featureId.`,
     );
@@ -111,7 +116,7 @@ export function validateIssuesState(
 
   if (!Array.isArray(candidate.issues)) {
     throw new IssueStateError(
-      `Invalid derived issue state in ${sourceLabel}. Expected \"issues\" to be an array.`,
+      `Invalid derived issue state in ${sourceLabel}. Expected "issues" to be an array.`,
     );
   }
 
@@ -123,7 +128,9 @@ export function validateIssuesState(
         ? candidate.featureStatus
         : undefined,
     lastUpdated:
-      typeof candidate.lastUpdated === "string" ? candidate.lastUpdated : undefined,
+      typeof candidate.lastUpdated === "string"
+        ? candidate.lastUpdated
+        : undefined,
     issues: candidate.issues.map((issue, index) =>
       validateIssueRecord(issue, index, sourceLabel),
     ),
@@ -149,25 +156,37 @@ function validateIssueRecord(
     );
   }
 
-  if (typeof candidate.title !== "string" || candidate.title.trim().length === 0) {
+  if (
+    typeof candidate.title !== "string" ||
+    candidate.title.trim().length === 0
+  ) {
     throw new IssueStateError(
       `Invalid issue ${candidate.id} in ${sourceLabel}. Expected a non-empty title.`,
     );
   }
 
-  if (typeof candidate.status !== "string" || candidate.status.trim().length === 0) {
+  if (
+    typeof candidate.status !== "string" ||
+    candidate.status.trim().length === 0
+  ) {
     throw new IssueStateError(
       `Invalid issue ${candidate.id} in ${sourceLabel}. Expected a non-empty status.`,
     );
   }
 
-  if (typeof candidate.method !== "string" || candidate.method.trim().length === 0) {
+  if (
+    typeof candidate.method !== "string" ||
+    candidate.method.trim().length === 0
+  ) {
     throw new IssueStateError(
       `Invalid issue ${candidate.id} in ${sourceLabel}. Expected a non-empty method.`,
     );
   }
 
-  if (!Number.isInteger(candidate.complexity) || Number(candidate.complexity) <= 0) {
+  if (
+    !Number.isInteger(candidate.complexity) ||
+    Number(candidate.complexity) <= 0
+  ) {
     throw new IssueStateError(
       `Invalid issue ${candidate.id} in ${sourceLabel}. Expected a positive integer complexity.`,
     );
