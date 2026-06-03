@@ -107,3 +107,19 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 [ ] Code is minimal for this test
 [ ] No speculative features added
 ```
+
+## Final Response Contract
+
+When this skill is used in work that is scoped to .scratch (planning, issue-tracker, PRD, or orchestration flow), the final user-facing answer must follow the response layout defined in [.scratch/AGENTS.md](../../../.scratch/AGENTS.md).
+
+Use that layout as the default final response shape:
+
+```md
+Status: enum(not-started, done, blocked)
+Problem: short description (required for done as solved summary, optional otherwise)
+Impact: short description (optional)
+Changes: optional table with file path, lines changed, short description
+Next Step: direct question or recommendation
+```
+
+Keep that final response concise and management-oriented unless the user explicitly asks for deep technical detail.
