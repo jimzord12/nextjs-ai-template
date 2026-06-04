@@ -7,10 +7,15 @@ import { describe, expect, it } from "vitest";
 import { validateFeaturesState } from "@/issues-manager-cli/features-state";
 import {
   getActionableIssues,
+  type IssuesState,
   regenerateIssuesStateFromIssueFiles,
   resolveFeatureForIssueRead,
+  selectNextIssue,
   updateIssueBlockers,
+  updateIssueStatus,
+  VALID_STATUSES,
   validateIssuesState,
+  validateStatusTransition,
 } from "@/issues-manager-cli/issues-state";
 
 describe("resolveFeatureForIssueRead", () => {
@@ -382,6 +387,758 @@ describe("issue markdown regeneration and normalization", () => {
       expect(
         update.issuesState.issues.find((issue) => issue.id === 1)?.blockedBy,
       ).toEqual([2]);
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+});
+describe("selectNextIssue", () => {
+  it("selects the issue with lowest complexity, then lowest id as tiebreaker", () => {
+    const state: IssuesState = {
+      featureId: 1,
+      featureSlug: "test-feature",
+      issues: [
+        {
+          id: 3,
+          title: "Complex task",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 5,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/03.md",
+        },
+        {
+          id: 1,
+          title: "Medium task",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 3,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Also medium task",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 3,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/02.md",
+        },
+      ],
+    };
+    const result = selectNextIssue(state);
+    expect(result).toEqual({
+      kind: "winner",
+      issue: expect.objectContaining({ id: 1, title: "Medium task" }),
+    });
+  });
+  it("returns no-winner/empty when issues array is empty", () => {
+    const state: IssuesState = {
+      featureId: 1,
+      featureSlug: "test-feature",
+      issues: [],
+    };
+    const result = selectNextIssue(state);
+    expect(result).toEqual({ kind: "no-winner", reason: "empty" });
+  });
+  it("returns no-winner/complete when all issues have terminal statuses", () => {
+    const state: IssuesState = {
+      featureId: 1,
+      featureSlug: "test-feature",
+      issues: [
+        {
+          id: 1,
+          title: "Done issue",
+          status: "done",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Wontfix issue",
+          status: "wontfix",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/02.md",
+        },
+      ],
+    };
+    const result = selectNextIssue(state);
+    expect(result).toEqual({ kind: "no-winner", reason: "complete" });
+  });
+  it("returns no-winner/no-actionable when issues exist but none are actionable", () => {
+    const state: IssuesState = {
+      featureId: 1,
+      featureSlug: "test-feature",
+      issues: [
+        {
+          id: 1,
+          title: "Blocked issue",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [2],
+          filePath: ".scratch/test-feature/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "In-progress issue",
+          status: "in-progress",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/02.md",
+        },
+      ],
+    };
+    const result = selectNextIssue(state);
+    expect(result).toEqual({ kind: "no-winner", reason: "no-actionable" });
+  });
+  it("returns the correct winner among actionable issues", () => {
+    const state: IssuesState = {
+      featureId: 1,
+      featureSlug: "test-feature",
+      issues: [
+        {
+          id: 1,
+          title: "In-progress issue",
+          status: "in-progress",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Actionable low complexity",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/02.md",
+        },
+        {
+          id: 3,
+          title: "Blocked issue",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [1],
+          filePath: ".scratch/test-feature/issues/03.md",
+        },
+        {
+          id: 4,
+          title: "Actionable high complexity",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 5,
+          blockedBy: [],
+          filePath: ".scratch/test-feature/issues/04.md",
+        },
+      ],
+    };
+    const result = selectNextIssue(state);
+    expect(result).toEqual({
+      kind: "winner",
+      issue: expect.objectContaining({
+        id: 2,
+        title: "Actionable low complexity",
+      }),
+    });
+  });
+});
+
+describe("validateStatusTransition", () => {
+  it("accepts a valid transition from ready-for-agent to in-progress", () => {
+    expect(() =>
+      validateStatusTransition("ready-for-agent", "in-progress"),
+    ).not.toThrow();
+  });
+
+  it("rejects an invalid transition from ready-for-agent to done", () => {
+    expect(() =>
+      validateStatusTransition("ready-for-agent", "done"),
+    ).toThrowError(/invalid transition/i);
+  });
+
+  it("allows force to bypass the transition graph", () => {
+    expect(() =>
+      validateStatusTransition("ready-for-agent", "done", { force: true }),
+    ).not.toThrow();
+  });
+
+  it("rejects invalid status vocabulary even with force", () => {
+    expect(() =>
+      validateStatusTransition("ready-for-agent", "invalid-status", {
+        force: true,
+      }),
+    ).toThrowError(/invalid status/i);
+  });
+
+  it("rejects a normal transition from a terminal status", () => {
+    expect(() =>
+      validateStatusTransition("done", "ready-for-agent"),
+    ).toThrowError(/invalid transition/i);
+  });
+
+  it("rejects a same-status no-op transition", () => {
+    expect(() =>
+      validateStatusTransition("ready-for-agent", "ready-for-agent"),
+    ).toThrowError(/no-op/i);
+  });
+
+  it("contains the expected statuses in VALID_STATUSES", () => {
+    expect(VALID_STATUSES).toEqual(
+      expect.arrayContaining([
+        "needs-triage",
+        "needs-info",
+        "ready-for-agent",
+        "ready-for-human",
+        "in-progress",
+        "done",
+        "wontfix",
+      ]),
+    );
+  });
+});
+
+describe("updateIssueStatus", () => {
+  it("updates status in markdown and regenerates derived state", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      await writeFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        `${JSON.stringify(
+          {
+            features: [
+              { id: 1, slug: "issues-manager-cli", status: "in-progress" },
+            ],
+          },
+          null,
+          2,
+        )}\n`,
+        "utf8",
+      );
+
+      await writeFile(
+        join(issuesDir, "02-example.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 3",
+          "BlockedBy: none",
+          "",
+          "# Example",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      const feature = {
+        id: 1,
+        slug: "issues-manager-cli",
+        status: "in-progress" as const,
+      };
+
+      const result = await updateIssueStatus({
+        cwd: workspacePath,
+        feature,
+        issueId: 2,
+        status: "in-progress",
+      });
+
+      const updatedMarkdown = await readFile(
+        join(issuesDir, "02-example.md"),
+        "utf8",
+      );
+      const regenerated = JSON.parse(
+        await readFile(
+          join(
+            workspacePath,
+            ".scratch",
+            "issues-manager-cli",
+            "issues-status.json",
+          ),
+          "utf8",
+        ),
+      ) as { issues: Array<{ id: number; status: string }> };
+
+      expect(result.issueId).toBe(2);
+      expect(result.status).toBe("in-progress");
+      expect(result.featureSlug).toBe("issues-manager-cli");
+      expect(updatedMarkdown).toContain("Status: in-progress");
+      expect(updatedMarkdown).not.toContain("Status: ready-for-agent");
+      expect(regenerated.issues.find((issue) => issue.id === 2)?.status).toBe(
+        "in-progress",
+      );
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects an invalid transition before writing", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      const content = [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "BlockedBy: none",
+        "",
+        "# Example",
+        "",
+      ].join("\n");
+
+      await writeFile(join(issuesDir, "02-example.md"), content, "utf8");
+
+      await expect(
+        updateIssueStatus({
+          cwd: workspacePath,
+          feature: {
+            id: 1,
+            slug: "issues-manager-cli",
+            status: "in-progress",
+          },
+          issueId: 2,
+          status: "done",
+        }),
+      ).rejects.toThrowError(/invalid transition/i);
+
+      const unchanged = await readFile(
+        join(issuesDir, "02-example.md"),
+        "utf8",
+      );
+      expect(unchanged).toBe(content);
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("bypasses the transition graph with force", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      await writeFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        `${JSON.stringify(
+          {
+            features: [
+              { id: 1, slug: "issues-manager-cli", status: "in-progress" },
+            ],
+          },
+          null,
+          2,
+        )}\n`,
+        "utf8",
+      );
+
+      await writeFile(
+        join(issuesDir, "02-example.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 3",
+          "BlockedBy: none",
+          "",
+          "# Example",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      const result = await updateIssueStatus({
+        cwd: workspacePath,
+        feature: {
+          id: 1,
+          slug: "issues-manager-cli",
+          status: "in-progress",
+        },
+        issueId: 2,
+        status: "done",
+        force: true,
+      });
+
+      expect(result.status).toBe("done");
+
+      const updatedMarkdown = await readFile(
+        join(issuesDir, "02-example.md"),
+        "utf8",
+      );
+      expect(updatedMarkdown).toContain("Status: done");
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects invalid status vocabulary even with force", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      await writeFile(
+        join(issuesDir, "02-example.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 3",
+          "BlockedBy: none",
+          "",
+          "# Example",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      await expect(
+        updateIssueStatus({
+          cwd: workspacePath,
+          feature: {
+            id: 1,
+            slug: "issues-manager-cli",
+            status: "in-progress",
+          },
+          issueId: 2,
+          status: "invalid-status",
+          force: true,
+        }),
+      ).rejects.toThrowError(/invalid status/i);
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("fails for an unknown issue id", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      await writeFile(
+        join(issuesDir, "02-example.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 3",
+          "BlockedBy: none",
+          "",
+          "# Example",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      await expect(
+        updateIssueStatus({
+          cwd: workspacePath,
+          feature: {
+            id: 1,
+            slug: "issues-manager-cli",
+            status: "in-progress",
+          },
+          issueId: 999,
+          status: "in-progress",
+        }),
+      ).rejects.toThrowError(/unknown issue/i);
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("refreshes issue lastUpdated after status update", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      await writeFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        `${JSON.stringify(
+          {
+            features: [
+              { id: 1, slug: "issues-manager-cli", status: "in-progress" },
+            ],
+          },
+          null,
+          2,
+        )}\n`,
+        "utf8",
+      );
+
+      await writeFile(
+        join(issuesDir, "02-example.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 3",
+          "BlockedBy: none",
+          "",
+          "# Example",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      const before = new Date();
+
+      await updateIssueStatus({
+        cwd: workspacePath,
+        feature: {
+          id: 1,
+          slug: "issues-manager-cli",
+          status: "in-progress",
+        },
+        issueId: 2,
+        status: "in-progress",
+      });
+
+      const regenerated = JSON.parse(
+        await readFile(
+          join(
+            workspacePath,
+            ".scratch",
+            "issues-manager-cli",
+            "issues-status.json",
+          ),
+          "utf8",
+        ),
+      ) as { lastUpdated: string };
+
+      const updated = new Date(regenerated.lastUpdated);
+      expect(updated.getTime()).toBeGreaterThanOrEqual(before.getTime());
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("refreshes feature lastUpdated after status update", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      const scratchDir = join(workspacePath, ".scratch");
+      const featuresStatus = {
+        features: [
+          {
+            id: 1,
+            slug: "issues-manager-cli",
+            status: "in-progress",
+            lastUpdated: "2020-01-01T00:00:00.000Z",
+          },
+        ],
+        lastUpdated: "2020-01-01T00:00:00.000Z",
+      };
+      await writeFile(
+        join(scratchDir, "features-status.json"),
+        `${JSON.stringify(featuresStatus, null, 2)}\n`,
+        "utf8",
+      );
+
+      await writeFile(
+        join(issuesDir, "02-example.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 3",
+          "BlockedBy: none",
+          "",
+          "# Example",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      const before = new Date();
+
+      await updateIssueStatus({
+        cwd: workspacePath,
+        feature: {
+          id: 1,
+          slug: "issues-manager-cli",
+          status: "in-progress",
+        },
+        issueId: 2,
+        status: "in-progress",
+      });
+
+      const updatedFeatures = JSON.parse(
+        await readFile(join(scratchDir, "features-status.json"), "utf8"),
+      ) as {
+        lastUpdated: string;
+        features: Array<{ slug: string; lastUpdated: string }>;
+      };
+
+      const featureUpdated = new Date(
+        updatedFeatures.features.find((f) => f.slug === "issues-manager-cli")!
+          .lastUpdated,
+      );
+      const rootUpdated = new Date(updatedFeatures.lastUpdated);
+
+      expect(featureUpdated.getTime()).toBeGreaterThanOrEqual(before.getTime());
+      expect(rootUpdated.getTime()).toBeGreaterThanOrEqual(before.getTime());
+    } finally {
+      await rm(workspacePath, { recursive: true, force: true });
+    }
+  });
+
+  it("unblocks downstream issues when a blocker reaches done", async () => {
+    const workspacePath = await mkdtemp(
+      join(tmpdir(), "issues-manager-cli-domain-"),
+    );
+
+    try {
+      const issuesDir = join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+      );
+      await mkdir(issuesDir, { recursive: true });
+
+      await writeFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        `${JSON.stringify(
+          {
+            features: [
+              { id: 1, slug: "issues-manager-cli", status: "in-progress" },
+            ],
+          },
+          null,
+          2,
+        )}\n`,
+        "utf8",
+      );
+
+      // Issue 1: blocked by issue 2
+      await writeFile(
+        join(issuesDir, "01-blocked.md"),
+        [
+          "Status: ready-for-agent",
+          "Method: tdd",
+          "Complexity: 2",
+          "BlockedBy: 2",
+          "",
+          "# Blocked downstream issue",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      // Issue 2: the blocker, currently in-progress
+      await writeFile(
+        join(issuesDir, "02-blocker.md"),
+        [
+          "Status: in-progress",
+          "Method: tdd",
+          "Complexity: 1",
+          "BlockedBy: none",
+          "",
+          "# Blocker issue",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      await updateIssueStatus({
+        cwd: workspacePath,
+        feature: {
+          id: 1,
+          slug: "issues-manager-cli",
+          status: "in-progress",
+        },
+        issueId: 2,
+        status: "done",
+      });
+
+      const regenerated = JSON.parse(
+        await readFile(
+          join(
+            workspacePath,
+            ".scratch",
+            "issues-manager-cli",
+            "issues-status.json",
+          ),
+          "utf8",
+        ),
+      ) as {
+        issues: Array<{ id: number; status: string; blockedBy: number[] }>;
+      };
+
+      const downstream = regenerated.issues.find((i) => i.id === 1)!;
+      expect(downstream).toBeDefined();
+      // Issue 1 is still blockedBy [2], but blocker 2 is now done
+      // so getActionableIssues should include it
+      const actionable = getActionableIssues(regenerated);
+      expect(actionable.some((i) => i.id === 1)).toBe(true);
     } finally {
       await rm(workspacePath, { recursive: true, force: true });
     }

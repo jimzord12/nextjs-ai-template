@@ -847,4 +847,360 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("blockedBy: 2");
     expect(result.stderr).toBe("");
   });
+
+  // --- get-issue --next smoke tests ---
+
+  it("returns the next issue winner with feature metadata and issue path", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesState(workspacePath, "issues-manager-cli", {
+      featureId: 1,
+      featureSlug: "issues-manager-cli",
+      featureStatus: "in-progress",
+      issues: [
+        {
+          id: 1,
+          title: "Done issue",
+          status: "done",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Next actionable",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 3,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/02.md",
+        },
+        {
+          id: 3,
+          title: "Higher complexity",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 5,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/03.md",
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["get-issue", "--next"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("Next issue");
+    expect(result.stdout).toContain("feature: issues-manager-cli");
+    expect(result.stdout).toContain("id: 2");
+    expect(result.stdout).toContain("Next actionable");
+    expect(result.stdout).toContain("complexity: 3");
+    expect(result.stdout).toContain(".scratch/issues-manager-cli/issues/02.md");
+  });
+
+  it("returns empty no-winner as success when feature has no issues", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesState(workspacePath, "issues-manager-cli", {
+      featureId: 1,
+      featureSlug: "issues-manager-cli",
+      featureStatus: "in-progress",
+      issues: [],
+    });
+
+    const result = await runIssuesManagerCli(["get-issue", "--next"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("No issues found for this feature.");
+    expect(result.stderr).toBe("");
+  });
+
+  it("returns complete no-winner as success when all issues are terminal", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesState(workspacePath, "issues-manager-cli", {
+      featureId: 1,
+      featureSlug: "issues-manager-cli",
+      featureStatus: "in-progress",
+      issues: [
+        {
+          id: 1,
+          title: "Done",
+          status: "done",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "Wontfix",
+          status: "wontfix",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/02.md",
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["get-issue", "--next"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("All issues are complete.");
+    expect(result.stderr).toBe("");
+  });
+
+  it("returns no-actionable as non-zero when issues exist but none are actionable", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssuesState(workspacePath, "issues-manager-cli", {
+      featureId: 1,
+      featureSlug: "issues-manager-cli",
+      featureStatus: "in-progress",
+      issues: [
+        {
+          id: 1,
+          title: "Blocked",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 1,
+          blockedBy: [2],
+          filePath: ".scratch/issues-manager-cli/issues/01.md",
+        },
+        {
+          id: 2,
+          title: "In-progress",
+          status: "in-progress",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [],
+          filePath: ".scratch/issues-manager-cli/issues/02.md",
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["get-issue", "--next"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toContain("No actionable issues found");
+  });
+
+  it("supports explicit feature targeting on get-issue --next", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "issues-manager-cli", status: "in-progress" },
+        { id: 2, slug: "other-feature", status: "todo" },
+      ],
+    });
+
+    await writeIssuesState(workspacePath, "other-feature", {
+      featureId: 2,
+      featureSlug: "other-feature",
+      featureStatus: "todo",
+      issues: [
+        {
+          id: 1,
+          title: "Explicit target issue",
+          status: "ready-for-agent",
+          method: "tdd",
+          complexity: 2,
+          blockedBy: [],
+          filePath: ".scratch/other-feature/issues/01.md",
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(
+      ["get-issue", "--next", "--feature", "other-feature"],
+      { cwd: workspacePath },
+    );
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Next issue");
+    expect(result.stdout).toContain("feature: other-feature");
+    expect(result.stdout).toContain("Explicit target issue");
+    expect(result.stdout).toContain(".scratch/other-feature/issues/01.md");
+  });
+
+  // --- update-status smoke tests ---
+
+  it("updates issue status and verifies markdown was updated", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-example.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "BlockedBy: none",
+        "",
+        "# Example",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await runIssuesManagerCli(
+      ["update-status", "2", "--status", "in-progress"],
+      { cwd: workspacePath },
+    );
+
+    const updatedMarkdown = await readFile(
+      join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+        "02-example.md",
+      ),
+      "utf8",
+    );
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("Updated status");
+    expect(result.stdout).toContain("feature: issues-manager-cli");
+    expect(result.stdout).toContain("issue: 2");
+    expect(result.stdout).toContain("status: in-progress");
+    expect(result.stdout).toContain(
+      ".scratch/issues-manager-cli/issues/02-example.md",
+    );
+    expect(updatedMarkdown).toContain("Status: in-progress");
+  });
+
+  it("fails update-status with an invalid transition", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-example.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "BlockedBy: none",
+        "",
+        "# Example",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await runIssuesManagerCli(
+      ["update-status", "2", "--status", "done"],
+      { cwd: workspacePath },
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("Invalid transition");
+  });
+
+  it("succeeds update-status with --force", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-example.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "BlockedBy: none",
+        "",
+        "# Example",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await runIssuesManagerCli(
+      ["update-status", "2", "--status", "done", "--force"],
+      { cwd: workspacePath },
+    );
+
+    const updatedMarkdown = await readFile(
+      join(
+        workspacePath,
+        ".scratch",
+        "issues-manager-cli",
+        "issues",
+        "02-example.md",
+      ),
+      "utf8",
+    );
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Updated status");
+    expect(updatedMarkdown).toContain("Status: done");
+  });
+
+  it("rejects invalid status vocabulary even with --force", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    await writeIssueMarkdown(
+      workspacePath,
+      "issues-manager-cli",
+      "02-example.md",
+      [
+        "Status: ready-for-agent",
+        "Method: tdd",
+        "Complexity: 3",
+        "BlockedBy: none",
+        "",
+        "# Example",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await runIssuesManagerCli(
+      ["update-status", "2", "--status", "invalid", "--force"],
+      { cwd: workspacePath },
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("Invalid status");
+  });
+
+  it("shows usage error when --status is missing", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
+    });
+
+    const result = await runIssuesManagerCli(["update-status", "2"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("Usage: update-status");
+  });
 });

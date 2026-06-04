@@ -4,6 +4,8 @@ import {
   type FeatureRecord,
   FeatureStateError,
   type FeaturesState,
+  getFeaturesStatusPath,
+  readFeaturesState,
   resolveCurrentFeature,
 } from "./features-state";
 
@@ -32,7 +34,7 @@ export class IssueStateError extends Error {
   }
 }
 
-export function getIssuesStatusPath(cwd: string, featureSlug: string) {
+function getIssuesStatusPath(cwd: string, featureSlug: string) {
   return join(cwd, ".scratch", featureSlug, "issues-status.json");
 }
 
@@ -154,6 +156,104 @@ export function getActionableIssues(state: IssuesState): IssueRecord[] {
       issue.status === "ready-for-agent" && !isIssueBlocked(issue, issuesById),
   );
 }
+const TERMINAL_STATUSES = ["done", "wontfix"] as const;
+export type NoWinnerReason = "empty" | "complete" | "no-actionable";
+export type NextIssueResult =
+  | { kind: "winner"; issue: IssueRecord }
+  | { kind: "no-winner"; reason: NoWinnerReason };
+export function selectNextIssue(state: IssuesState): NextIssueResult {
+  if (state.issues.length === 0) {
+    return { kind: "no-winner", reason: "empty" };
+  }
+  const allTerminal = state.issues.every((issue) =>
+    TERMINAL_STATUSES.includes(
+      issue.status as (typeof TERMINAL_STATUSES)[number],
+    ),
+  );
+  if (allTerminal) {
+    return { kind: "no-winner", reason: "complete" };
+  }
+  const actionable = getActionableIssues(state);
+  if (actionable.length === 0) {
+    return { kind: "no-winner", reason: "no-actionable" };
+  }
+  const sorted = [...actionable].sort((a, b) => {
+    if (a.complexity !== b.complexity) {
+      return a.complexity - b.complexity;
+    }
+    return a.id - b.id;
+  });
+  return { kind: "winner", issue: sorted[0] };
+}
+
+export const VALID_STATUSES = [
+  "needs-triage",
+  "needs-info",
+  "ready-for-agent",
+  "ready-for-human",
+  "in-progress",
+  "done",
+  "wontfix",
+] as const;
+
+const STATUS_TRANSITIONS: Record<string, ReadonlySet<string>> = {
+  "needs-triage": new Set(["needs-info", "ready-for-agent", "wontfix"]),
+  "needs-info": new Set([
+    "needs-triage",
+    "ready-for-agent",
+    "ready-for-human",
+    "wontfix",
+  ]),
+  "ready-for-agent": new Set([
+    "in-progress",
+    "ready-for-human",
+    "needs-triage",
+    "wontfix",
+  ]),
+  "in-progress": new Set([
+    "ready-for-agent",
+    "ready-for-human",
+    "done",
+    "wontfix",
+  ]),
+  "ready-for-human": new Set([
+    "ready-for-agent",
+    "needs-triage",
+    "needs-info",
+    "wontfix",
+  ]),
+  done: new Set(),
+  wontfix: new Set(),
+};
+
+export function validateStatusTransition(
+  from: string,
+  to: string,
+  options?: { force?: boolean },
+): void {
+  if (from === to) {
+    throw new IssueStateError(`No-op transition: issue is already "${from}".`);
+  }
+
+  if (!VALID_STATUSES.includes(to as (typeof VALID_STATUSES)[number])) {
+    throw new IssueStateError(
+      `Invalid status "${to}". Expected one of: ${VALID_STATUSES.join(", ")}.`,
+    );
+  }
+
+  if (!options?.force) {
+    if (!VALID_STATUSES.includes(from as (typeof VALID_STATUSES)[number])) {
+      throw new IssueStateError(
+        `Invalid source status "${from}". Expected one of: ${VALID_STATUSES.join(", ")}.`,
+      );
+    }
+
+    const allowed = STATUS_TRANSITIONS[from];
+    if (!allowed || !allowed.has(to)) {
+      throw new IssueStateError(`Invalid transition: "${from}" → "${to}".`);
+    }
+  }
+}
 
 export async function regenerateIssuesStateFromIssueFiles(options: {
   cwd: string;
@@ -259,6 +359,100 @@ export async function updateIssueBlockers(options: {
     blockedBy: [...options.blockedBy],
     issuesState: state,
     issuePath: `.scratch/${options.feature.slug}/issues/${targetEntry}`,
+  };
+}
+
+function upsertStatusHeader(content: string, statusLine: string): string {
+  const lines = content.split(/\r?\n/);
+  const firstHeadingIndex = lines.findIndex((line) => /^#\s+/.test(line));
+  const metadataEnd = firstHeadingIndex >= 0 ? firstHeadingIndex : lines.length;
+
+  const existingIndex = lines.findIndex(
+    (line, index) => index < metadataEnd && /^Status:\s*/i.test(line),
+  );
+
+  if (existingIndex >= 0) {
+    lines[existingIndex] = statusLine;
+    return `${lines.join("\n")}\n`;
+  }
+
+  lines.splice(metadataEnd, 0, statusLine);
+  return `${lines.join("\n")}\n`;
+}
+
+export async function updateIssueStatus(options: {
+  cwd: string;
+  feature: FeatureRecord;
+  issueId: number;
+  status: string;
+  force?: boolean;
+}): Promise<{
+  issueId: number;
+  featureSlug: string;
+  status: string;
+  issuePath: string;
+  issuesState: IssuesState;
+}> {
+  const issuesDir = getIssueFilesDir(options.cwd, options.feature.slug);
+  let entries: string[];
+
+  try {
+    entries = await readdir(issuesDir);
+  } catch {
+    throw new IssueStateError(
+      `Missing issues directory at ${issuesDir}. Create .scratch/${options.feature.slug}/issues before updating status.`,
+    );
+  }
+
+  const targetEntry = entries.find(
+    (entry) => parseIssueIdFromFileName(entry) === options.issueId,
+  );
+
+  if (!targetEntry) {
+    throw new IssueStateError(
+      `Unknown issue ${options.issueId} in feature "${options.feature.slug}". Choose an existing issue file in .scratch/${options.feature.slug}/issues.`,
+    );
+  }
+
+  const targetPath = join(issuesDir, targetEntry);
+  const current = await readFile(targetPath, "utf8");
+
+  const statusMatch = current.match(/^Status:\s*(.+)$/m);
+  const currentStatus = statusMatch ? statusMatch[1].trim() : "";
+
+  validateStatusTransition(currentStatus, options.status, {
+    force: options.force,
+  });
+
+  const next = upsertStatusHeader(current, `Status: ${options.status}`);
+  await writeFile(targetPath, next, "utf8");
+
+  const state = await regenerateIssuesStateFromIssueFiles({
+    cwd: options.cwd,
+    feature: options.feature,
+  });
+  // Refresh feature-level timestamp
+  const featuresState = await readFeaturesState(options.cwd);
+  const timestamp = new Date().toISOString();
+  const updatedFeaturesState: FeaturesState = {
+    ...featuresState,
+    lastUpdated: timestamp,
+    features: featuresState.features.map((f) =>
+      f.slug === options.feature.slug ? { ...f, lastUpdated: timestamp } : f,
+    ),
+  };
+  await writeFile(
+    getFeaturesStatusPath(options.cwd),
+    `${JSON.stringify(updatedFeaturesState, null, 2)}\n`,
+    "utf8",
+  );
+
+  return {
+    issueId: options.issueId,
+    featureSlug: options.feature.slug,
+    status: options.status,
+    issuePath: `.scratch/${options.feature.slug}/issues/${targetEntry}`,
+    issuesState: state,
   };
 }
 

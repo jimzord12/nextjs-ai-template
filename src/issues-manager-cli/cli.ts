@@ -11,7 +11,9 @@ import {
   readIssuesState,
   regenerateIssuesStateFromIssueFiles,
   resolveFeatureForIssueRead,
+  selectNextIssue,
   updateIssueBlockers,
+  updateIssueStatus,
 } from "./issues-state";
 
 export type CliResult = {
@@ -173,10 +175,105 @@ export async function runIssuesManagerCli(
       };
     }
 
+    if (args[0] === "get-issue" && args[1] === "--next") {
+      const featureFlagIndex = args.indexOf("--feature");
+      const state = await readFeaturesState(options.cwd);
+      const feature = resolveFeatureForIssueRead(
+        state,
+        featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
+      );
+
+      const issuesState = await readIssuesState(options.cwd, feature.slug);
+      const result = selectNextIssue(issuesState);
+
+      if (result.kind === "winner") {
+        return {
+          exitCode: 0,
+          stderr: "",
+          stdout: [
+            "Next issue",
+            `feature: ${issuesState.featureSlug}`,
+            `id: ${result.issue.id}`,
+            `title: ${result.issue.title}`,
+            `complexity: ${result.issue.complexity}`,
+            `path: ${result.issue.filePath}`,
+          ].join("\n"),
+        };
+      }
+
+      if (result.reason === "no-actionable") {
+        return {
+          exitCode: 1,
+          stderr:
+            "No actionable issues found. All issues are blocked or not in ready-for-agent status.",
+          stdout: "",
+        };
+      }
+
+      const message =
+        result.reason === "empty"
+          ? "No issues found for this feature."
+          : "All issues are complete.";
+
+      return {
+        exitCode: 0,
+        stderr: "",
+        stdout: message,
+      };
+    }
+
+    if (args[0] === "update-status") {
+      const issueIdRaw = args[1];
+      const statusFlagIndex = args.indexOf("--status");
+      const featureFlagIndex = args.indexOf("--feature");
+      const force = args.includes("--force");
+      const status =
+        statusFlagIndex >= 0 ? args[statusFlagIndex + 1] : undefined;
+
+      if (!issueIdRaw || !status) {
+        throw new IssueStateError(
+          "Usage: update-status <issue-id> --status <status> [--feature <slug>] [--force]",
+        );
+      }
+
+      const issueId = Number(issueIdRaw);
+      if (!Number.isInteger(issueId) || issueId <= 0) {
+        throw new IssueStateError(
+          `Invalid issue id "${issueIdRaw}". Expected a positive integer issue id.`,
+        );
+      }
+
+      const state = await readFeaturesState(options.cwd);
+      const feature = resolveFeatureForIssueRead(
+        state,
+        featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
+      );
+
+      const update = await updateIssueStatus({
+        cwd: options.cwd,
+        feature,
+        issueId,
+        status,
+        force,
+      });
+
+      return {
+        exitCode: 0,
+        stderr: "",
+        stdout: [
+          "Updated status",
+          `feature: ${update.featureSlug}`,
+          `issue: ${update.issueId}`,
+          `status: ${update.status}`,
+          `path: ${update.issuePath}`,
+        ].join("\n"),
+      };
+    }
+
     return {
       exitCode: 1,
       stderr:
-        "Unknown command. Supported commands: list-issues, get-feature, update-feature, update-blockers.",
+        "Unknown command. Supported commands: list-issues, get-issue, get-feature, update-feature, update-blockers, update-status.",
       stdout: "",
     };
   } catch (error) {

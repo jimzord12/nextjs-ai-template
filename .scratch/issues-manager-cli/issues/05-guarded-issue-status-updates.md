@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: done
 Method: tdd
 Complexity: 4
 
@@ -18,16 +18,16 @@ The result is a complete end-to-end write path for issue workflow changes that s
 
 ## Acceptance criteria
 
-- [ ] A status update command updates canonical issue markdown and regenerates the derived issue read model in the same operation
-- [ ] Status updates enforce the transition graph by default
-- [ ] A constrained `--force` path bypasses only transition-graph checks
-- [ ] Structural validation still applies when `--force` is used
-- [ ] Status-vocabulary validation still applies when `--force` is used
-- [ ] Issue-level last-updated metadata is refreshed when an issue changes
-- [ ] Feature-level last-updated metadata is refreshed when an issue changes
-- [ ] When an issue reaches `done`, regenerated state reflects any newly unblocked downstream issues
-- [ ] Focused domain tests cover valid transitions, invalid transitions, force behavior, and timestamp refresh behavior
-- [ ] CLI smoke coverage verifies representative success and failure output for normal and forced status changes
+- [x] A status update command updates canonical issue markdown and regenerates the derived issue read model in the same operation
+- [x] Status updates enforce the transition graph by default
+- [x] A constrained `--force` path bypasses only transition-graph checks
+- [x] Structural validation still applies when `--force` is used
+- [x] Status-vocabulary validation still applies when `--force` is used
+- [x] Issue-level last-updated metadata is refreshed when an issue changes
+- [x] Feature-level last-updated metadata is refreshed when an issue changes
+- [x] When an issue reaches `done`, regenerated state reflects any newly unblocked downstream issues
+- [x] Focused domain tests cover valid transitions, invalid transitions, force behavior, and timestamp refresh behavior
+- [x] CLI smoke coverage verifies representative success and failure output for normal and forced status changes
 
 ## Blocked by
 
@@ -46,10 +46,10 @@ Encode the allowed status transitions and the exact behavior of the constrained 
 
 **Acceptance criteria**
 
-- [ ] Valid transitions are accepted
-- [ ] Invalid transitions fail by default
-- [ ] `--force` bypasses only transition-graph checks
-- [ ] Structure and status vocabulary validation still apply under `--force`
+- [x] Valid transitions are accepted
+- [x] Invalid transitions fail by default
+- [x] `--force` bypasses only transition-graph checks
+- [x] Structure and status vocabulary validation still apply under `--force`
 
 **Blocked by**
 
@@ -67,9 +67,9 @@ Implement the markdown write path for `Status:` changes on an issue file, with v
 
 **Acceptance criteria**
 
-- [ ] Issue markdown is updated in place
-- [ ] Invalid issue structure fails before writing
-- [ ] Invalid workflow vocabulary fails before writing
+- [x] Issue markdown is updated in place
+- [x] Invalid issue structure fails before writing
+- [x] Invalid workflow vocabulary fails before writing
 
 **Blocked by**
 
@@ -87,10 +87,10 @@ Refresh issue-level and feature-level `lastUpdated` data and regenerate the deri
 
 **Acceptance criteria**
 
-- [ ] Issue `lastUpdated` changes on successful writes
-- [ ] Feature `lastUpdated` changes on successful writes
-- [ ] Derived issue state regenerates in the same operation
-- [ ] Newly unblocked downstream issues appear after a blocker reaches `done`
+- [x] Issue `lastUpdated` changes on successful writes
+- [x] Feature `lastUpdated` changes on successful writes
+- [x] Derived issue state regenerates in the same operation
+- [x] Newly unblocked downstream issues appear after a blocker reaches `done`
 
 **Blocked by**
 
@@ -108,10 +108,10 @@ Wire stdout-facing success and failure output for the status update flow, and ad
 
 **Acceptance criteria**
 
-- [ ] Success output is self-contained and human-readable
-- [ ] Failure output is descriptive
-- [ ] Smoke tests cover representative normal transitions
-- [ ] Smoke tests cover representative forced transitions
+- [x] Success output is self-contained and human-readable
+- [x] Failure output is descriptive
+- [x] Smoke tests cover representative normal transitions
+- [x] Smoke tests cover representative forced transitions
 
 **Blocked by**
 

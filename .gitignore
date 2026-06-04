@@ -51,3 +51,4 @@ next-env.d.ts
 test-results/
 tmp/
 .fallow/
+.idea/
