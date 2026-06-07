@@ -42,7 +42,7 @@ Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How,
 Biome owns formatting and linting. Don't argue with it.
 
 - **Check:** `pnpm lint`
-- **Fix:** `pnpm lint:fix`
+- **Fix:** `pnpm exec biome check --write .`
 - **Config:** `biome.json` at repo root (2-space indent, 80-char line width, double quotes)
 
 Key conventions:
@@ -59,7 +59,7 @@ Key conventions:
 | `pnpm build` | Production build (`next build`) |
 | `pnpm start` | Serve production build |
 | `pnpm lint` | Biome check (lint + format) |
-| `pnpm lint:fix` | Biome check with auto-fix |
+| `pnpm doctor` | Run react-doctor locally |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm check` | Lint + typecheck combined |
 | `pnpm test` | Vitest unit tests |
