@@ -1,6 +1,7 @@
-Status: ready-for-agent
+Status: done
 Method: chore
 Complexity: 2
+BlockedBy: 2
 
 # QA Gate 3 — Security + Bundle
 
@@ -14,14 +15,14 @@ Add Vercel security configuration and bundle analysis tooling. Create `vercel.js
 
 ## Acceptance criteria
 
-- [ ] `vercel.json` exists with OWASP-recommended security headers
-- [ ] CSP template includes clear instructions to relax per-project (not a drop-in)
-- [ ] `@next/bundle-analyzer` wired in `next.config.ts` behind `ANALYZE` env var
-- [ ] `pnpm analyze` script triggers bundle analysis
-- [ ] `pnpm qa:security` script runs and exits non-zero on critical/high CVEs
-- [ ] `pnpm qa:bundle` script runs and outputs bundle report
-- [ ] Security headers documented: how to verify via securityheaders.com and Mozilla Observatory
-- [ ] `next build` succeeds with new config
+- [x] `vercel.json` exists with OWASP-recommended security headers
+- [x] CSP template includes clear instructions to relax per-project (not a drop-in)
+- [x] `@next/bundle-analyzer` wired in `next.config.ts` behind `ANALYZE` env var
+- [x] `pnpm analyze` script triggers bundle analysis
+- [x] `pnpm qa:security` script runs and exits non-zero on critical/high CVEs
+- [x] `pnpm qa:bundle` script runs and outputs bundle report
+- [x] Security headers documented: how to verify via securityheaders.com and Mozilla Observatory
+- [x] `next build` succeeds with new config
 
 ## Blocked by
 

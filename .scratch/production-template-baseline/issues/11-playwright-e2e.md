@@ -1,6 +1,7 @@
 Status: done
 Method: scaffold
 Complexity: 3
+BlockedBy: 6,7
 
 # Playwright + E2E Smoke Tests
 

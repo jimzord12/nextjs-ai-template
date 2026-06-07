@@ -1,0 +1,53 @@
+{
+  "featureId": 2,
+  "featureSlug": "issues-manager-cli",
+  "featureStatus": "archived",
+  "lastUpdated": "2026-06-07T18:14:37.405Z",
+  "issues": [
+    {
+      "id": 1,
+      "title": "Feature Scope Inspection And Activation",
+      "status": "done",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [],
+      "filePath": ".scratch/issues-manager-cli/issues/01-feature-scope-inspection-and-activation.md"
+    },
+    {
+      "id": 2,
+      "title": "Issue Inventory For A Feature",
+      "status": "done",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [1],
+      "filePath": ".scratch/issues-manager-cli/issues/02-issue-inventory-for-a-feature.md"
+    },
+    {
+      "id": 3,
+      "title": "Canonical Blockers And Actionable Filtering",
+      "status": "done",
+      "method": "tdd",
+      "complexity": 5,
+      "blockedBy": [2],
+      "filePath": ".scratch/issues-manager-cli/issues/03-canonical-blockers-and-actionable-filtering.md"
+    },
+    {
+      "id": 4,
+      "title": "Deterministic Next-Issue Selection",
+      "status": "done",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [2, 3],
+      "filePath": ".scratch/issues-manager-cli/issues/04-deterministic-next-issue-selection.md"
+    },
+    {
+      "id": 5,
+      "title": "Guarded Issue Status Updates",
+      "status": "done",
+      "method": "tdd",
+      "complexity": 4,
+      "blockedBy": [2, 3],
+      "filePath": ".scratch/issues-manager-cli/issues/05-guarded-issue-status-updates.md"
+    }
+  ]
+}

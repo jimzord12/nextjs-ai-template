@@ -42,7 +42,7 @@ Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How,
 Biome owns formatting and linting. Don't argue with it.
 
 - **Check:** `pnpm lint`
-- **Fix:** `pnpm exec biome check --write .`
+- **Fix:** `pnpm lint:fix`
 - **Config:** `biome.json` at repo root (2-space indent, 80-char line width, double quotes)
 
 Key conventions:
@@ -59,7 +59,7 @@ Key conventions:
 | `pnpm build` | Production build (`next build`) |
 | `pnpm start` | Serve production build |
 | `pnpm lint` | Biome check (lint + format) |
-| `pnpm doctor` | Run react-doctor locally |
+| `pnpm lint:fix` | Biome check with auto-fix |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm check` | Lint + typecheck combined |
 | `pnpm test` | Vitest unit tests |
@@ -67,8 +67,23 @@ Key conventions:
 | `pnpm test:coverage` | Vitest with coverage report |
 | `pnpm test:e2e` | Playwright E2E tests |
 | `pnpm qa:doctor` | react-doctor quality gate (threshold: 80) |
-| `pnpm audit:ci` | Audit for critical/high CVEs |
-| `pnpm qa` | Full QA suite (all categories) |
+| `pnpm qa:performance` | Lighthouse performance audit |
+| `pnpm qa:a11y` | Accessibility E2E tests (axe-core) |
+| `pnpm qa:cross-browser` | Playwright across Chromium, Firefox, WebKit |
+| `pnpm qa:security` | Dependency audit (high+ severity) |
+| `pnpm qa:seo` | SEO audit script |
+| `pnpm qa:bundle` | Bundle analysis with `ANALYZE=true` |
+| `pnpm qa` | Full QA report |
+| `pnpm qa:full` | All quality gates |
+| `pnpm audit:ci` | CI dependency audit (critical/high CVEs) |
+| `pnpm storybook` | Storybook dev server (port 6006) |
+| `pnpm build-storybook` | Static Storybook build |
+| `pnpm doctor` | react-doctor (alias for qa:doctor) |
+| `pnpm fallow` | Dead code detection |
+| `pnpm fallow:audit` | Full dead code audit |
+| `pnpm analyze` | Bundle analysis via `@next/bundle-analyzer` |
+| `pnpm git:prune` | Delete locally-merged tracking branches |
+| `pnpm issues-manager` | Issue tracker CLI |
 
 ## Quality Gates
 

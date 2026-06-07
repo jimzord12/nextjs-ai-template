@@ -1,6 +1,7 @@
 Status: done
 Method: chore
 Complexity: 4
+BlockedBy: 13
 
 # QA Gate 4 — Cross-Browser + Reporting
 

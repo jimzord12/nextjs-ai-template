@@ -1,6 +1,7 @@
 Status: done
 Method: chore
 Complexity: 1
+BlockedBy: none
 
 # Fix Configuration Aliases
 
@@ -24,6 +25,3 @@ Additionally, `ARCHITECTURE.md` shows an example at the bottom with `src/compone
 - [x] `next build` succeeds after changes
 - [x] All existing imports still resolve correctly
 
-## Blocked by
-
-None — can start immediately.

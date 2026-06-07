@@ -1,5 +1,7 @@
 # PRD - Issues Manager CLI
 
+Status: done
+
 ## Problem Statement
 
 The local `.scratch/` issue-tracker workflow already gives the project a lightweight, Markdown-first way to define features, PRDs, and implementation issues. The gap is that routine issue-management work is still manual: an agent must inspect feature state, find the current feature, scan issue metadata, interpret blockers, and decide what is actionable. That manual loop is slow, repetitive, and easy to get wrong when derived JSON is stale, blocker notation is inconsistent, or feature focus is ambiguous.

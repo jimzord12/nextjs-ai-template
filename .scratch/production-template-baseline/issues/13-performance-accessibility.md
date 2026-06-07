@@ -1,6 +1,7 @@
 Status: done
 Method: scaffold
 Complexity: 4
+BlockedBy: 11
 
 # QA Gate 1 — Performance + Accessibility
 
