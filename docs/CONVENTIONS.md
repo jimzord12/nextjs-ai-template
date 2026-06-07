@@ -1,4 +1,5 @@
 # Conventions
+
 ## Version Pinning
 
 Critical dependencies — Next.js, React, React DOM, TypeScript, Tailwind CSS, and `@tailwindcss/postcss` — are pinned to exact versions in `package.json`. Transitive copies of React and TypeScript are forced to the same version via `pnpm.overrides`.
@@ -8,6 +9,9 @@ Critical dependencies — Next.js, React, React DOM, TypeScript, Tailwind CSS, a
 **When to relax:** Pinning trades freshness for stability. Relax a pin when you intentionally want to adopt a new major or minor version. Run `pnpm update <pkg>` after changing the version string, then run the full test suite before committing.
 
 **Security auditing:** `pnpm audit:ci` runs `pnpm audit --audit-level high` and exits non-zero if critical or high-severity CVEs are found. This is the CI gate — it does not block `pnpm install` locally, but it will fail the pipeline. Resolve CVEs by updating the affected package to a patched version (which may require relaxing a pin).
+## Pull Requests
+
+Always follow the structure in `.github/PULL_REQUEST_TEMPLATE.md` when opening a PR — both from the browser and from the terminal. Agents must read the template and use it as the body when running `gh pr create`.
 
 ## Purpose
 
