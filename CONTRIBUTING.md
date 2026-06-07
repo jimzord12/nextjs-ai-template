@@ -59,7 +59,7 @@ Key conventions:
 | `pnpm build` | Production build (`next build`) |
 | `pnpm start` | Serve production build |
 | `pnpm lint` | Biome check (lint + format) |
-| `pnpm lint:fix` | Biome check with auto-fix |
+| `pnpm doctor` | Run react-doctor locally |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm check` | Lint + typecheck combined |
 | `pnpm test` | Vitest unit tests |
