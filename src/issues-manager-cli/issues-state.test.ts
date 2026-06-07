@@ -1037,10 +1037,20 @@ describe("updateIssueStatus", () => {
         features: Array<{ slug: string; lastUpdated: string }>;
       };
 
-      const featureUpdated = new Date(
-        updatedFeatures.features.find((f) => f.slug === "issues-manager-cli")!
-          .lastUpdated,
+      if (!updatedFeatures)
+        throw new Error("Missing features-status.json after update");
+
+      if (!updatedFeatures.features)
+        throw new Error(
+          "Missing features in features-status.json after update",
+        );
+
+      const feature = updatedFeatures.features.find(
+        (f) => f.slug === "issues-manager-cli",
       );
+      if (!feature)
+        throw new Error("Feature 'issues-manager-cli' not found in update");
+      const featureUpdated = new Date(feature.lastUpdated);
       const rootUpdated = new Date(updatedFeatures.lastUpdated);
 
       expect(featureUpdated.getTime()).toBeGreaterThanOrEqual(before.getTime());
@@ -1119,7 +1129,7 @@ describe("updateIssueStatus", () => {
         status: "done",
       });
 
-      const regenerated = JSON.parse(
+      const regenerated: IssuesState = JSON.parse(
         await readFile(
           join(
             workspacePath,
@@ -1129,11 +1139,10 @@ describe("updateIssueStatus", () => {
           ),
           "utf8",
         ),
-      ) as {
-        issues: Array<{ id: number; status: string; blockedBy: number[] }>;
-      };
+      );
 
-      const downstream = regenerated.issues.find((i) => i.id === 1)!;
+      const downstream = regenerated.issues.find((i) => i.id === 1);
+      if (!downstream) throw new Error("Downstream issue not found");
       expect(downstream).toBeDefined();
       // Issue 1 is still blockedBy [2], but blocker 2 is now done
       // so getActionableIssues should include it
