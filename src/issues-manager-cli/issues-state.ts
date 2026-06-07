@@ -249,7 +249,7 @@ export function validateStatusTransition(
     }
 
     const allowed = STATUS_TRANSITIONS[from];
-    if (!allowed || !allowed.has(to)) {
+    if (!allowed?.has(to)) {
       throw new IssueStateError(`Invalid transition: "${from}" → "${to}".`);
     }
   }

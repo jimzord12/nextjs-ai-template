@@ -11,8 +11,8 @@ import { runIssuesManagerCli } from "@/issues-manager-cli/cli";
 const workspaces: string[] = [];
 const execFileAsync = promisify(execFile);
 const binPath = join(process.cwd(), "src", "issues-manager-cli", "bin.ts");
-const tsRuntime = process.platform === "win32" ? "npx.cmd" : "npx";
-const tsRuntimeArgs: [string, ...string[]] = ["tsx", binPath];
+const tsRuntime = process.platform === "win32" ? "tsx.cmd" : "tsx";
+const tsRuntimeArgs: [string, ...string[]] = [binPath];
 
 async function createWorkspace(featuresStatus: object) {
   const workspacePath = await mkdtemp(join(tmpdir(), "issues-manager-cli-"));
