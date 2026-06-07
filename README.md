@@ -1,161 +1,157 @@
-# nextjs-ai-template
+# Next.js AI Template
 
-This repository is intended to become an opinionated Next.js starter for static websites built with SSG/ISR, a reusable UI foundation, and strong support for AI-agent-driven workflows.
+A production-grade Next.js static-site template optimized for agencies delivering client marketing sites.
 
-Right now, it is best understood as an opinionated website foundation rather than a finished product. The design system base, route shell, testing setup, and documentation conventions are in place; real site content and production workflows still need to be built.
+- **Static export only** — `output: 'export'`, no server required
+- **i18n out of the box** — English, Greek, German with URL-prefixed locales
+- **Local CMS model** — Strapi-inspired JSON content with Zod validation
+- **Quality gates built in** — Linting, testing, accessibility, performance, and security
 
-## What This Codebase Wants To Be
+> [!NOTE]
+> This template ships with a complete **Hotel Example** — a hotel marketing site that demonstrates the architecture in practice. Use it as a reference, then strip it and start building.
 
-The target state is a template that gives a team a strong default way to build applications without having to reinvent structure, UI primitives, testing, and project process.
+---
 
-The intended end state looks like this:
-
-- A modern Next.js App Router codebase using current React patterns.
-- A layered structure with route-level colocation, feature modules, and shared leaf utilities.
-- A reusable design-system foundation built from composable primitives instead of one-off components.
-- A clear place for product features, shared hooks, app-wide helpers, and route-specific logic.
-- A project that is easy to extend into rich marketing and content-heavy website surfaces without drifting into generic app-starter sprawl.
-- A repo with built-in engineering discipline: tests, linting, conventions, and decision tracking.
-
-## Current State To Final State
-
-This section shows where the repo is today against the intended final shape.
-
-### Foundation
-
-- [x] Next.js App Router project is set up.
-- [x] React 19, TypeScript, Tailwind CSS v4, and Biome are installed.
-- [x] Base UI primitives exist under `src/components/ui`.
-- [x] Global theme tokens and base styling are defined.
-- [x] Marketing route group and shared shell exist.
-- [ ] Brand identity, product copy, and real information architecture are implemented.
-
-### Architecture
-
-- [x] Architecture direction is documented in `docs/ARCHITECTURE.md`.
-- [x] Route-group structure has started under `src/app`.
-- [x] Shared and utility directories exist.
-- [ ] Feature modules are implemented as first-class units.
-- [ ] Barrel-exported feature public APIs are enforced.
-- [ ] Dependency boundaries are validated in practice across the codebase.
-
-### Website Surface
-
-- [x] Homepage placeholder exists.
-- [x] Header, not-found page, and error boundary exist.
-- [ ] Real landing-page sections are implemented.
-- [ ] Real multi-section website experience is implemented end-to-end.
-- [ ] At least one content detail route demonstrates SSG/ISR patterns cleanly.
-- [ ] Site-level metadata, sitemap, robots, and sharing metadata are integrated.
-
-### Quality
-
-- [x] Vitest is configured.
-- [x] Testing Library setup exists.
-- [x] At least one component smoke test exists.
-- [ ] Core UI primitives have meaningful test coverage.
-- [ ] Route-level and feature-level tests exist.
-- [ ] End-to-end coverage validates key user journeys.
-
-### Project Process
-
-- [x] Project conventions are documented.
-- [x] Documentation maintenance rules are documented.
-- [x] README reflects the intended product direction and current setup.
-- [ ] Contributor onboarding is complete enough for a new engineer to ship a feature without tribal knowledge.
-
-## What Exists Today
-
-The current repo already includes a useful base layer:
-
-- Root layout and global styles.
-- A marketing layout with a responsive header.
-- Error and not-found handling for the public route group.
-- Reusable UI building blocks such as buttons, cards, dialogs, inputs, sheets, and related primitives.
-- A `cn()` utility for class composition.
-- Unit-test tooling with Vitest and Testing Library.
-- Project documentation covering conventions, routines, and architectural direction.
-
-## Proposed Shape
-
-The architecture docs point toward this model:
-
-```text
-src/
-	app/        # routes, layouts, route-local components and logic
-	features/   # domain modules with public APIs
-	shared/     # generic hooks, helpers, and reusable cross-cutting pieces
-	components/ # design system and higher-level shared UI
-	lib/        # app-wide low-level helpers
-	test/       # test setup and helpers
-```
-
-The intended dependency flow is:
-
-```text
-route -> feature -> shared
-```
-
-That structure is documented and partially scaffolded, but not yet fully realized in code.
-
-## Stack
-
-- Next.js 16
-- React 19
-- TypeScript 5
-- Tailwind CSS 4
-- Biome
-- Vitest
-- Testing Library
-- Base UI primitives
-- class-variance-authority
-- lucide-react
-
-## Getting Started
-
-This repository uses `pnpm`.
-
-Install dependencies:
+## Quick Start
 
 ```bash
+# Clone the template
+git clone <repo-url> my-project && cd my-project
+
+# Install dependencies
 pnpm install
-```
 
-Start the development server:
-
-```bash
+# Start dev server (http://localhost:3000)
 pnpm dev
 ```
 
-Run the linter:
+Prerequisites: **Node.js >= 22**, **pnpm >= 11**. No database, no Docker.
+
+---
+
+## Reset the Hotel Example
+
+The template ships with a full hotel demo (pages, content, components, features, E2E tests). Strip it all and get a bare i18n skeleton:
 
 ```bash
-pnpm lint
+pnpm run reset
+# or: bash scripts/reset-example.sh
 ```
 
-Run the test suite:
+This removes:
+- `(marketing)/` route group and all hotel pages
+- Layout components, shared components, contact feature
+- All content data files (directories preserved with `.gitkeep`)
+- Content loaders, types, schemas, and tests
+- Hotel E2E test specs
 
-```bash
-pnpm test
+And creates:
+- Skeleton `src/app/[locale]/page.tsx`
+- Minimal message files (`en.json`, `el.json`, `de.json`)
+- Clean `src/env.ts`
+
+The script is idempotent — safe to run multiple times.
+
+---
+
+## Available Scripts
+
+| Script | What it does |
+|---|---|
+| `pnpm dev` | Dev server with Turbopack |
+| `pnpm build` | Production static build |
+| `pnpm start` | Serve production build locally |
+| `pnpm lint` | Biome check (lint + format) |
+| `pnpm typecheck` | TypeScript type check (`tsc --noEmit`) |
+| `pnpm check` | Lint + typecheck combined |
+| `pnpm test` | Vitest unit tests |
+| `pnpm test:watch` | Vitest in watch mode |
+| `pnpm test:coverage` | Vitest with coverage report |
+| `pnpm test:e2e` | Playwright E2E tests |
+| `pnpm qa` | Full QA suite (all categories, reports in `.qa/`) |
+| `pnpm qa:full` | Full quality gates (build + test + QA) |
+| `pnpm qa:performance` | Unlighthouse performance audit |
+| `pnpm qa:a11y` | axe-core accessibility scan |
+| `pnpm qa:seo` | Lighthouse SEO audit |
+| `pnpm qa:cross-browser` | Playwright across Chromium, Firefox, WebKit |
+| `pnpm qa:security` | Dependency audit for critical/high CVEs |
+| `pnpm qa:bundle` | Bundle size analysis |
+| `pnpm qa:doctor` | react-doctor quality gate (threshold: 80) |
+| `pnpm audit:ci` | CVE audit gate for CI |
+| `pnpm analyze` | Bundle analyzer visualization |
+| `pnpm storybook` | Storybook dev server |
+| `pnpm build-storybook` | Build Storybook static site |
+| `pnpm doctor` | react-doctor local run |
+| `pnpm git:prune` | Delete merged local branches |
+| `pnpm run reset` | Strip Hotel Example → bare skeleton |
+
+---
+
+## Tech Stack
+
+**Core:** Next.js 16 · React 19 · TypeScript 5.9 · Tailwind CSS 4
+
+**UI:** shadcn (copy-paste components) · Base UI · Lucide icons · Sonner toasts
+
+**Forms:** TanStack Form · Zod validation
+
+**i18n:** next-intl (App Router, URL-prefixed locales)
+
+**Testing:** Vitest · Testing Library · Playwright (E2E, cross-browser, a11y)
+
+**Quality:** Biome (lint + format) · react-doctor · Unlighthouse · Lighthouse
+
+**Git:** Husky · lint-staged · commitlint (Conventional Commits)
+
+**Docs:** Storybook
+
+→ Full dependency details: [docs/TECH_STACK.md](docs/TECH_STACK.md)
+
+---
+
+## Project Structure
+
+```
+src/
+  app/                    # Next.js App Router routes
+    [locale]/             # i18n locale segment
+      (marketing)/        # Public pages route group
+  components/
+    ui/                   # shadcn design system
+    providers/            # Theme, intl providers
+  features/               # Domain modules (barrel-exported)
+  content/                # Local CMS (JSON + Zod)
+    collection-types/     # Repeatable content entities
+    single-types/         # Singleton documents
+    components/           # Reusable content fragments
+    media/                # Files + metadata records
+  shared/
+    lib/                  # cn(), formatters
+    hooks/                # Generic hooks
+  i18n/                   # Routing + request config
+  messages/               # Translation files (en, el, de)
+  test/                   # Setup + test helpers
 ```
 
-Build for production:
+→ Full architecture guide: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
-```bash
-pnpm build
-```
+---
 
-## Working Rules
+## Documentation
 
-This repo is intentionally process-aware. Before making substantial changes, read:
+| Document | What it covers |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layered architecture, dependency flow, content model |
+| [docs/TECH_STACK.md](docs/TECH_STACK.md) | Every dependency with rationale and links |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Vercel deployment, security headers, partial removal guide |
+| [docs/CONVENTIONS.md](docs/CONVENTIONS.md) | Version pinning, PR requirements |
+| [docs/ROUTINES.md](docs/ROUTINES.md) | QA routines, git routines, cross-browser checklist |
+| [docs/RULES.md](docs/RULES.md) | Agent and contributor rules |
+| [docs/WORKING_WITH_ME.md](docs/WORKING_WITH_ME.md) | How to work with this repo |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Setup, branch strategy, scripts, quality gates |
 
-- `docs/WORKING_WITH_ME.md`
-- `docs/CONVENTIONS.md`
-- `docs/ROUTINES.md`
-- `docs/RULES.md`
+---
 
-Those files define the expected engineering behavior and documentation maintenance rules used in this project.
+## License
 
-## Near-Term Priority
-
-The highest-leverage next step is to turn the current shell into one real website slice: a branded landing page plus one content detail route that exercises the intended SSG/ISR architecture instead of leaving it purely documented.
+Private template. All rights reserved.

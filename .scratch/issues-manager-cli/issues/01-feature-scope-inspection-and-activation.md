@@ -1,6 +1,7 @@
 Status: done
 Method: tdd
 Complexity: 3
+BlockedBy: none
 
 # Feature Scope Inspection And Activation
 
@@ -29,6 +30,3 @@ The result is a stable end-to-end path for validating tracker state, inspecting 
 - [x] Focused domain tests cover valid state, no-current-feature, and ambiguous-current-feature cases
 - [x] CLI smoke coverage verifies representative success and failure output for feature inspection and feature updates
 
-## Blocked by
-
-None - can start immediately.

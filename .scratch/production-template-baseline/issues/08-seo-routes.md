@@ -1,6 +1,7 @@
 Status: done
 Method: scaffold
 Complexity: 2
+BlockedBy: 6,7
 
 # SEO Routes (robots, sitemap, JSON-LD, hreflang)
 

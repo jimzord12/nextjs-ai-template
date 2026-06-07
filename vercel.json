@@ -1,0 +1,54 @@
+{
+  "_docs": {
+    "overview": "OWASP-recommended security headers for production. Vercel ignores unknown keys like this one.",
+    "csp_template_notes": {
+      "default-src 'self'": "Baseline: only allow resources from same origin. Relax per use-case below.",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'": "WARNING: unsafe-inline/eval are needed for Next.js dev and some frameworks. For strict CSP, remove unsafe-inline/eval and use nonce-based or hash-based CSP with Next.js <Script nonce> prop. See https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy",
+      "style-src 'self' 'unsafe-inline'": "Tailwind CSS and many CSS-in-JS libs need unsafe-inline. If you use only CSS files, remove it.",
+      "img-src 'self' data: https:": "Allows all HTTPS images. Narrow to your CDN domains for strictest policy, e.g. img-src 'self' data: https://cdn.example.com",
+      "font-src 'self' https://fonts.gstatic.com": "Google Fonts. Remove if self-hosting fonts. Add other font CDNs as needed.",
+      "connect-src 'self'": "API calls and fetch requests. Add your API domains, e.g. connect-src 'self' https://api.example.com",
+      "frame-ancestors 'none'": "Prevents clickjacking. Equivalent to X-Frame-Options DENY but CSP-level.",
+      "RELAXING_FOR_ANALYTICS": "Add your analytics domain: script-src 'self' 'unsafe-inline' https://plausible.io; connect-src 'self' https://plausible.io",
+      "RELAXING_FOR_FONTS": "Add font CDNs: font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net",
+      "RELAXING_FOR_STORYBOOK_EMBEDS": "Allow framing from specific origins: frame-ancestors https://your-storybook.vercel.app; or for iframe embeds: frame-src https://your-storybook.vercel.app"
+    },
+    "verification": {
+      "securityheaders.com": "Deploy to Vercel, then submit your URL at https://securityheaders.com — aim for A or A+ rating",
+      "Mozilla_Observatory": "Run: npx observatory-cli <your-url> or visit https://observatory.mozilla.org — aim for A or higher",
+      "curl_local_check": "curl -sI https://your-domain.com | grep -i 'strict-transport\\|x-frame\\|x-content\\|referrer\\|permissions\\|content-security'",
+      "devtools_check": "Open DevTools → Network tab → click any document request → check Response Headers"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+        }
+      ]
+    }
+  ]
+}
