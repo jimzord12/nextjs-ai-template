@@ -5,7 +5,7 @@ THRESHOLD="${REACT_DOCTOR_THRESHOLD:-80}"
 
 echo "Running react-doctor (score threshold: ${THRESHOLD})..."
 
-SCORE=$(pnpm react-doctor --score -y 2>&1)
+SCORE=$(pnpm exec react-doctor --score -y 2>&1)
 
 # react-doctor --score outputs a bare integer, but may include other lines
 # (e.g. wall time) — extract the last numeric token on its own line.
