@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="#E8E0D5"/>
-  <rect x="120" y="220" width="260" height="180" rx="8" fill="#B8A898"/>
-  <rect x="440" y="180" width="220" height="260" rx="4" fill="#C8B8A8"/>
-  <rect x="80" y="460" width="60" height="60" rx="4" fill="#8B7355"/>
-  <text x="400" y="100" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#5C4A3A">Standard Room</text>
-</svg>

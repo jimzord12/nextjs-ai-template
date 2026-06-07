@@ -57,6 +57,20 @@ For each QA run, the `.qa/<timestamp>/` directory contains:
 - Old reports are not automatically cleaned up — delete manually or before releases.
 - `.qa/` is gitignored and never committed to the repository.
 
+## Git Routines
+
+### Pruning merged local branches
+
+Run `pnpm git:prune` to safely delete all local branches that have been fully merged into the default branch (`main` or `master`).
+
+| Flag        | What it does                                                                 |
+| ----------- | ---------------------------------------------------------------------------- |
+| (none)      | Lists merged branches and asks for confirmation                              |
+| `--dry-run` | Shows what would be deleted without deleting (run as `pnpm git:prune -- --dry-run`) |
+| `--force`   | Skips confirmation prompt (run as `pnpm git:prune -- --force`)               |
+
+The script always protects `main`, `master`, and the current branch from deletion.
+
 ## Manual Cross-Browser Testing Checklist
 
 Automated tests cover Chromium, Firefox, and WebKit via Playwright. The following browsers require manual verification:

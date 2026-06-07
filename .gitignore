@@ -27,6 +27,7 @@
 
 # production
 /build
+/storybook-static
 
 # misc
 .DS_Store

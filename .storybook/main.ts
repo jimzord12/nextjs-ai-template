@@ -21,13 +21,14 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: "tag",
-  },
+  } as unknown as Record<string, unknown>,
   viteFinal: async (config) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
       // Path aliases from tsconfig
       "@": join(projectRoot, "src"),
+      "@src": join(projectRoot, "src"),
       "@shared": join(projectRoot, "src/shared"),
       // Mock Next.js and next-intl modules for Storybook
       "next/image": join(projectRoot, ".storybook/mocks/next-image.tsx"),
