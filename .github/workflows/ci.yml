@@ -28,3 +28,6 @@ jobs:
       - run: pnpm build
 
       - run: pnpm audit:ci
+      - run: pnpm qa:doctor
+        env:
+          REACT_DOCTOR_THRESHOLD: 80

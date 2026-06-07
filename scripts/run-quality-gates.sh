@@ -31,6 +31,7 @@ run_gate "pnpm check"
 run_gate "pnpm test"
 run_gate "pnpm build"
 run_gate "pnpm qa"
+run_gate "pnpm qa:doctor"
 
 echo ""
 echo "=== SUMMARY ==="
