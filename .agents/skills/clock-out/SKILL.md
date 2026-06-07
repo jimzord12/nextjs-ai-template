@@ -1,7 +1,7 @@
 ---
 name: clock-out
-description: Wrap up a work session by validating the repo, turning the current diff into logical commits, creating the daily diary record, and handing the user a push-ready summary. Use when the user wants to close shop, end a shift, do closing duties, wrap up today's work, or batch a day's coding into clean commits without pushing.
-argument-hint: "Optional: commit message style, grouping preferences, or diary emphasis"
+description: Wrap up a work session by validating the repo, turning the current diff into logical commits, and handing the user a push-ready summary. Use when the user wants to close shop, end a shift, do closing duties, wrap up today's work, or batch a day's coding into clean commits without pushing.
+argument-hint: "Optional: commit message style or grouping preferences"
 ---
 
 # Clock Out
@@ -14,7 +14,7 @@ Close a work session without cutting corners.
 2. Run `pnpm check` before touching staging.
 3. Split the current diff into the smallest sensible set of logical commits.
 4. Commit each group non-interactively so Husky and commitlint run on every commit.
-5. If all commits succeed, read `docs/ROUTINES.md` and create the daily diary record from `docs/templates/DIARY.template.md`.
+5. If all commits succeed, give the user a wrap-up.
 6. Give the user an ultra-brief wrap-up, then ask them to push the commits.
 
 ## Hard stops
@@ -47,16 +47,8 @@ Close a work session without cutting corners.
 - Commit each group non-interactively.
 - If a hook fails, stop, report it, and leave the repo in its current state.
 
-### 4. Create the daily diary record
 
-- Read `docs/ROUTINES.md` before writing the record.
-- Follow `docs/CONVENTIONS.md` for the established diary naming convention.
-- Create the record in `docs/diary/`.
-- Use `docs/templates/DIARY.template.md` as the base.
-- Name new files using the `DIARY-dd-mm-yyyy-xxxxx.md` format.
-- Record what was done, why it was done that way, problems that came up, and what should happen next.
-
-### 5. Close out with the user
+### 4. Close out with the user
 
 End with an ultra-brief report containing:
 

@@ -5,7 +5,6 @@
 - See [docs/ROUTINES.md](docs/ROUTINES.md) for recurring project routines.
 - See [docs/RULES.md](docs/RULES.md) for documentation maintenance rules.
 
-This project keeps process diary records in `docs/diary/`. When work reaches approximately a day's worth of meaningful progress, create or update a diary record using `docs/templates/DIARY.template.md`.
 
 <!-- END:always-must-read -->
 
@@ -85,7 +84,7 @@ Installed skills live in `.agents/skills/`. Invoke with `/skill-name`.
 | `diagnose`                      | Disciplined diagnosis loop: reproduce → minimise → hypothesise → instrument → fix → regression-test |
 | `caveman`                       | Ultra-compressed communication mode (~75% fewer tokens), stays active until explicitly disabled     |
 | `frontend-design`               | Create distinctive, production-grade frontend interfaces with bold aesthetic direction              |
-| `clock-out`                     | End-of-shift closing routine: validate, split work into commits, write the diary, ask for push      |
+| `clock-out`                     | End-of-shift closing routine: validate, split work into commits, ask for push                        |
 | `vercel-composition-patterns`   | React composition patterns that scale — compound components, state management, React 19 APIs        |
 | `vercel-cli-with-tokens`        | Deploy and manage Vercel projects using token-based (non-interactive) CLI authentication            |
 | `vercel-optimize`               | Deep cost and performance optimization for Vercel projects, grounded in metrics and docs            |

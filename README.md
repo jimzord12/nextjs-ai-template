@@ -61,7 +61,6 @@ This section shows where the repo is today against the intended final shape.
 
 - [x] Project conventions are documented.
 - [x] Documentation maintenance rules are documented.
-- [x] Diary/process-record workflow is defined.
 - [x] README reflects the intended product direction and current setup.
 - [ ] Contributor onboarding is complete enough for a new engineer to ship a feature without tribal knowledge.
 
@@ -155,7 +154,7 @@ This repo is intentionally process-aware. Before making substantial changes, rea
 - `docs/ROUTINES.md`
 - `docs/RULES.md`
 
-Those files define the expected engineering behavior, documentation maintenance rules, and process diary conventions used in this project.
+Those files define the expected engineering behavior and documentation maintenance rules used in this project.
 
 ## Near-Term Priority
 
