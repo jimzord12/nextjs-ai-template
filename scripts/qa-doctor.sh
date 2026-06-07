@@ -5,13 +5,17 @@ THRESHOLD="${REACT_DOCTOR_THRESHOLD:-80}"
 
 echo "Running react-doctor (score threshold: ${THRESHOLD})..."
 
-SCORE=$(pnpm react-doctor --score -y 2>&1)
+# Use --json for machine-readable output — avoids fragility of parsing --score text.
+RAW=$(pnpm exec react-doctor --json --json-compact -y 2>/dev/null)
 
-# react-doctor --score outputs a bare integer, but may include other lines
-# (e.g. wall time) — extract the last numeric token on its own line.
-SCORE=$(echo "$SCORE" | grep -oE '^[0-9]+$' | tail -1)
-
-if [ -z "${SCORE}" ]; then
+if ! SCORE=$(echo "$RAW" | python3 -c "
+import sys, json
+try:
+    data = json.load(sys.stdin)
+    print(data['summary']['score'])
+except Exception:
+    sys.exit(1)
+" 2>/dev/null); then
   echo "FAIL react-doctor — could not parse score from output"
   exit 1
 fi
