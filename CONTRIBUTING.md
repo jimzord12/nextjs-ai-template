@@ -42,7 +42,7 @@ Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How,
 Biome owns formatting and linting. Don't argue with it.
 
 - **Check:** `pnpm lint`
-- **Fix:** `pnpm lint:fix`
+- **Fix:** `pnpm exec biome check --write .`
 - **Config:** `biome.json` at repo root (2-space indent, 80-char line width, double quotes)
 
 Key conventions:
