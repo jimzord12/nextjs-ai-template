@@ -78,7 +78,8 @@
   ],
   "trustedDependencies": [
     "sharp",
-    "unrs-resolver"
+    "unrs-resolver",
+    "msgpackr-extract"
   ],
   "packageManager": "pnpm@11.5.0"
 }
