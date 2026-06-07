@@ -11,6 +11,8 @@ import { runIssuesManagerCli } from "@/issues-manager-cli/cli";
 const workspaces: string[] = [];
 const execFileAsync = promisify(execFile);
 const binPath = join(process.cwd(), "src", "issues-manager-cli", "bin.ts");
+const tsRuntime = process.platform === "win32" ? "npx.cmd" : "npx";
+const tsRuntimeArgs: [string, ...string[]] = ["tsx", binPath];
 
 async function createWorkspace(featuresStatus: object) {
   const workspacePath = await mkdtemp(join(tmpdir(), "issues-manager-cli-"));
@@ -625,9 +627,13 @@ describe("runIssuesManagerCli", () => {
       features: [{ id: 1, slug: "issues-manager-cli", status: "in-progress" }],
     });
 
-    const result = await execFileAsync("bun", [binPath, "get-feature"], {
-      cwd: workspacePath,
-    });
+    const result = await execFileAsync(
+      tsRuntime,
+      [...tsRuntimeArgs, "get-feature"],
+      {
+        cwd: workspacePath,
+      },
+    );
 
     expect(result.stdout).toContain("Current feature");
     expect(result.stdout).toContain("issues-manager-cli");
@@ -640,9 +646,9 @@ describe("runIssuesManagerCli", () => {
     });
 
     const result = await execFileAsync(
-      "bun",
+      tsRuntime,
       [
-        binPath,
+        ...tsRuntimeArgs,
         "update-feature",
         "issues-manager-cli",
         "--status",
@@ -694,9 +700,13 @@ describe("runIssuesManagerCli", () => {
       ],
     });
 
-    const result = await execFileAsync("bun", [binPath, "list-issues"], {
-      cwd: workspacePath,
-    });
+    const result = await execFileAsync(
+      tsRuntime,
+      [...tsRuntimeArgs, "list-issues"],
+      {
+        cwd: workspacePath,
+      },
+    );
 
     expect(result.stdout).toContain("Feature issues");
     expect(result.stdout).toContain("slug: issues-manager-cli");
@@ -734,8 +744,13 @@ describe("runIssuesManagerCli", () => {
     });
 
     const result = await execFileAsync(
-      "bun",
-      [binPath, "list-issues", "--feature", "production-template-baseline"],
+      tsRuntime,
+      [
+        ...tsRuntimeArgs,
+        "list-issues",
+        "--feature",
+        "production-template-baseline",
+      ],
       {
         cwd: workspacePath,
       },
@@ -783,8 +798,8 @@ describe("runIssuesManagerCli", () => {
     });
 
     const result = await execFileAsync(
-      "bun",
-      [binPath, "list-issues", "--actionable"],
+      tsRuntime,
+      [...tsRuntimeArgs, "list-issues", "--actionable"],
       {
         cwd: workspacePath,
       },
@@ -835,8 +850,8 @@ describe("runIssuesManagerCli", () => {
     );
 
     const result = await execFileAsync(
-      "bun",
-      [binPath, "update-blockers", "1", "--blockers", "2"],
+      tsRuntime,
+      [...tsRuntimeArgs, "update-blockers", "1", "--blockers", "2"],
       {
         cwd: workspacePath,
       },
