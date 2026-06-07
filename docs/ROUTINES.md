@@ -61,15 +61,14 @@ For each QA run, the `.qa/<timestamp>/` directory contains:
 
 ### Pruning merged local branches
 
-Run `pnpm git:prune` to safely delete all local branches that have been fully merged into the default branch (`main` or `master`).
+Run `pnpm git:prune` to safely delete all local branches that have been fully merged into `main`.
 
-| Flag        | What it does                                                                 |
-| ----------- | ---------------------------------------------------------------------------- |
-| (none)      | Lists merged branches and asks for confirmation                              |
-| `--dry-run` | Shows what would be deleted without deleting (run as `pnpm git:prune -- --dry-run`) |
-| `--force`   | Skips confirmation prompt (run as `pnpm git:prune -- --force`)               |
+| Flag        | What it does                                      |
+| ----------- | ------------------------------------------------- |
+| (none)      | Lists merged branches and asks for confirmation   |
+| `--dry-run` | Shows what would be deleted without deleting      |
 
-The script always protects `main`, `master`, and the current branch from deletion.
+The script always protects `main`, `master`, and the current branch from deletion. It detects both fast-forward merges and GitHub squash merges.
 
 ## Manual Cross-Browser Testing Checklist
 
