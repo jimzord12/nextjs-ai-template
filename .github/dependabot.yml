@@ -1,0 +1,49 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+      - github-actions
+      - automerge-candidate
+    commit-message:
+      prefix: ci
+      include: scope
+    open-pull-requests-limit: 5
+    groups:
+      actions-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+      - npm
+      - automerge-candidate
+    commit-message:
+      prefix: chore
+      include: scope
+    open-pull-requests-limit: 10
+    groups:
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "next"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "typescript"
+      - dependency-name: "tailwindcss"
+      - dependency-name: "@tailwindcss/postcss"
