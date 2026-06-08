@@ -2,8 +2,9 @@
 
 - See [docs/WORKING_WITH_ME.md](docs/WORKING_WITH_ME.md) for behavioral rules. Read it before starting work.
 - See [docs/CONVENTIONS.md](docs/CONVENTIONS.md) for project conventions.
-- See [docs/ROUTINES.md](docs/ROUTINES.md) for recurring project routines.
+- See [docs/ROUTINES.md](docs/ROUTINES.md) for recurring project routines, **including the 7-step Feature Delivery Pipeline** (grill-with-docs → to-prd → grill-with-docs → to-issues → do-issue → review-feature → manual sign-off).
 - See [docs/RULES.md](docs/RULES.md) for documentation maintenance rules.
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for available scripts, code style, and PR requirements.
 
 
 <!-- END:always-must-read -->
@@ -72,9 +73,10 @@ Installed skills live in `.agents/skills/`. Invoke with `/skill-name`.
 | `zoom-out`                      | Get broader context and a map of relevant modules/callers in an unfamiliar code area                |
 | `write-a-skill`                 | Create new agent skills with proper structure, progressive disclosure, and bundled resources        |
 | `triage`                        | Triage issues through a state machine (needs-triage → needs-info → ready-for-agent/human → wontfix) |
-| `to-prd`                        | Synthesize conversation context into a PRD and publish it to the issue tracker                      |
+| `to-prd`                        | Synthesize grilling session state or conversation context into a PRD with feature registry and feature briefs, published to the issue tracker |
 | `to-issues`                     | Break a plan/spec/PRD into independently-grabbable vertical-slice issues                            |
 | `tdd`                           | Test-driven development with red-green-refactor tracer-bullet loops                                 |
+| `review-feature`                | Automated feature-scoped review verifying acceptance criteria, scoped QA, orphan detection, producing a review report before human sign-off |
 | `setup-matt-pocock-skills`      | Scaffold repo config (issue tracker, triage labels, domain docs) for the engineering skills         |
 | `prototype`                     | Build throwaway prototypes — terminal apps for logic/state questions, or UI variation toggles       |
 | `improve-codebase-architecture` | Surface architectural friction, propose deepening opportunities with visual HTML report             |
@@ -88,7 +90,7 @@ Installed skills live in `.agents/skills/`. Invoke with `/skill-name`.
 | `vercel-composition-patterns`   | React composition patterns that scale — compound components, state management, React 19 APIs        |
 | `vercel-cli-with-tokens`        | Deploy and manage Vercel projects using token-based (non-interactive) CLI authentication            |
 | `vercel-optimize`               | Deep cost and performance optimization for Vercel projects, grounded in metrics and docs            |
-| `execute`                       | Discover and implement 1-3 ready-for-agent issues using the method specified in each issue          |
+| `do-issue`                      | Discover and implement 1-3 ready-for-agent issues using the issues-manager CLI and method specified in each issue |
 | `complexity-rating`             | Assign Complexity ratings (1-5) to issues and recommend decomposition for Complexity 5 issues       |
 
 <!-- END:project-skills -->

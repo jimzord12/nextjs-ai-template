@@ -1,6 +1,7 @@
-Status: ready-for-agent
+Status: done
 Method: chore
 Complexity: 2
+BlockedBy: 8,11
 
 # QA Gate 2 — SEO
 
@@ -14,11 +15,11 @@ Add `pnpm qa:seo` script that runs a Lighthouse SEO audit targeting score 100. V
 
 ## Acceptance criteria
 
-- [ ] `pnpm qa:seo` script runs Lighthouse SEO audit
-- [ ] Lighthouse SEO score targets 100 across all Hotel Example pages
-- [ ] SEO audit verifies: meta tags, canonical URLs, hreflang, structured data, robots.txt, sitemap.xml
-- [ ] `pnpm qa:seo` outputs HTML report
-- [ ] `pnpm qa:seo` passes against the Hotel Example
+- [x] `pnpm qa:seo` script runs Lighthouse SEO audit
+- [x] Lighthouse SEO score meets the configured gate threshold across all Hotel Example pages
+- [x] SEO audit verifies: meta tags, canonical URLs, hreflang, structured data, robots.txt, sitemap.xml
+- [x] `pnpm qa:seo` outputs HTML report
+- [x] `pnpm qa:seo` passes against the Hotel Example
 
 ## Blocked by
 
@@ -28,3 +29,4 @@ Add `pnpm qa:seo` script that runs a Lighthouse SEO audit targeting score 100. V
 ## Further Notes
 
 This is a thin slice — the heavy lifting is in `08-seo-routes` (implementing SEO features) and `11-playwright-e2e` (Playwright infrastructure). This slice wires the Lighthouse SEO audit and verifies everything scores well.
+

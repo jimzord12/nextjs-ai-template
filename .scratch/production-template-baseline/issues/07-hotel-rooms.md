@@ -1,6 +1,7 @@
 Status: done
 Method: scaffold
 Complexity: 3
+BlockedBy: 4
 
 # Hotel Rooms (Collection Types + Dynamic Routes)
 

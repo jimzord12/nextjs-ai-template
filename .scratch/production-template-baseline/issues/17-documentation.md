@@ -1,6 +1,7 @@
-Status: ready-for-agent
+Status: done
 Method: chore
 Complexity: 3
+BlockedBy: 16
 
 # Documentation
 
@@ -30,16 +31,16 @@ Write and update all project documentation to reflect the actual codebase. This 
 
 ## Acceptance criteria
 
-- [ ] `docs/TECH_STACK.md` created with all dependencies listed, `[installed]`/`[planned]` status, rationale, and doc links
-- [ ] `README.md` updated with template-specific content, available scripts, reset workflow
-- [ ] `docs/ARCHITECTURE.md` updated to match actual file structure and v1 scope
-- [ ] `docs/CONVENTIONS.md` updated with Local CMS conventions, i18n patterns, scaffold baselines
-- [ ] `docs/ROUTINES.md` updated with QA routines
-- [ ] `docs/DEPLOYMENT.md` created with Vercel deployment guide and security headers
-- [ ] Scaffold baselines audited and documented (env validation, root metadata, design tokens, error patterns, test setup)
-- [ ] Partial-removal guide included for individual tool opt-out
-- [ ] Move `docs/in-progress/Nextjs-Quality-Assurance-Guide.pdf` to `docs/` (no longer in-progress)
-- [ ] All documentation uses domain vocabulary from `CONTEXT.md`
+- [x] `docs/TECH_STACK.md` created with all dependencies listed, `[installed]`/`[planned]` status, rationale, and doc links
+- [x] `README.md` updated with template-specific content, available scripts, reset workflow
+- [x] `docs/ARCHITECTURE.md` updated to match actual file structure and v1 scope
+- [x] `docs/CONVENTIONS.md` updated with Local CMS conventions, i18n patterns, scaffold baselines
+- [x] `docs/ROUTINES.md` updated with QA routines
+- [x] `docs/DEPLOYMENT.md` created with Vercel deployment guide and security headers
+- [x] Scaffold baselines audited and documented (env validation, root metadata, design tokens, error patterns, test setup)
+- [x] Partial-removal guide included for individual tool opt-out
+- [x] Move `docs/in-progress/Nextjs-Quality-Assurance-Guide.pdf` to `docs/` (no longer in-progress)
+- [x] All documentation uses domain vocabulary from `CONTEXT.md`
 
 ## Blocked by
 
@@ -48,3 +49,5 @@ Write and update all project documentation to reflect the actual codebase. This 
 ## Further Notes
 
 This is marked HITL because it requires reviewing the complete codebase state and making judgment calls about what to document and what to omit. The human should review the final documentation for accuracy and completeness.
+
+
