@@ -2,7 +2,7 @@
 
 A production-grade Next.js static-site template optimized for agencies delivering client marketing sites.
 
-- **Static export only** — `output: 'export'`, no server required
+- **Vercel-first baseline** — the default config uses `next build` + `next start`; enable `output: 'export'` if you want a pure static export
 - **i18n out of the box** — English, Greek, German with URL-prefixed locales
 - **Local CMS model** — Strapi-inspired JSON content with Zod validation
 - **Quality gates built in** — Linting, testing, accessibility, performance, and security
@@ -59,7 +59,7 @@ The script is idempotent — safe to run multiple times.
 | Script | What it does |
 |---|---|
 | `pnpm dev` | Dev server with Turbopack |
-| `pnpm build` | Production static build |
+| `pnpm build` | Production Next.js build |
 | `pnpm start` | Serve production build locally |
 | `pnpm lint` | Biome check (lint + format) |
 | `pnpm typecheck` | TypeScript type check (`tsc --noEmit`) |

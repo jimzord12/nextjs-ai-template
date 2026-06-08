@@ -67,7 +67,7 @@ Key conventions:
 | `pnpm test:coverage` | Vitest with coverage report |
 | `pnpm test:e2e` | Playwright E2E tests |
 | `pnpm qa:doctor` | react-doctor quality gate (threshold: 80) |
-| `pnpm qa:performance` | Lighthouse performance audit |
+| `pnpm qa:performance` | Unlighthouse performance audit |
 | `pnpm qa:a11y` | Accessibility E2E tests (axe-core) |
 | `pnpm qa:cross-browser` | Playwright across Chromium, Firefox, WebKit |
 | `pnpm qa:security` | Dependency audit (high+ severity) |
@@ -83,7 +83,6 @@ Key conventions:
 | `pnpm fallow:audit` | Full dead code audit |
 | `pnpm analyze` | Bundle analysis via `@next/bundle-analyzer` |
 | `pnpm git:prune` | Delete locally-merged tracking branches |
-| `pnpm issues-manager` | Issue tracker CLI |
 
 ## Quality Gates
 

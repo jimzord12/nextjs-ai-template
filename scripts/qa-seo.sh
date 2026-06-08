@@ -8,7 +8,7 @@ set -euo pipefail
 # Run with:  pnpm qa:seo
 #
 # Outputs:
-#   .qa/seo-report-<locale>.html  — per-locale Lighthouse HTML report
+#   .qa/seo-result-<locale>.report.html  — per-locale Lighthouse HTML report
 #   .qa/seo-summary.json          — consolidated scores (for CI parsing)
 # ──────────────────────────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ SEO_THRESHOLD=80
 
 # Raise to 100 once Hotel Example pages have full SEO setup (meta descriptions,
 # structured data, canonical URLs, robots.txt, sitemap.xml, etc.).
-# See: docs/issues/14
+# See: .scratch/production-template-baseline/issues/14-seo-qa.md
 
 PAGES=("/en" "/el" "/de")
 

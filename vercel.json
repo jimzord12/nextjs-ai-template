@@ -3,7 +3,7 @@
     "overview": "OWASP-recommended security headers for production. Vercel ignores unknown keys like this one.",
     "csp_template_notes": {
       "default-src 'self'": "Baseline: only allow resources from same origin. Relax per use-case below.",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'": "WARNING: unsafe-inline/eval are needed for Next.js dev and some frameworks. For strict CSP, remove unsafe-inline/eval and use nonce-based or hash-based CSP with Next.js <Script nonce> prop. See https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy",
+      "script-src 'self' 'unsafe-inline'": "WARNING: unsafe-inline may be needed for some Next.js setups and third-party scripts. For strict CSP, remove unsafe-inline and use nonce-based or hash-based CSP with Next.js <Script nonce> prop. See https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy",
       "style-src 'self' 'unsafe-inline'": "Tailwind CSS and many CSS-in-JS libs need unsafe-inline. If you use only CSS files, remove it.",
       "img-src 'self' data: https:": "Allows all HTTPS images. Narrow to your CDN domains for strictest policy, e.g. img-src 'self' data: https://cdn.example.com",
       "font-src 'self' https://fonts.gstatic.com": "Google Fonts. Remove if self-hosting fonts. Add other font CDNs as needed.",
@@ -46,7 +46,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
         }
       ]
     }

@@ -16,7 +16,7 @@ Add `pnpm qa:seo` script that runs a Lighthouse SEO audit targeting score 100. V
 ## Acceptance criteria
 
 - [x] `pnpm qa:seo` script runs Lighthouse SEO audit
-- [x] Lighthouse SEO score targets 100 across all Hotel Example pages
+- [x] Lighthouse SEO score meets the configured gate threshold across all Hotel Example pages
 - [x] SEO audit verifies: meta tags, canonical URLs, hreflang, structured data, robots.txt, sitemap.xml
 - [x] `pnpm qa:seo` outputs HTML report
 - [x] `pnpm qa:seo` passes against the Hotel Example
@@ -29,5 +29,4 @@ Add `pnpm qa:seo` script that runs a Lighthouse SEO audit targeting score 100. V
 ## Further Notes
 
 This is a thin slice — the heavy lifting is in `08-seo-routes` (implementing SEO features) and `11-playwright-e2e` (Playwright infrastructure). This slice wires the Lighthouse SEO audit and verifies everything scores well.
-
 

@@ -1,6 +1,6 @@
 # Deployment
 
-Vercel is the primary deployment platform for v1. The template is configured for static export (`output: 'export'`) targeting Vercel's free tier.
+Vercel is the primary deployment platform for v1. The default template config uses a standard Next.js production build targeting Vercel's free tier, and it can be adapted to static export later if needed.
 
 Other platforms (Netlify, Cloudflare Pages, AWS S3 + CloudFront) are deferred to v2.
 
@@ -29,7 +29,7 @@ No other environment variables are needed. The template validates these at build
 
 Push to `main` — Vercel builds and deploys automatically. PRs get preview deployments.
 
-The build command (`pnpm build`) runs `next build`, which produces a static export in the `out/` directory.
+The build command (`pnpm build`) runs `next build`, which produces a `.next/` build with the current configuration. If you later enable `output: 'export'` in `next.config.ts`, Next.js will emit an `out/` directory instead.
 
 ---
 
@@ -74,7 +74,7 @@ Vercel runs the build automatically. Locally, you can reproduce it:
 pnpm build
 ```
 
-This produces a static export. The build configuration in `next.config.ts` includes the bundle analyzer (enabled via `ANALYZE=true`) and the next-intl plugin.
+This produces the standard Next.js production build for the current config. The build configuration in `next.config.ts` includes the bundle analyzer (enabled via `ANALYZE=true`) and the next-intl plugin.
 
 ---
 
