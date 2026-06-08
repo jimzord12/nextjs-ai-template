@@ -1,0 +1,21 @@
+{
+  "features": [
+    {
+      "id": 1,
+      "slug": "production-template-baseline",
+      "status": "in-progress",
+      "lastUpdated": "2026-06-07T18:38:28.646Z",
+      "finalStatus": null
+    },
+    {
+      "id": 2,
+      "slug": "issues-manager-cli",
+      "status": "archived",
+      "lastUpdated": "2026-06-07T18:14:29.652Z",
+      "finalStatus": "done"
+    }
+  ],
+  "lastUpdated": "2026-06-07T18:38:28.646Z",
+  "nextFeatureId": 3,
+  "version": "1"
+}

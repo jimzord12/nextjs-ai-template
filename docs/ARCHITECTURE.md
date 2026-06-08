@@ -8,10 +8,11 @@ Without intentional architecture, files become coupled — a component reaches i
 
 ## Project Baseline Constraints
 
-- The starter baseline is **static export only**. Architectural choices in the baseline should stay compatible with `output: 'export'`; ISR is a later variation, not a baseline assumption.
-- Internationalization uses `next-intl` on the App Router, and this project treats it as compatible with the Next.js 16 baseline.
-- Content follows a **local Strapi-like JSON CMS** model, not loose ad hoc fixture objects. Collection types, single types, reusable components, SEO fields, locale-aware records, and media records should have a predictable on-disk shape.
-- Image rendering should use `next/image` with a **static-safe approach** that works in export mode and with the local media library model.
+- **V1 scope:** Vercel-first and static-export-compatible. The current config uses a standard Next.js production build; no ISR, no server functions, and no dynamic API routes in the baseline. Architectural choices should stay compatible with static export if it is enabled later.
+- **Marketing-only:** Only the `(marketing)` route group exists in v1. An `(app)` route group for authenticated pages is a v2 consideration — do not assume it.
+- **Internationalization** uses `next-intl` on the App Router, compatible with Next.js 16. All locales (en, el, de) are URL-prefixed including the default.
+- **Content** follows a **Local CMS** model (Strapi-inspired JSON layer), not loose ad hoc fixture objects. Collection Types, Single Types, Content Components, and Media Records have a predictable on-disk shape.
+- **Image rendering** uses `next/image` with a **static-safe approach** compatible with export mode and the local media library.
 
 ---
 
@@ -47,14 +48,11 @@ Folders wrapped in `()` create route groups — shared layouts without URL segme
 ```
 src/app/
   [locale]/                 # i18n locale segment (en, el, de)
-    (marketing)/            # Public pages: home, rooms, contact (v1 scope)
-      layout.tsx
+    (marketing)/            # Public pages (v1 scope — only route group)
+      layout.tsx            # Marketing shell (header, footer)
       page.tsx              # Homepage
-      rooms/[slug]/...
-      contact/...
-    (app)/                  # Authenticated pages (v2 scope — not yet implemented)
-      layout.tsx
-      dashboard/...
+      rooms/[slug]/...      # Example: room detail pages
+      contact/...           # Example: contact page
 ```
 
 ---
@@ -78,13 +76,9 @@ src/
       lib/
       types.ts
       index.ts
-    bookings/
-      ...
   shared/
-    components/         # Generic: Spinner, Modal
+    lib/                # cn() helper, date formatters
     hooks/              # useDebounce, useMediaQuery
-    lib/                # http client, date formatters
-    ui/                 # shadcn/ui design system
 ```
 
 ### Barrel Exports (index.ts) — Not Optional
@@ -114,9 +108,9 @@ Rest of app imports from `@/features/auth`, **never** from `@/features/auth/lib/
 
 ---
 
-## Layer 3 — Local Content System
+## Layer 3 — Local CMS
 
-This starter's canonical content source is a **repo-local JSON CMS layer** inspired by Strapi, not arbitrary fixture objects spread across `src/lib/`.
+This template's canonical content source is a **repo-local JSON CMS layer** (the Local CMS) inspired by Strapi, not arbitrary fixture objects spread across `src/lib/`.
 
 ```
 src/
@@ -129,64 +123,129 @@ src/
       records/            # Media metadata: alt, dimensions, captions, focal point
 ```
 
-Pages and features should consume this content through typed loaders, adapters, or validation layers rather than importing loose fixture blobs directly. That keeps the starter aligned with the Strapi-like mental model while remaining fully local and export-safe.
+Pages and features consume this content through typed **Content Loaders** — functions that read JSON, validate through Zod, and return typed objects. Content Loaders are the API contract between content and the rest of the application.
 
 ---
 
-## An example: Hotel Website Structure
+## Current Skeleton State
+
+The template ships as a bare skeleton. The current `src/` tree after a fresh clone (or after running Reset):
 
 ```
 src/
-├── app/                          # Layer 1: App Router & Colocation
-│   ├── layout.tsx                # Root layout (fonts, providers)
-│   ├── globals.css
-│   └── [locale]/                 # i18n locale segment (en, el, de)
-│       ├── (marketing)/          # Public pages route group (v1 scope)
-│       │   ├── layout.tsx        # Public layout (header, footer)
-│       │   ├── page.tsx          # Homepage
-│       │   ├── rooms/
-│       │   │   └── [slug]/       # Room detail
-│       │   │       ├── components/
-│       │   │       └── lib/
-│       │   └── contact/
-│       └── (app)/                # Authenticated route group (v2 scope — not yet implemented)
-│           ├── layout.tsx        # App shell (sidebar, nav)
-│           └── dashboard/
+├── app/                          # Layer 1: App Router
+│   ├── layout.tsx                # Root layout (passes children through)
+│   ├── globals.css               # Design tokens + shadcn base-nova theme
+│   ├── not-found.tsx             # 404 page (root-level, locale-independent)
+│   ├── favicon.ico
+│   └── [locale]/                 # i18n locale segment
+│       ├── layout.tsx            # Locale layout (fonts, metadata, IntlErrorHandlingProvider)
+│       └── page.tsx              # Skeleton page (centered "Welcome." heading)
 │
-├── features/                     # Layer 2: Feature Modules
-│   └── rooms/                    # Room listings, detail
-│       ├── components/
-│       ├── hooks/
-│       ├── lib/
-│       ├── types.ts
-│       └── index.ts              # Barrel export
+├── components/                   # App-level components
+│   ├── ui/                       # shadcn/ui design system (Button, ButtonVariants)
+│   └── providers/                # IntlErrorHandlingProvider
 │
-├── content/                      # Layer 3: Local Strapi-like JSON CMS
-│   ├── collection-types/
-│   ├── single-types/
-│   ├── components/
+├── features/                     # Layer 2: Feature Modules (empty — populated by Hotel Example)
+│
+├── content/                      # Layer 3: Local CMS
+│   ├── collection-types/         # (empty — populated by Hotel Example)
+│   ├── single-types/             # (empty — populated by Hotel Example)
+│   ├── components/               # (empty — populated by Hotel Example)
 │   └── media/
 │       ├── files/
 │       └── records/
 │
-├── components/                   # App-level component directories
-│   ├── ui/                       # shadcn/ui design system
-│   ├── layout/                   # Layout components (Header, Footer)
-│   └── shared/                   # Shared example components
-│
 ├── shared/                       # Cross-cutting shared utilities
-│   ├── hooks/                    # Generic hooks (useDebounce)
-│   └── lib/                      # cn() helper, formatters
+│   ├── hooks/                    # (empty — .gitkeep only)
+│   └── lib/                      # cn() helper, utils
 │
-└── test/                         # Test helpers & setup
+├── i18n/                         # Internationalization
+│   ├── routing.ts                # Locale definitions (en, el, de)
+│   └── request.ts                # Message loading + error handling
+│
+├── messages/                     # Translation files
+│   ├── en.json
+│   ├── el.json
+│   └── de.json
+│
+├── test/                         # Test setup
+│   ├── setup.ts                  # @testing-library/jest-dom/vitest
+│   ├── button.test.tsx           # Smoke test for shadcn Button
+│   └── fixtures/
+│
+├── env.ts                        # Zod-validated environment variables
+└── proxy.ts                      # Middleware (next-intl locale routing)
 ```
+
+---
+
+## Hotel Example
+
+The template ships with a Hotel Example — a complete demo site for a fictional hotel that demonstrates the full Local CMS pattern. The Hotel Example includes:
+
+- `(marketing)/` route group with homepage, room detail, and contact pages
+- `src/components/layout/` (Header, Footer)
+- `src/components/shared/` (shared example components)
+- `src/features/contact/` (contact form feature)
+- Collection Types: `rooms`, `reviews` (with per-locale data and Zod schemas)
+- Single Types: `homepage`, `site-settings` (with per-locale data and Zod schemas)
+- Media Records with structured metadata
+- Content Loaders (`src/content/loaders.ts`)
+- E2E tests: `homepage.spec.ts`, `rooms.spec.ts`, `navigation.spec.ts`, `contact.spec.ts`
+- `robots.ts` and `sitemap.ts` for SEO
+
+### Hotel Example Tree (reference)
+
+```
+src/
+├── app/
+│   ├── robots.ts                         # SEO
+│   ├── sitemap.ts                        # SEO
+│   └── [locale]/
+│       └── (marketing)/
+│           ├── layout.tsx                # Header + Footer shell
+│           ├── page.tsx                  # Homepage
+│           ├── rooms/[slug]/             # Room detail
+│           └── contact/                  # Contact form
+│
+├── features/
+│   └── contact/                          # Contact form feature
+│
+├── content/
+│   ├── collection-types/
+│   │   ├── rooms/                        # Per-locale data + schema.ts
+│   │   └── reviews/                      # Per-locale data + schema.ts
+│   ├── single-types/
+│   │   ├── homepage/                     # Per-locale data + schema.ts
+│   │   └── site-settings/               # Per-locale data + schema.ts
+│   ├── components/                       # Content Components
+│   ├── loaders.ts                        # Content Loaders
+│   ├── types.ts                          # Shared content types
+│   ├── schemas/                          # Reusable Zod schemas
+│   └── media/
+│       ├── files/                        # Image assets
+│       └── records/                      # Structured media metadata
+│
+├── components/
+│   ├── ui/                               # shadcn/ui
+│   ├── layout/                           # Header, Footer (stripped by Reset)
+│   ├── shared/                           # Shared demo components (stripped by Reset)
+│   └── providers/
+```
+
+### Reset
+
+Running `scripts/reset-example.sh` strips all Hotel Example content and returns the project to the skeleton state. The reset script is idempotent — safe to run multiple times. See the reset script for the full list of removed and preserved files.
+
+---
 
 ## Dependency Flow
 
 ```
-Route page   → imports from features/ or typed content loaders
-Feature      → imports from shared/ and validated content adapters
-Content JSON → validated before feature or route consumption
+Route page   → imports from features/ or Content Loaders
+Feature      → imports from shared/ and Content Loaders
+Content JSON → validated by Zod schemas → consumed by Content Loaders
 Shared       → imports nothing (leaf node)
 ```
 

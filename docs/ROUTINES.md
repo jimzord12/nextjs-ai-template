@@ -12,14 +12,22 @@ This umbrella script runs all QA categories sequentially and collects reports in
 
 ### Individual QA Scripts
 
-| Script                  | What it does                                                                                    | Report output          |
-| ----------------------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
-| `pnpm qa:performance`   | Runs Unlighthouse against the production build and enforces Performance budget ≥ 90             | `.unlighthouse/`       |
-| `pnpm qa:a11y`          | Runs axe-core accessibility scans against all pages, asserts 0 critical/serious WCAG violations | Playwright HTML report |
-| `pnpm qa:seo`           | Runs Lighthouse SEO audit (placeholder — will be wired in a future slice)                       | —                      |
-| `pnpm qa:security`      | Runs `pnpm audit --audit-level high`, exits non-zero on critical/high CVEs                      | Terminal output        |
-| `pnpm qa:bundle`        | Runs bundle analysis (placeholder — will be wired in a future slice)                            | —                      |
-| `pnpm qa:cross-browser` | Runs full Playwright suite across Chromium, Firefox, and WebKit                                 | Playwright HTML report |
+| Script                  | What it does                                                                                    | Report output                                        |
+| ----------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `pnpm qa:performance`   | Runs Unlighthouse against the production build and enforces Performance budget ≥ 90             | `.unlighthouse/`                                     |
+| `pnpm qa:a11y`          | Runs axe-core accessibility scans against all pages, asserts 0 critical/serious WCAG violations | Playwright HTML report                               |
+| `pnpm qa:seo`           | Runs Lighthouse SEO audits against all locale pages, asserts each page meets the current SEO score gate (≥ 80; target 100 after the Hotel Example's SEO work is complete) | `.qa/seo-result-<locale>.report.html`, `.qa/seo-summary.json` |
+| `pnpm qa:security`      | Runs `pnpm audit --audit-level high`, exits non-zero on critical/high CVEs                      | Terminal output                                      |
+| `pnpm qa:bundle`        | Runs bundle analysis via `@next/bundle-analyzer` (sets `ANALYZE=true`), opens interactive client/bundle size report in browser | Browser (client/server bundle treemaps)              |
+| `pnpm qa:cross-browser` | Runs full Playwright suite across Chromium, Firefox, and WebKit                                 | Playwright HTML report                               |
+| `pnpm qa:doctor`        | Runs `react-doctor` score check, asserts score meets threshold (default: 80, configurable via `REACT_DOCTOR_THRESHOLD`) | Terminal output                                      |
+
+### Additional Analysis Scripts
+
+| Script          | What it does                                                       |
+| --------------- | ------------------------------------------------------------------ |
+| `pnpm analyze`  | Alias for `ANALYZE=true pnpm build` — runs `@next/bundle-analyzer` |
+| `pnpm doctor`   | Runs `react-doctor` interactively (no threshold enforcement)       |
 
 ### Interpreting Reports
 
@@ -28,7 +36,8 @@ After `pnpm qa` completes:
 1. Open `.qa/<timestamp>/` for the collected report bundle.
 2. Playwright HTML reports are in the `playwright-report/` subdirectory.
 3. Unlighthouse report artifacts are in the `unlighthouse-report/` subdirectory.
-4. Each QA category's terminal output is in `<category>.log` files.
+4. SEO reports are per-locale Lighthouse HTML files in `.qa/`.
+5. Each QA category's terminal output is in `<category>.log` files.
 
 ## QA Delivery Package
 
@@ -40,6 +49,7 @@ For each QA run, the `.qa/<timestamp>/` directory contains:
 
 - **Playwright HTML report** — interactive report showing all E2E test results across browsers
 - **Unlighthouse reports** — site-wide performance audits with scores and metrics
+- **SEO reports** — per-locale Lighthouse SEO audit HTML files
 - **Category logs** — terminal output from each `qa:*` script for audit trails
 
 ### How to present
@@ -47,8 +57,9 @@ For each QA run, the `.qa/<timestamp>/` directory contains:
 1. Run `pnpm qa` against the production build.
 2. Open the Playwright HTML report in a browser and screenshot the summary view.
 3. Open the Unlighthouse report and screenshot the score gauges.
-4. Copy the terminal summary output showing all ✅ passes.
-5. Compile screenshots into a Client deck with date, project name, and pass/fail status.
+4. Open the SEO Lighthouse reports and screenshot the SEO scores.
+5. Copy the terminal summary output showing all passes.
+6. Compile screenshots into a Client deck with date, project name, and pass/fail status.
 
 ### Conventions
 
