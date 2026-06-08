@@ -6,6 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "ci:local": "pnpm install --frozen-lockfile && pnpm check && pnpm test && pnpm build && pnpm audit:ci",
+    "issues-manager": "bun src/issues-manager-cli/bin.ts",
     "lint": "biome check .",
     "lint:fix": "biome check --fix .",
     "typecheck": "tsc --noEmit",
