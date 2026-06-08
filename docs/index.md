@@ -20,5 +20,7 @@ This index lists the files currently present under `docs/`.
 - `agents/issue-tracker.md`
 - `agents/triage-labels.md`
 - `in-progress/Nextjs-Quality-Assurance-Guide.pdf`
-- `templates/GRILLING-SESSION-RESPONSE.template.md`
-- `templates/LLD.template.md`
+- `templates/index.md` — template directory index
+- `templates/grilling/GRILLING-SESSION-RESPONSE.template.md`
+- `templates/grilling/GRILLING-SESSION-STATE.template.md`
+- `templates/ui/COMPONENT.lld.template.md`
