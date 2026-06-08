@@ -1,4 +1,8 @@
-# nextjs-ai-template
+# Next.js Marketing Template - AI-batteries included
+
+## Core strategy
+
+The promise: “marketing site from content model to publishable slices in the fewest decisions possible.”
 
 This repository is intended to become an opinionated Next.js starter for static websites built with SSG/ISR, a reusable UI foundation, and strong support for AI-agent-driven workflows.
 
