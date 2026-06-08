@@ -5,8 +5,18 @@ THRESHOLD="${REACT_DOCTOR_THRESHOLD:-80}"
 
 echo "Running react-doctor (score threshold: ${THRESHOLD})..."
 
-# --score outputs the picker line + bare integer on stdout. Grab the last numeric line.
-SCORE=$(pnpm exec react-doctor --score -y | tail -1)
+# Capture full output (including diagnostics) and preserve exit status under pipefail.
+TMP_OUTPUT="$(mktemp)"
+cleanup() { rm -f "$TMP_OUTPUT"; }
+trap cleanup EXIT
+
+if ! pnpm exec react-doctor --score -y | tee "$TMP_OUTPUT"; then
+  echo "FAIL react-doctor — command execution failed"
+  exit 1
+fi
+
+# Extract the score from the last numeric-only line.
+SCORE="$(grep -E '^[0-9]+$' "$TMP_OUTPUT" | tail -1 || true)"
 
 if ! [[ "${SCORE}" =~ ^[0-9]+$ ]]; then
   echo "FAIL react-doctor — could not parse score from output"
