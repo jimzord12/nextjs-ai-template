@@ -78,7 +78,7 @@ Remove the label and restore full CI:
 gh pr edit <pr-number> --remove-label ci-bypass-approved
 ```
 
-Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How, Testing, and the checklist. Resolve all conversations before merging.
+Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How, Testing, and the checklist.
 
 ## Code Style
 
