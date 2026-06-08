@@ -47,6 +47,10 @@ Things that are out of scope for this PRD.
 
 Any further notes about the feature.
 
+## Triage
+
+Status: ready-for-agent
+
 ---
 
 # Feature Registry Format
