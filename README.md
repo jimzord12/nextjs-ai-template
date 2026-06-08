@@ -1,4 +1,8 @@
-# Next.js AI Template
+# Next.js Marketing Template - AI-batteries included
+
+## Core strategy
+
+The promise: “marketing site from content model to publishable slices in the fewest decisions possible.”
 
 A production-grade Next.js static-site template optimized for agencies delivering client marketing sites.
 
