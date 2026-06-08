@@ -1,39 +1,65 @@
-# Grilling Session State Template
+# Grilling Session State
 
-## Session Metadata
+## Goal
 
-**Session ID:** `[session-id]`
-**Date:** `[YYYY-MM-DD]`
-**Feature / PRD:** `[link or title]`
-**Participants:** `[who is being grilled]`
+`[The final outcome this grilling session wants to achieve — one or two sentences describing what "done" looks like.]`
 
----
+## Topic
 
-## Active Branch
+`[What we're grilling — one sentence.]`
 
-| # | Branch Title | Status | Decision |
-|---|-------------|--------|----------|
-| 1 | `[Branch title]` | Open / Decided | `[chosen option or pending]` |
-| 2 | `[Branch title]` | Open / Decided | `[chosen option or pending]` |
+## Constraints
 
----
+- `[Invariant discovered during grilling — things that narrowed later options.]`
+- `[Add more as they emerge. Remove this block if none yet.]`
 
-## Decisions Log
+## Decision Tree
 
-### Branch `[N]`: `[Branch title]`
+### N1: `[Short question title]`
 
-**Decision:** `[Option letter] — short label`
-**Rationale:** `[1-2 sentence summary of why]`
-**Implications:** `[what this means for implementation]`
+- **Status:** ✅ Resolved
+- **Question:** `[Full question text.]`
+- **Answer:** `[Chosen option or summary.]`
+- **Resolved in:** session `[ISO timestamp or label]`
+- **ADR:** `[filename or —]`
+- **Opened branches:** N2, N3
 
----
+### N2: `[Short question title]`
 
-## Open Questions
+- **Status:** 🔴 Blocked — depends on `[Nx]`
+- **Question:** `[Full question text.]`
 
-- `[Question that needs resolution before moving forward]`
+### N3: `[Short question title]`
 
----
+- **Status:** 🟡 In Progress
+- **Question:** `[Full question text.]`
+- **Partial answer:** `[Notes captured so far. Remove if none.]`
+- **Active in:** session `[ISO timestamp or label]`
 
-## Session Notes
+## Open Leaves
 
-- `[Any context, assumptions, or constraints discovered during the session]`
+Unresolved branches that need a session:
+
+- `N3` → `N4`, `N5` (branches depend on answer)
+- `N6` (standalone, unblocked)
+
+## Notes
+
+`[Cross-cutting observations, reminders, or anything that doesn't fit a node. Remove this block if empty.]`
+
+## Status Legend
+
+| Symbol | Meaning |
+|--------|---------|
+| ✅ | Resolved |
+| 🟡 | In progress |
+| 🔴 | Blocked |
+| ⬚ | Not started |
+
+## Usage Rules
+
+- One node per design question. Number sequentially: N1, N2, N3…
+- **Opened branches** lists the child nodes this answer created.
+- A new AI session reads **Open Leaves** to know where to resume.
+- When a node is resolved, move it out of **Open Leaves** and fill in the answer fields.
+- If a resolved node has a detailed writeup, store it separately using the `GRILLING-SESSION-RESPONSE` template and link it from the answer field.
