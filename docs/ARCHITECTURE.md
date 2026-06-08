@@ -8,7 +8,7 @@ Without intentional architecture, files become coupled — a component reaches i
 
 ## Project Baseline Constraints
 
-- **V1 scope:** Vercel-first, static export only (`output: 'export'`). No ISR, no server functions, no dynamic API routes in the baseline. Architectural choices should stay compatible with static export.
+- **V1 scope:** Vercel-first and static-export-compatible. The current config uses a standard Next.js production build; no ISR, no server functions, and no dynamic API routes in the baseline. Architectural choices should stay compatible with static export if it is enabled later.
 - **Marketing-only:** Only the `(marketing)` route group exists in v1. An `(app)` route group for authenticated pages is a v2 consideration — do not assume it.
 - **Internationalization** uses `next-intl` on the App Router, compatible with Next.js 16. All locales (en, el, de) are URL-prefixed including the default.
 - **Content** follows a **Local CMS** model (Strapi-inspired JSON layer), not loose ad hoc fixture objects. Collection Types, Single Types, Content Components, and Media Records have a predictable on-disk shape.

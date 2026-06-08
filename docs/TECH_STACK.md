@@ -24,7 +24,7 @@ Every dependency in this template, why it's here, and where to learn more.
 |---|---|---|---|---|---|
 | `tailwindcss` | `4.3.0` | Utility-first CSS framework | Tailwind v4 with CSS-native config, zero config files, and faster builds. Pinned to exact version. | [tailwindcss.com/docs](https://tailwindcss.com/docs) | `[installed]` |
 | `@tailwindcss/postcss` | `4.3.0` | Tailwind PostCSS plugin for v4 | Required integration layer for Tailwind v4. Pinned to match Tailwind version. | [tailwindcss.com/docs](https://tailwindcss.com/docs) | `[installed]` |
-| `tw-animate-css` | `^1.4.0` | CSS animation utilities for Tailwind | Provides `animate-in`, `animate-out`, and other motion primitives used by shadcn components. | [github.com/d incap/tw-animate-css](https://github.com/WolfYuille/tw-animate-css) | `[installed]` |
+| `tw-animate-css` | `^1.4.0` | CSS animation utilities for Tailwind | Provides `animate-in`, `animate-out`, and other motion primitives used by shadcn components. | [github.com/WolfYuille/tw-animate-css](https://github.com/WolfYuille/tw-animate-css) | `[installed]` |
 | `@base-ui/react` | `^1.5.0` | Unstyled headless UI primitives (MUI Base) | Powers shadcn's more complex primitives (Select, etc.) with accessible, unstyled behavior. | [base-ui.com](https://base-ui.com) | `[installed]` |
 | `shadcn` | `^4.8.2` | CLI for adding copy-paste UI components | Design system foundation — copy-paste components that the Agency owns and can customize. Not a dependency at runtime. | [ui.shadcn.com](https://ui.shadcn.com) | `[installed]` |
 | `class-variance-authority` | `^0.7.1` | Variant utility for component classes | Standard pattern for `className` variants in shadcn components (`cvb()`). | [cva.style](https://cva.style/) | `[installed]` |
@@ -63,7 +63,7 @@ Every dependency in this template, why it's here, and where to learn more.
 | `@testing-library/react` | `^16.3.2` | React testing utilities | Queries by user-facing behavior (role, text, label), not implementation details. | [testing-library.com/docs/react-testing-library](https://testing-library.com/docs/react-testing-library/intro/) | `[installed]` |
 | `@testing-library/jest-dom` | `^6.9.1` | Custom DOM matchers (`toBeVisible`, etc.) | Extends Vitest's `expect` with DOM-specific assertions. | [testing-library.com/docs/ecosystem-jest-dom](https://testing-library.com/docs/ecosystem-jest-dom/) | `[installed]` |
 | `@testing-library/user-event` | `^14.6.1` | User interaction simulation | Fires realistic browser events (click, type, hover) for interaction tests. | [testing-library.com/docs/ecosystem-user-event](https://testing-library.com/docs/ecosystem-user-event/) | `[installed]` |
-| `tsx` | `^4.22.4` | TypeScript execution for scripts | Runs TypeScript CLI scripts (e.g. issues-manager) without a build step. | [github.com/privatenumber/tsx](https://github.com/privatenumber/tsx) | `[installed]` |
+| `tsx` | `^4.22.4` | TypeScript execution for scripts | Runs TypeScript utility scripts without a build step. | [github.com/privatenumber/tsx](https://github.com/privatenumber/tsx) | `[installed]` |
 
 ---
 
