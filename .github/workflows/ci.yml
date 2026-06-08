@@ -2,11 +2,8 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled, ready_for_review]
     branches: [main]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.agents/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,16 +11,94 @@ concurrency:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CI_BYPASS_LABEL: ci-bypass-approved
 
 jobs:
+  policy:
+    runs-on: ubuntu-latest
+    outputs:
+      ci_bypass: ${{ steps.evaluate.outputs.ci_bypass }}
+      docs_only: ${{ steps.evaluate.outputs.docs_only }}
+    steps:
+      - id: evaluate
+        env:
+          HAS_BYPASS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'ci-bypass-approved') }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docs_only=$(python3 <<'PY'
+          import json
+          import os
+          import sys
+          import urllib.request
+
+          with open(os.environ["GITHUB_EVENT_PATH"], "r", encoding="utf-8") as handle:
+              event = json.load(handle)
+
+          pr = event.get("pull_request") or {}
+          files_url = pr.get("url", "") + "/files?per_page=100"
+
+          if not files_url:
+              print("false")
+              sys.exit(0)
+
+          allowed_prefixes = ("docs/", ".agents/")
+
+          def is_docs_only(path: str) -> bool:
+              return path.endswith(".md") or path.startswith(allowed_prefixes)
+
+          filenames = []
+          next_url = files_url
+
+          while next_url:
+              request = urllib.request.Request(
+                  next_url,
+                  headers={
+                      "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}",
+                      "Accept": "application/vnd.github+json",
+                      "User-Agent": "ci-policy-check",
+                  },
+              )
+              with urllib.request.urlopen(request) as response:
+                  payload = json.load(response)
+                  filenames.extend(item["filename"] for item in payload)
+                  link_header = response.headers.get("Link", "")
+
+              next_url = None
+              for part in link_header.split(","):
+                  if 'rel="next"' not in part:
+                      continue
+                  start = part.find("<")
+                  end = part.find(">")
+                  if start != -1 and end != -1:
+                      next_url = part[start + 1:end]
+                      break
+
+          print("true" if filenames and all(is_docs_only(path) for path in filenames) else "false")
+          PY
+          )
+
+          echo "ci_bypass=${HAS_BYPASS_LABEL}" >> "$GITHUB_OUTPUT"
+          echo "docs_only=${docs_only}" >> "$GITHUB_OUTPUT"
+
+          if [ "${HAS_BYPASS_LABEL}" = "true" ]; then
+            echo "CI bypass approved via label ${CI_BYPASS_LABEL}."
+          elif [ "${docs_only}" = "true" ]; then
+            echo "Docs-only PR detected. Skipping expensive CI jobs."
+          else
+            echo "CI bypass label not present. Running full CI."
+          fi
+
   setup:
+    needs: policy
+    if: needs.policy.outputs.ci_bypass != 'true' && needs.policy.outputs.docs_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
       - uses: ./.github/actions/setup
 
   lint:
-    needs: setup
+    needs: [policy, setup]
+    if: needs.policy.outputs.ci_bypass != 'true' && needs.policy.outputs.docs_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -31,7 +106,8 @@ jobs:
       - run: pnpm lint
 
   typecheck:
-    needs: setup
+    needs: [policy, setup]
+    if: needs.policy.outputs.ci_bypass != 'true' && needs.policy.outputs.docs_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -39,7 +115,8 @@ jobs:
       - run: pnpm typecheck
 
   test:
-    needs: setup
+    needs: [policy, setup]
+    if: needs.policy.outputs.ci_bypass != 'true' && needs.policy.outputs.docs_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -47,7 +124,8 @@ jobs:
       - run: pnpm test
 
   build:
-    needs: [lint, typecheck, test]
+    needs: [policy, lint, typecheck, test]
+    if: needs.policy.outputs.ci_bypass != 'true' && needs.policy.outputs.docs_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -62,9 +140,52 @@ jobs:
       - run: pnpm build
 
   audit:
-    needs: [lint, typecheck, test]
+    needs: [policy, lint, typecheck, test]
+    if: needs.policy.outputs.ci_bypass != 'true' && needs.policy.outputs.docs_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
       - uses: ./.github/actions/setup
       - run: pnpm audit:ci
+
+  ci-gate:
+    needs: [policy, lint, typecheck, test, build, audit]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce CI policy
+        env:
+          CI_BYPASS: ${{ needs.policy.outputs.ci_bypass }}
+          DOCS_ONLY: ${{ needs.policy.outputs.docs_only }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          TYPECHECK_RESULT: ${{ needs.typecheck.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          AUDIT_RESULT: ${{ needs.audit.result }}
+        run: |
+          if [ "${CI_BYPASS}" = "true" ]; then
+            echo "CI bypass approved. Final gate passing without heavy jobs."
+            exit 0
+          fi
+
+          if [ "${DOCS_ONLY}" = "true" ]; then
+            echo "Docs-only PR detected. Final gate passing without heavy jobs."
+            exit 0
+          fi
+
+          for result in \
+            "lint:${LINT_RESULT}" \
+            "typecheck:${TYPECHECK_RESULT}" \
+            "test:${TEST_RESULT}" \
+            "build:${BUILD_RESULT}" \
+            "audit:${AUDIT_RESULT}"; do
+            name="${result%%:*}"
+            value="${result##*:}"
+
+            if [ "${value}" != "success" ]; then
+              echo "Required job ${name} finished with status ${value}."
+              exit 1
+            fi
+          done
+
+          echo "All required CI jobs passed."

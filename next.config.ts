@@ -14,7 +14,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   // biome-ignore lint/style/noProcessEnv: bundle analyzer is opt-in via env var
   enabled: process.env.ANALYZE === "true",
   analyzerMode: "static",
-  openAnalyzer: false
+  openAnalyzer: false,
 });
 
 const wrappedConfig = withBundleAnalyzer(nextConfig);
