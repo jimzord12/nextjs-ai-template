@@ -30,12 +30,56 @@ GitHub Flow — nothing else:
 CI must pass before merge. The pipeline runs:
 
 1. `pnpm lint` — Biome check
-2. `pnpm test` — Vitest unit tests
-3. `pnpm build` — Next.js production build
-4. `pnpm audit:ci` — flags critical/high CVEs
-5. `pnpm qa:doctor` — react-doctor score >= 80
+2. `pnpm typecheck` — TypeScript compile check
+3. `pnpm test` — Vitest unit tests
+4. `pnpm build` — Next.js production build
+5. `pnpm audit:ci` — flags critical/high CVEs
 
-Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How, Testing, and the checklist. Resolve all conversations before merging.
+Before each push, Husky runs `pnpm ci:local` from the `pre-push` hook. That mirrors the core PR checks locally:
+
+```bash
+pnpm install --frozen-lockfile && pnpm check && pnpm test && pnpm build && pnpm audit:ci
+```
+
+If any of those checks fail, including a stale `pnpm-lock.yaml`, Git blocks the push.
+
+### CI Bypass Label
+
+Use the `ci-bypass-approved` label only when you intentionally want to skip the expensive PR jobs for a pull request into `main`.
+
+- The PR workflow always runs a lightweight policy job.
+- Docs-only and text-only PRs still report `ci-gate`, but skip the expensive jobs automatically.
+- When the label is present, the expensive jobs are skipped.
+- When the label is removed, the next PR event runs the full workflow again.
+
+### Apply The Bypass In GitHub UI
+
+1. Open the pull request.
+2. In the right sidebar, open `Labels`.
+3. Add the `ci-bypass-approved` label.
+4. Wait for the CI workflow to re-run on the label event.
+
+### Apply The Bypass With `gh`
+
+Create the label once if the repository does not have it yet:
+
+```bash
+gh label create ci-bypass-approved --color FFAA00 --description "Approved to skip heavy CI jobs"
+```
+
+Add the label to a pull request:
+
+```bash
+gh pr edit <pr-number> --add-label ci-bypass-approved
+```
+
+Remove the label and restore full CI:
+
+```bash
+gh pr edit <pr-number> --remove-label ci-bypass-approved
+```
+
+Use the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Fill in What, Why, How, Testing, and the checklist.
 
 ## Code Style
 
@@ -53,22 +97,23 @@ Key conventions:
 
 ## Available Scripts
 
-| Script | What it does |
-| --- | --- |
-| `pnpm dev` | Dev server with Turbopack |
-| `pnpm build` | Production build (`next build`) |
-| `pnpm start` | Serve production build |
-| `pnpm lint` | Biome check (lint + format) |
-| `pnpm doctor` | Run react-doctor locally |
-| `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm check` | Lint + typecheck combined |
-| `pnpm test` | Vitest unit tests |
-| `pnpm test:watch` | Vitest in watch mode |
-| `pnpm test:coverage` | Vitest with coverage report |
-| `pnpm test:e2e` | Playwright E2E tests |
-| `pnpm qa:doctor` | react-doctor quality gate (threshold: 80) |
-| `pnpm audit:ci` | Audit for critical/high CVEs |
-| `pnpm qa` | Full QA suite (all categories) |
+| Script               | What it does                                                         |
+| -------------------- | -------------------------------------------------------------------- |
+| `pnpm dev`           | Dev server with Turbopack                                            |
+| `pnpm build`         | Production build (`next build`)                                      |
+| `pnpm start`         | Serve production build                                               |
+| `pnpm ci:local`      | Local pre-push CI mirror: frozen lockfile, check, test, build, audit |
+| `pnpm lint`          | Biome check (lint + format)                                          |
+| `pnpm doctor`        | Run react-doctor locally                                             |
+| `pnpm typecheck`     | `tsc --noEmit`                                                       |
+| `pnpm check`         | Lint + typecheck combined                                            |
+| `pnpm test`          | Vitest unit tests                                                    |
+| `pnpm test:watch`    | Vitest in watch mode                                                 |
+| `pnpm test:coverage` | Vitest with coverage report                                          |
+| `pnpm test:e2e`      | Playwright E2E tests                                                 |
+| `pnpm qa:doctor`     | react-doctor quality gate (threshold: 80)                            |
+| `pnpm audit:ci`      | Audit for critical/high CVEs                                         |
+| `pnpm qa`            | Full QA suite (all categories)                                       |
 
 ## Quality Gates
 
@@ -77,7 +122,7 @@ Key conventions:
 - **Default threshold:** 80 (set in CI via `REACT_DOCTOR_THRESHOLD`)
 - **Config:** `doctor.config.json` at repo root
 
-CI enforces this gate. If it fails, fix the reported issues — don't lower the threshold.
+The PR CI workflow enforces lint, typecheck, tests, build, and audit by default. If the `ci-bypass-approved` label is present on a PR, the workflow records the bypass in its policy job and skips the expensive jobs for that run.
 
 ## Additional Rules
 
