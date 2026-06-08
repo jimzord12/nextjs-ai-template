@@ -16,8 +16,9 @@ BASE_URL="http://localhost:3000"
 QA_DIR=".qa"
 SEO_THRESHOLD=80
 
-# Raise to 100 once Hotel Example pages have full SEO setup (meta descriptions,
-# structured data, canonical URLs, robots.txt, sitemap.xml, etc.).
+# Current SEO gate is 80. Raise it to 100 once the Hotel Example has full SEO
+# setup (meta descriptions, structured data, canonical URLs, robots.txt,
+# sitemap.xml, etc.).
 # See: .scratch/production-template-baseline/issues/14-seo-qa.md
 
 PAGES=("/en" "/el" "/de")
