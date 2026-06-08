@@ -48,6 +48,7 @@ If any of those checks fail, including a stale `pnpm-lock.yaml`, Git blocks the 
 Use the `ci-bypass-approved` label only when you intentionally want to skip the expensive PR jobs for a pull request into `main`.
 
 - The PR workflow always runs a lightweight policy job.
+- Docs-only and text-only PRs still report `ci-gate`, but skip the expensive jobs automatically.
 - When the label is present, the expensive jobs are skipped.
 - When the label is removed, the next PR event runs the full workflow again.
 
