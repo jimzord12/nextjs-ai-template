@@ -2,7 +2,7 @@
 
 A production-grade Next.js static-site template optimized for agencies delivering client marketing sites.
 
-- **Static export only** — `output: 'export'`, no server required
+- **Static-site focused** — marketing-site template (enable `output: 'export'` if you want pure static export)
 - **i18n out of the box** — English, Greek, German with URL-prefixed locales
 - **Local CMS model** — Strapi-inspired JSON content with Zod validation
 - **Quality gates built in** — Linting, testing, accessibility, performance, and security
