@@ -2,6 +2,7 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled, ready_for_review]
     branches: [main]
     paths-ignore:
       - '**.md'
@@ -14,16 +15,37 @@ concurrency:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CI_BYPASS_LABEL: ci-bypass-approved
 
 jobs:
+  policy:
+    runs-on: ubuntu-latest
+    outputs:
+      ci_bypass: ${{ steps.evaluate.outputs.ci_bypass }}
+    steps:
+      - id: evaluate
+        env:
+          HAS_BYPASS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'ci-bypass-approved') }}
+        run: |
+          echo "ci_bypass=${HAS_BYPASS_LABEL}" >> "$GITHUB_OUTPUT"
+
+          if [ "${HAS_BYPASS_LABEL}" = "true" ]; then
+            echo "CI bypass approved via label ${CI_BYPASS_LABEL}."
+          else
+            echo "CI bypass label not present. Running full CI."
+          fi
+
   setup:
+    needs: policy
+    if: needs.policy.outputs.ci_bypass != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
       - uses: ./.github/actions/setup
 
   lint:
-    needs: setup
+    needs: [policy, setup]
+    if: needs.policy.outputs.ci_bypass != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -31,7 +53,8 @@ jobs:
       - run: pnpm lint
 
   typecheck:
-    needs: setup
+    needs: [policy, setup]
+    if: needs.policy.outputs.ci_bypass != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -39,7 +62,8 @@ jobs:
       - run: pnpm typecheck
 
   test:
-    needs: setup
+    needs: [policy, setup]
+    if: needs.policy.outputs.ci_bypass != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -47,7 +71,8 @@ jobs:
       - run: pnpm test
 
   build:
-    needs: [lint, typecheck, test]
+    needs: [policy, lint, typecheck, test]
+    if: needs.policy.outputs.ci_bypass != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
@@ -62,9 +87,46 @@ jobs:
       - run: pnpm build
 
   audit:
-    needs: [lint, typecheck, test]
+    needs: [policy, lint, typecheck, test]
+    if: needs.policy.outputs.ci_bypass != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
       - uses: ./.github/actions/setup
       - run: pnpm audit:ci
+
+  ci-gate:
+    needs: [policy, lint, typecheck, test, build, audit]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce CI policy
+        env:
+          CI_BYPASS: ${{ needs.policy.outputs.ci_bypass }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          TYPECHECK_RESULT: ${{ needs.typecheck.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          AUDIT_RESULT: ${{ needs.audit.result }}
+        run: |
+          if [ "${CI_BYPASS}" = "true" ]; then
+            echo "CI bypass approved. Final gate passing without heavy jobs."
+            exit 0
+          fi
+
+          for result in \
+            "lint:${LINT_RESULT}" \
+            "typecheck:${TYPECHECK_RESULT}" \
+            "test:${TEST_RESULT}" \
+            "build:${BUILD_RESULT}" \
+            "audit:${AUDIT_RESULT}"; do
+            name="${result%%:*}"
+            value="${result##*:}"
+
+            if [ "${value}" != "success" ]; then
+              echo "Required job ${name} finished with status ${value}."
+              exit 1
+            fi
+          done
+
+          echo "All required CI jobs passed."
