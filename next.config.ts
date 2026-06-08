@@ -10,10 +10,11 @@ const nextConfig: NextConfig = {
 };
 
 // Bundle analyzer: enabled only when ANALYZE=true
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   // biome-ignore lint/style/noProcessEnv: bundle analyzer is opt-in via env var
   enabled: process.env.ANALYZE === "true",
+  analyzerMode: "static",
+  openAnalyzer: false
 });
 
 const wrappedConfig = withBundleAnalyzer(nextConfig);
