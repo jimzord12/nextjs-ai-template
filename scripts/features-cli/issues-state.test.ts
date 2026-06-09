@@ -79,7 +79,7 @@ describe("validateIssuesState", () => {
             status: "ready-for-agent",
             method: "tdd",
             complexity: 3,
-            filePath: ".scratch/issues-manager-cli/issues/01.md",
+            filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
           },
         ],
       }),
@@ -118,7 +118,7 @@ describe("validateIssuesState", () => {
             method: "tdd",
             complexity: 3,
             blockedBy: [7],
-            filePath: ".scratch/issues-manager-cli/issues/07.md",
+            filePath: ".scratch/features/001-issues-manager-cli/issues/07.md",
           },
         ],
       }),
@@ -138,7 +138,7 @@ describe("validateIssuesState", () => {
             method: "tdd",
             complexity: 2,
             blockedBy: [],
-            filePath: ".scratch/issues-manager-cli/issues/01.md",
+            filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
           },
           {
             id: 2,
@@ -147,7 +147,7 @@ describe("validateIssuesState", () => {
             method: "tdd",
             complexity: 3,
             blockedBy: [1, 1],
-            filePath: ".scratch/issues-manager-cli/issues/02.md",
+            filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
           },
         ],
       }),
@@ -167,7 +167,7 @@ describe("validateIssuesState", () => {
             method: "tdd",
             complexity: 2,
             blockedBy: [],
-            filePath: ".scratch/issues-manager-cli/issues/01.md",
+            filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
           },
           {
             id: 2,
@@ -176,7 +176,7 @@ describe("validateIssuesState", () => {
             method: "tdd",
             complexity: 3,
             blockedBy: [99],
-            filePath: ".scratch/issues-manager-cli/issues/02.md",
+            filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
           },
         ],
       }),
@@ -197,7 +197,7 @@ describe("getActionableIssues", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [2],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -206,7 +206,7 @@ describe("getActionableIssues", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
       ],
     });
@@ -226,7 +226,7 @@ describe("getActionableIssues", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [2],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -235,7 +235,7 @@ describe("getActionableIssues", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
       ],
     });
@@ -255,7 +255,7 @@ describe("getActionableIssues", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [2],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -264,7 +264,7 @@ describe("getActionableIssues", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
       ],
     });
@@ -283,7 +283,8 @@ describe("issue markdown regeneration and normalization", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -329,7 +330,8 @@ describe("issue markdown regeneration and normalization", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -405,7 +407,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 5,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/03.md",
+          filePath: ".scratch/features/001-test-feature/issues/03.md",
         },
         {
           id: 1,
@@ -414,7 +416,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 3,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/01.md",
+          filePath: ".scratch/features/001-test-feature/issues/01.md",
         },
         {
           id: 2,
@@ -423,7 +425,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 3,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/02.md",
+          filePath: ".scratch/features/001-test-feature/issues/02.md",
         },
       ],
     };
@@ -454,7 +456,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/01.md",
+          filePath: ".scratch/features/001-test-feature/issues/01.md",
         },
         {
           id: 2,
@@ -463,7 +465,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/02.md",
+          filePath: ".scratch/features/001-test-feature/issues/02.md",
         },
       ],
     };
@@ -482,7 +484,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [2],
-          filePath: ".scratch/test-feature/issues/01.md",
+          filePath: ".scratch/features/001-test-feature/issues/01.md",
         },
         {
           id: 2,
@@ -491,7 +493,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/02.md",
+          filePath: ".scratch/features/001-test-feature/issues/02.md",
         },
       ],
     };
@@ -510,7 +512,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/01.md",
+          filePath: ".scratch/features/001-test-feature/issues/01.md",
         },
         {
           id: 2,
@@ -519,7 +521,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/02.md",
+          filePath: ".scratch/features/001-test-feature/issues/02.md",
         },
         {
           id: 3,
@@ -528,7 +530,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [1],
-          filePath: ".scratch/test-feature/issues/03.md",
+          filePath: ".scratch/features/001-test-feature/issues/03.md",
         },
         {
           id: 4,
@@ -537,7 +539,7 @@ describe("selectNextIssue", () => {
           method: "tdd",
           complexity: 5,
           blockedBy: [],
-          filePath: ".scratch/test-feature/issues/04.md",
+          filePath: ".scratch/features/001-test-feature/issues/04.md",
         },
       ],
     };
@@ -616,7 +618,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -671,7 +674,8 @@ describe("updateIssueStatus", () => {
           join(
             workspacePath,
             ".scratch",
-            "issues-manager-cli",
+            "features",
+            "001-issues-manager-cli",
             "issues-status.json",
           ),
           "utf8",
@@ -700,7 +704,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -749,7 +754,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -815,7 +821,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -861,7 +868,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -906,7 +914,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -957,7 +966,8 @@ describe("updateIssueStatus", () => {
           join(
             workspacePath,
             ".scratch",
-            "issues-manager-cli",
+            "features",
+            "001-issues-manager-cli",
             "issues-status.json",
           ),
           "utf8",
@@ -980,7 +990,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -1069,7 +1080,8 @@ describe("updateIssueStatus", () => {
       const issuesDir = join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
       );
       await mkdir(issuesDir, { recursive: true });
@@ -1134,7 +1146,8 @@ describe("updateIssueStatus", () => {
           join(
             workspacePath,
             ".scratch",
-            "issues-manager-cli",
+            "features",
+            "001-issues-manager-cli",
             "issues-status.json",
           ),
           "utf8",

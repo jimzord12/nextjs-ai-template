@@ -2,7 +2,7 @@
   "featureId": 1,
   "featureSlug": "production-template-baseline",
   "featureStatus": "in-progress",
-  "lastUpdated": "2026-06-07T18:38:28.646Z",
+  "lastUpdated": "2026-06-09T12:32:14.852Z",
   "issues": [
     {
       "id": 1,
@@ -11,7 +11,7 @@
       "method": "chore",
       "complexity": 1,
       "blockedBy": [],
-      "filePath": ".scratch/production-template-baseline/issues/01-fix-configuration-aliases.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/01-fix-configuration-aliases.md"
     },
     {
       "id": 2,
@@ -20,7 +20,7 @@
       "method": "chore",
       "complexity": 2,
       "blockedBy": [],
-      "filePath": ".scratch/production-template-baseline/issues/02-version-pinning-audit.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/02-version-pinning-audit.md"
     },
     {
       "id": 3,
@@ -29,7 +29,7 @@
       "method": "scaffold",
       "complexity": 3,
       "blockedBy": [1],
-      "filePath": ".scratch/production-template-baseline/issues/03-i18n-routing-skeleton.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/03-i18n-routing-skeleton.md"
     },
     {
       "id": 4,
@@ -38,7 +38,7 @@
       "method": "tdd",
       "complexity": 4,
       "blockedBy": [3],
-      "filePath": ".scratch/production-template-baseline/issues/04-local-cms-foundation.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/04-local-cms-foundation.md"
     },
     {
       "id": 5,
@@ -47,7 +47,7 @@
       "method": "tdd",
       "complexity": 3,
       "blockedBy": [3],
-      "filePath": ".scratch/production-template-baseline/issues/05-contact-form.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/05-contact-form.md"
     },
     {
       "id": 6,
@@ -56,7 +56,7 @@
       "method": "scaffold",
       "complexity": 3,
       "blockedBy": [4],
-      "filePath": ".scratch/production-template-baseline/issues/06-hotel-homepage.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/06-hotel-homepage.md"
     },
     {
       "id": 7,
@@ -65,7 +65,7 @@
       "method": "scaffold",
       "complexity": 3,
       "blockedBy": [4],
-      "filePath": ".scratch/production-template-baseline/issues/07-hotel-rooms.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/07-hotel-rooms.md"
     },
     {
       "id": 8,
@@ -74,7 +74,7 @@
       "method": "scaffold",
       "complexity": 2,
       "blockedBy": [6, 7],
-      "filePath": ".scratch/production-template-baseline/issues/08-seo-routes.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/08-seo-routes.md"
     },
     {
       "id": 9,
@@ -83,7 +83,7 @@
       "method": "chore",
       "complexity": 2,
       "blockedBy": [2],
-      "filePath": ".scratch/production-template-baseline/issues/09-ci-pipeline.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/09-ci-pipeline.md"
     },
     {
       "id": 10,
@@ -92,7 +92,7 @@
       "method": "chore",
       "complexity": 2,
       "blockedBy": [6],
-      "filePath": ".scratch/production-template-baseline/issues/10-storybook.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/10-storybook.md"
     },
     {
       "id": 11,
@@ -101,7 +101,7 @@
       "method": "scaffold",
       "complexity": 3,
       "blockedBy": [6, 7],
-      "filePath": ".scratch/production-template-baseline/issues/11-playwright-e2e.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/11-playwright-e2e.md"
     },
     {
       "id": 12,
@@ -110,7 +110,7 @@
       "method": "chore",
       "complexity": 2,
       "blockedBy": [2],
-      "filePath": ".scratch/production-template-baseline/issues/12-security-bundle.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/12-security-bundle.md"
     },
     {
       "id": 13,
@@ -119,7 +119,7 @@
       "method": "scaffold",
       "complexity": 4,
       "blockedBy": [11],
-      "filePath": ".scratch/production-template-baseline/issues/13-performance-accessibility.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/13-performance-accessibility.md"
     },
     {
       "id": 14,
@@ -128,7 +128,7 @@
       "method": "chore",
       "complexity": 2,
       "blockedBy": [8, 11],
-      "filePath": ".scratch/production-template-baseline/issues/14-seo-qa.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/14-seo-qa.md"
     },
     {
       "id": 15,
@@ -137,7 +137,7 @@
       "method": "scaffold",
       "complexity": 3,
       "blockedBy": [6, 7],
-      "filePath": ".scratch/production-template-baseline/issues/15-reset-script.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/15-reset-script.md"
     },
     {
       "id": 16,
@@ -146,7 +146,7 @@
       "method": "chore",
       "complexity": 4,
       "blockedBy": [13],
-      "filePath": ".scratch/production-template-baseline/issues/16-cross-browser-reporting.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/16-cross-browser-reporting.md"
     },
     {
       "id": 17,
@@ -155,7 +155,7 @@
       "method": "chore",
       "complexity": 3,
       "blockedBy": [16],
-      "filePath": ".scratch/production-template-baseline/issues/17-documentation.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/17-documentation.md"
     }
   ]
 }

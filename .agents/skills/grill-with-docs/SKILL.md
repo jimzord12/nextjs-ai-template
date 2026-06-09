@@ -3,6 +3,44 @@ name: grill-with-docs
 description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
 ---
 
+## Pipeline Integration
+
+When invoked in the pipeline context (e.g. "grill this brief"), the skill operates on a feature directory under `.scratch/features/`.
+
+### Input
+
+1. Determine the active feature by running `pnpm features-cli get-feature`. This returns the feature slug (e.g. `001-my-feature`).
+2. Read the brief from `.scratch/features/<slug>/BRIEF.md`. The brief is the primary input — the grilling session stress-tests it.
+
+### Output
+
+- Write the session state to `.scratch/features/<slug>/GRILL_SESSION.md` using the template at `docs/templates/grilling/GRILLING-SESSION-STATE.template.md`.
+- For each branch that receives a detailed response, create a separate file using `docs/templates/grilling/GRILLING-SESSION-RESPONSE.template.md` and link it from the corresponding node in `GRILL_SESSION.md`.
+
+### Template usage
+
+- **State file** (`GRILL_SESSION.md`): Maintains the full decision tree, constraints, open leaves, and status of every node. Created on the first question, updated after every resolved decision — never batch updates.
+- **Response files**: One per resolved branch. Linked from the node's `Answer` field as `[explanation](./grill-responses/N<N>-response.md)`. Store these in `.scratch/features/<slug>/grill-responses/`.
+
+### Update cadence
+
+Update `GRILL_SESSION.md` on **every** resolved decision. Do not batch. Each resolution writes:
+- The chosen answer in the node.
+- Any new child branches opened by that answer.
+- The `Open Leaves` section pruned accordingly.
+
+### Done condition
+
+The session is **done** when the `Open Leaves` section is empty — every leaf of the decision tree has been resolved. At that point:
+- Confirm to the user that the grilling session is complete.
+- State that the session is ready for `to-prd`.
+- The `GRILL_SESSION.md` file serves as the handoff artifact for the next pipeline stage.
+
+### Non-pipeline usage
+
+When invoked outside the pipeline (no active feature, or user starts a standalone grilling session), all pipeline integration is skipped. The skill falls back to its original behavior: inline updates to `CONTEXT.md` glossary and ADRs as described below.
+
+
 <what-to-do>
 
 Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.

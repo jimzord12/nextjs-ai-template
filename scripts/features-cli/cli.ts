@@ -15,6 +15,12 @@ import {
   updateIssueBlockers,
   updateIssueStatus,
 } from "./issues-state";
+import {
+  computeMilestoneSummary,
+  formatStatusOutput,
+  type IssueBreakdownEntry,
+  scanAllFeatures,
+} from "./status-scanner";
 
 export type CliResult = {
   exitCode: number;
@@ -31,18 +37,12 @@ export async function runIssuesManagerCli(
       const featureFlagIndex = args.indexOf("--feature");
       const actionableOnly = args.includes("--actionable");
       const state = await readFeaturesState(options.cwd);
-      const featureSlug = resolveFeatureForIssueRead(
+      const feature = resolveFeatureForIssueRead(
         state,
         featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
-      ).slug;
+      );
 
-      if (!featureSlug) {
-        throw new FeatureStateError(
-          "Usage: list-issues [--feature <slug>] [--actionable]",
-        );
-      }
-
-      const issuesState = await readIssuesState(options.cwd, featureSlug);
+      const issuesState = await readIssuesState(options.cwd, feature);
       const issues = actionableOnly
         ? getActionableIssues(issuesState)
         : issuesState.issues;
@@ -83,19 +83,71 @@ export async function runIssuesManagerCli(
       };
     }
 
+    if (args[0] === "status") {
+      const state = await readFeaturesState(options.cwd);
+
+      if (state.features.length === 0) {
+        return {
+          exitCode: 0,
+          stderr: "",
+          stdout: "No features registered.",
+        };
+      }
+
+      const artifacts = await scanAllFeatures(options.cwd, state);
+      const summary = computeMilestoneSummary(state.features);
+
+      // Build issue breakdowns for in-progress features
+      const issueBreakdowns = new Map<number, IssueBreakdownEntry[]>();
+      for (const feature of state.features) {
+        if (feature.status !== "in-progress") continue;
+        try {
+          const issuesState = await readIssuesState(options.cwd, feature);
+          const entries: IssueBreakdownEntry[] = issuesState.issues.map(
+            (issue) => ({
+              id: issue.id,
+              title: issue.title,
+              status: issue.status,
+            }),
+          );
+          issueBreakdowns.set(feature.id, entries);
+        } catch {
+          // No issues-status.json or malformed — treat as no issues
+          issueBreakdowns.set(feature.id, []);
+        }
+      }
+
+      const output = formatStatusOutput(
+        summary,
+        artifacts,
+        state.features,
+        issueBreakdowns,
+      );
+
+      return {
+        exitCode: 0,
+        stderr: output.stderr,
+        stdout: output.stdout,
+      };
+    }
+
     if (args[0] === "update-feature") {
       const slug = args[1];
       const statusFlagIndex = args.indexOf("--status");
       const status =
         statusFlagIndex >= 0 ? args[statusFlagIndex + 1] : undefined;
+      const milestoneFlagIndex = args.indexOf("--milestone");
+      const milestoneRaw =
+        milestoneFlagIndex >= 0 ? args[milestoneFlagIndex + 1] : undefined;
 
-      if (!slug || !status) {
+      if (!slug || (!status && !milestoneRaw)) {
         throw new FeatureStateError(
-          "Usage: update-feature <slug> --status <todo|in-progress|archived>",
+          "Usage: update-feature <slug> --status <todo|in-progress|archived> [--milestone <number>]",
         );
       }
 
       if (
+        status !== undefined &&
         !FEATURE_STATUSES.includes(status as (typeof FEATURE_STATUSES)[number])
       ) {
         throw new FeatureStateError(
@@ -103,21 +155,62 @@ export async function runIssuesManagerCli(
         );
       }
 
+      let milestone: number | undefined;
+
+      if (milestoneRaw !== undefined) {
+        const parsed = Number(milestoneRaw);
+
+        if (!Number.isInteger(parsed) || parsed <= 0) {
+          throw new FeatureStateError(
+            `Invalid milestone "${milestoneRaw}". Expected a positive integer.`,
+          );
+        }
+
+        milestone = parsed;
+      }
+
+      // Resolve effective status: use --status if provided, otherwise keep current
+      let effectiveStatus: (typeof FEATURE_STATUSES)[number];
+
+      if (status !== undefined) {
+        effectiveStatus = status as (typeof FEATURE_STATUSES)[number];
+      } else {
+        const currentState = await readFeaturesState(options.cwd);
+        const currentFeature = currentState.features.find(
+          (entry) => entry.slug === slug,
+        );
+
+        if (!currentFeature) {
+          throw new FeatureStateError(
+            `Unknown feature "${slug}". Choose an existing feature slug from .scratch/features-status.json.`,
+          );
+        }
+
+        effectiveStatus = currentFeature.status;
+      }
+
       const feature = await updateFeatureStatus({
         cwd: options.cwd,
         slug,
-        status: status as (typeof FEATURE_STATUSES)[number],
+        status: effectiveStatus,
+        milestone,
       });
+
+      const lines = [
+        "Updated feature",
+        `id: ${feature.id}`,
+        `slug: ${feature.slug}`,
+        `status: ${feature.status}`,
+      ];
+
+      if (feature.milestone !== undefined) {
+        lines.push(`milestone: ${feature.milestone}`);
+      }
 
       return {
         exitCode: 0,
         stderr: "",
-        stdout: [
-          "Updated feature",
-          `id: ${feature.id}`,
-          `slug: ${feature.slug}`,
-          `status: ${feature.status}`,
-        ].join("\n"),
+        stdout: lines.join("\n"),
       };
     }
 
@@ -183,7 +276,7 @@ export async function runIssuesManagerCli(
         featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
       );
 
-      const issuesState = await readIssuesState(options.cwd, feature.slug);
+      const issuesState = await readIssuesState(options.cwd, feature);
       const result = selectNextIssue(issuesState);
 
       if (result.kind === "winner") {
@@ -273,7 +366,7 @@ export async function runIssuesManagerCli(
     return {
       exitCode: 1,
       stderr:
-        "Unknown command. Supported commands: list-issues, get-issue, get-feature, update-feature, update-blockers, update-status.",
+        "Unknown command. Supported commands: status, list-issues, get-issue, get-feature, update-feature, update-blockers, update-status.",
       stdout: "",
     };
   } catch (error) {

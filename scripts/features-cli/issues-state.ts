@@ -34,12 +34,25 @@ export class IssueStateError extends Error {
   }
 }
 
-function getIssuesStatusPath(cwd: string, featureSlug: string) {
-  return join(cwd, ".scratch", featureSlug, "issues-status.json");
+function formatFeatureDir(feature: { id: number; slug: string }): string {
+  return `${String(feature.id).padStart(3, "0")}-${feature.slug}`;
 }
 
-function getIssueFilesDir(cwd: string, featureSlug: string) {
-  return join(cwd, ".scratch", featureSlug, "issues");
+function getIssuesStatusPath(
+  cwd: string,
+  feature: { id: number; slug: string },
+) {
+  return join(
+    cwd,
+    ".scratch",
+    "features",
+    formatFeatureDir(feature),
+    "issues-status.json",
+  );
+}
+
+function getIssueFilesDir(cwd: string, feature: { id: number; slug: string }) {
+  return join(cwd, ".scratch", "features", formatFeatureDir(feature), "issues");
 }
 
 export function resolveFeatureForIssueRead(
@@ -65,16 +78,16 @@ export function resolveFeatureForIssueRead(
 
 export async function readIssuesState(
   cwd: string,
-  featureSlug: string,
+  feature: { id: number; slug: string },
 ): Promise<IssuesState> {
-  const filePath = getIssuesStatusPath(cwd, featureSlug);
+  const filePath = getIssuesStatusPath(cwd, feature);
   let raw: string;
 
   try {
     raw = await readFile(filePath, "utf8");
   } catch {
     throw new IssueStateError(
-      `Missing derived issue state at ${filePath}. Regenerate .scratch/${featureSlug}/issues-status.json before listing issues.`,
+      `Missing derived issue state at ${filePath}. Regenerate it before listing issues.`,
     );
   }
 
@@ -84,7 +97,7 @@ export async function readIssuesState(
     parsed = JSON.parse(raw);
   } catch {
     throw new IssueStateError(
-      `Malformed derived issue state at ${filePath}. Expected valid JSON in .scratch/${featureSlug}/issues-status.json.`,
+      `Malformed derived issue state at ${filePath}. Expected valid JSON.`,
     );
   }
 
@@ -259,14 +272,14 @@ export async function regenerateIssuesStateFromIssueFiles(options: {
   cwd: string;
   feature: FeatureRecord;
 }): Promise<IssuesState> {
-  const issuesDir = getIssueFilesDir(options.cwd, options.feature.slug);
+  const issuesDir = getIssueFilesDir(options.cwd, options.feature);
   let entries: string[];
 
   try {
     entries = await readdir(issuesDir);
   } catch {
     throw new IssueStateError(
-      `Missing issues directory at ${issuesDir}. Create .scratch/${options.feature.slug}/issues before regenerating issue state.`,
+      `Missing issues directory at ${issuesDir}. Create issues directory before regenerating issue state.`,
     );
   }
 
@@ -284,6 +297,7 @@ export async function regenerateIssuesStateFromIssueFiles(options: {
       return parseIssueMarkdown({
         content,
         sourceLabel: filePath,
+        featureId: options.feature.id,
         featureSlug: options.feature.slug,
         fileName: entry,
       });
@@ -302,11 +316,11 @@ export async function regenerateIssuesStateFromIssueFiles(options: {
 
   const validated = validateIssuesState(
     state,
-    `.scratch/${options.feature.slug}/issues-status.json`,
+    getIssuesStatusPath(options.cwd, options.feature),
   );
 
   await writeFile(
-    getIssuesStatusPath(options.cwd, options.feature.slug),
+    getIssuesStatusPath(options.cwd, options.feature),
     `${JSON.stringify(validated, null, 2)}\n`,
     "utf8",
   );
@@ -320,14 +334,14 @@ export async function updateIssueBlockers(options: {
   issueId: number;
   blockedBy: number[];
 }) {
-  const issuesDir = getIssueFilesDir(options.cwd, options.feature.slug);
+  const issuesDir = getIssueFilesDir(options.cwd, options.feature);
   let entries: string[];
 
   try {
     entries = await readdir(issuesDir);
   } catch {
     throw new IssueStateError(
-      `Missing issues directory at ${issuesDir}. Create .scratch/${options.feature.slug}/issues before updating blockers.`,
+      `Missing issues directory at ${issuesDir}. Create issues directory before updating blockers.`,
     );
   }
 
@@ -337,7 +351,7 @@ export async function updateIssueBlockers(options: {
 
   if (!targetEntry) {
     throw new IssueStateError(
-      `Unknown issue ${options.issueId} in feature "${options.feature.slug}". Choose an existing issue file in .scratch/${options.feature.slug}/issues.`,
+      `Unknown issue ${options.issueId} in feature "${options.feature.slug}". Choose an existing issue file.`,
     );
   }
 
@@ -358,7 +372,7 @@ export async function updateIssueBlockers(options: {
     featureSlug: options.feature.slug,
     blockedBy: [...options.blockedBy],
     issuesState: state,
-    issuePath: `.scratch/${options.feature.slug}/issues/${targetEntry}`,
+    issuePath: `issues/${targetEntry}`,
   };
 }
 
@@ -393,14 +407,14 @@ export async function updateIssueStatus(options: {
   issuePath: string;
   issuesState: IssuesState;
 }> {
-  const issuesDir = getIssueFilesDir(options.cwd, options.feature.slug);
+  const issuesDir = getIssueFilesDir(options.cwd, options.feature);
   let entries: string[];
 
   try {
     entries = await readdir(issuesDir);
   } catch {
     throw new IssueStateError(
-      `Missing issues directory at ${issuesDir}. Create .scratch/${options.feature.slug}/issues before updating status.`,
+      `Missing issues directory at ${issuesDir}. Create issues directory before updating status.`,
     );
   }
 
@@ -410,7 +424,7 @@ export async function updateIssueStatus(options: {
 
   if (!targetEntry) {
     throw new IssueStateError(
-      `Unknown issue ${options.issueId} in feature "${options.feature.slug}". Choose an existing issue file in .scratch/${options.feature.slug}/issues.`,
+      `Unknown issue ${options.issueId} in feature "${options.feature.slug}". Choose an existing issue file.`,
     );
   }
 
@@ -451,7 +465,7 @@ export async function updateIssueStatus(options: {
     issueId: options.issueId,
     featureSlug: options.feature.slug,
     status: options.status,
-    issuePath: `.scratch/${options.feature.slug}/issues/${targetEntry}`,
+    issuePath: `issues/${targetEntry}`,
     issuesState: state,
   };
 }
@@ -597,6 +611,7 @@ function validateIssueBlockerGraph(issues: IssueRecord[], sourceLabel: string) {
 function parseIssueMarkdown(options: {
   content: string;
   sourceLabel: string;
+  featureId: number;
   featureSlug: string;
   fileName: string;
 }): IssueRecord {
@@ -684,7 +699,8 @@ function parseIssueMarkdown(options: {
     options.sourceLabel,
   );
 
-  const filePath = `.scratch/${options.featureSlug}/issues/${options.fileName}`;
+  const featureDir = `${String(options.featureId).padStart(3, "0")}-${options.featureSlug}`;
+  const filePath = `.scratch/features/${featureDir}/issues/${options.fileName}`;
 
   return validateIssueRecord(
     {
