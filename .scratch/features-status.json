@@ -66,13 +66,13 @@
     {
       "id": 10,
       "slug": "project-state-tracking",
-      "status": "in-progress",
-      "lastUpdated": "2026-06-09T20:35:18.779Z",
+      "status": "archived",
+      "lastUpdated": "2026-06-09T20:42:30.458Z",
       "finalStatus": null,
       "milestone": 1
     }
   ],
-  "lastUpdated": "2026-06-09T20:35:18.779Z",
+  "lastUpdated": "2026-06-09T20:42:30.458Z",
   "nextFeatureId": 11,
   "version": "1"
 }
