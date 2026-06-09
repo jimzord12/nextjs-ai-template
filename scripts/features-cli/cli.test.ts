@@ -1246,4 +1246,131 @@ describe("runIssuesManagerCli", () => {
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("Usage: update-status");
   });
+
+  // --- milestone flag tests ---
+
+  it("update-feature <slug> --milestone 1 succeeds and writes milestone", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "test-feature", status: "todo" }],
+    });
+
+    const result = await runIssuesManagerCli(
+      ["update-feature", "test-feature", "--milestone", "1"],
+      { cwd: workspacePath },
+    );
+
+    const persistedState = JSON.parse(
+      await readFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        "utf8",
+      ),
+    ) as {
+      features: Array<{ slug: string; status: string; milestone?: number }>;
+    };
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("Updated feature");
+    expect(result.stdout).toContain("milestone: 1");
+    expect(
+      persistedState.features.find((f) => f.slug === "test-feature")
+        ?.milestone,
+    ).toBe(1);
+  });
+
+  it("update-feature <slug> --milestone 0 fails with validation error", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "test-feature", status: "todo" }],
+    });
+
+    const result = await runIssuesManagerCli(
+      ["update-feature", "test-feature", "--milestone", "0"],
+      { cwd: workspacePath },
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("milestone");
+  });
+
+  it("update-feature <slug> --milestone abc fails with validation error", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "test-feature", status: "todo" }],
+    });
+
+    const result = await runIssuesManagerCli(
+      ["update-feature", "test-feature", "--milestone", "abc"],
+      { cwd: workspacePath },
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("milestone");
+  });
+
+  it("update-feature <slug> --status in-progress preserves existing milestone", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "test-feature", status: "todo", milestone: 3 },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(
+      ["update-feature", "test-feature", "--status", "in-progress"],
+      { cwd: workspacePath },
+    );
+
+    const persistedState = JSON.parse(
+      await readFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        "utf8",
+      ),
+    ) as {
+      features: Array<{ slug: string; status: string; milestone?: number }>;
+    };
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(
+      persistedState.features.find((f) => f.slug === "test-feature")
+        ?.milestone,
+    ).toBe(3);
+  });
+
+  it("update-feature <slug> --status in-progress --milestone 2 updates both", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "test-feature", status: "todo" }],
+    });
+
+    const result = await runIssuesManagerCli(
+      [
+        "update-feature",
+        "test-feature",
+        "--status",
+        "in-progress",
+        "--milestone",
+        "2",
+      ],
+      { cwd: workspacePath },
+    );
+
+    const persistedState = JSON.parse(
+      await readFile(
+        join(workspacePath, ".scratch", "features-status.json"),
+        "utf8",
+      ),
+    ) as {
+      features: Array<{ slug: string; status: string; milestone?: number }>;
+    };
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("in-progress");
+    expect(result.stdout).toContain("milestone: 2");
+    expect(
+      persistedState.features.find((f) => f.slug === "test-feature")?.status,
+    ).toBe("in-progress");
+    expect(
+      persistedState.features.find((f) => f.slug === "test-feature")
+        ?.milestone,
+    ).toBe(2);
+  });
 });

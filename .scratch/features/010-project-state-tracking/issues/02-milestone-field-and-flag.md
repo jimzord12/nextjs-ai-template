@@ -1,5 +1,5 @@
 Method: tdd
-Status: ready-for-agent
+Status: done
 Complexity: 3
 BlockedBy: 1
 
@@ -32,13 +32,15 @@ Changes:
 
 ## Acceptance criteria
 
-- [ ] `FeatureRecord` type includes optional `milestone` field
-- [ ] `validateFeatureRecord` accepts valid milestone, rejects invalid, allows missing
-- [ ] `update-feature <slug> --milestone 1` writes milestone to `features-status.json`
-- [ ] `update-feature <slug> --milestone 0` fails with descriptive error
-- [ ] `update-feature <slug> --status in-progress` preserves existing milestone
-- [ ] All new tests pass
+- [x] `FeatureRecord` type includes optional `milestone` field
+- [x] `validateFeatureRecord` accepts valid milestone, rejects invalid, allows missing
+- [x] `update-feature <slug> --milestone 1` writes milestone to `features-status.json`
+- [x] `update-feature <slug> --milestone 0` fails with descriptive error
+- [x] `update-feature <slug> --status in-progress` preserves existing milestone
+- [x] All new tests pass
 
 ## Blocked by
 
 - `01-rename-to-features-cli` — must use the new directory structure and CLI name
+
+

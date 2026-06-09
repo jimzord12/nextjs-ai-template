@@ -82,14 +82,18 @@ export async function runIssuesManagerCli(
       const statusFlagIndex = args.indexOf("--status");
       const status =
         statusFlagIndex >= 0 ? args[statusFlagIndex + 1] : undefined;
+      const milestoneFlagIndex = args.indexOf("--milestone");
+      const milestoneRaw =
+        milestoneFlagIndex >= 0 ? args[milestoneFlagIndex + 1] : undefined;
 
-      if (!slug || !status) {
+      if (!slug || (!status && !milestoneRaw)) {
         throw new FeatureStateError(
-          "Usage: update-feature <slug> --status <todo|in-progress|archived>",
+          "Usage: update-feature <slug> --status <todo|in-progress|archived> [--milestone <number>]",
         );
       }
 
       if (
+        status !== undefined &&
         !FEATURE_STATUSES.includes(status as (typeof FEATURE_STATUSES)[number])
       ) {
         throw new FeatureStateError(
@@ -97,21 +101,62 @@ export async function runIssuesManagerCli(
         );
       }
 
+      let milestone: number | undefined;
+
+      if (milestoneRaw !== undefined) {
+        const parsed = Number(milestoneRaw);
+
+        if (!Number.isInteger(parsed) || parsed <= 0) {
+          throw new FeatureStateError(
+            `Invalid milestone "${milestoneRaw}". Expected a positive integer.`,
+          );
+        }
+
+        milestone = parsed;
+      }
+
+      // Resolve effective status: use --status if provided, otherwise keep current
+      let effectiveStatus: (typeof FEATURE_STATUSES)[number];
+
+      if (status !== undefined) {
+        effectiveStatus = status as (typeof FEATURE_STATUSES)[number];
+      } else {
+        const currentState = await readFeaturesState(options.cwd);
+        const currentFeature = currentState.features.find(
+          (entry) => entry.slug === slug,
+        );
+
+        if (!currentFeature) {
+          throw new FeatureStateError(
+            `Unknown feature "${slug}". Choose an existing feature slug from .scratch/features-status.json.`,
+          );
+        }
+
+        effectiveStatus = currentFeature.status;
+      }
+
       const feature = await updateFeatureStatus({
         cwd: options.cwd,
         slug,
-        status: status as (typeof FEATURE_STATUSES)[number],
+        status: effectiveStatus,
+        milestone,
       });
+
+      const lines = [
+        "Updated feature",
+        `id: ${feature.id}`,
+        `slug: ${feature.slug}`,
+        `status: ${feature.status}`,
+      ];
+
+      if (feature.milestone !== undefined) {
+        lines.push(`milestone: ${feature.milestone}`);
+      }
 
       return {
         exitCode: 0,
         stderr: "",
-        stdout: [
-          "Updated feature",
-          `id: ${feature.id}`,
-          `slug: ${feature.slug}`,
-          `status: ${feature.status}`,
-        ].join("\n"),
+        stdout: lines.join("\n"),
       };
     }
 

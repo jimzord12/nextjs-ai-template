@@ -11,6 +11,7 @@ export type FeatureRecord = {
   status: FeatureStatus;
   lastUpdated?: string;
   finalStatus?: "done" | "cancelled" | null;
+  milestone?: number;
 };
 
 export type FeaturesState = {
@@ -141,6 +142,16 @@ function validateFeatureRecord(
     );
   }
 
+  if (
+    candidate.milestone !== undefined &&
+    (!Number.isInteger(candidate.milestone) ||
+      Number(candidate.milestone) <= 0)
+  ) {
+    throw new FeatureStateError(
+      `Invalid feature ${candidate.slug} in ${sourceLabel}. milestone must be a positive integer.`,
+    );
+  }
+
   return {
     id: Number(candidate.id),
     slug: candidate.slug.trim(),
@@ -153,6 +164,10 @@ function validateFeatureRecord(
       candidate.finalStatus === undefined
         ? undefined
         : (candidate.finalStatus as FeatureRecord["finalStatus"]),
+    milestone:
+      candidate.milestone !== undefined
+        ? Number(candidate.milestone)
+        : undefined,
   };
 }
 
@@ -182,9 +197,12 @@ export async function updateFeatureStatus(options: {
   cwd: string;
   slug: string;
   status: FeatureStatus;
+  milestone?: number;
 }) {
   const state = await readFeaturesState(options.cwd);
-  const feature = state.features.find((entry) => entry.slug === options.slug);
+  const feature = state.features.find(
+    (entry) => entry.slug === options.slug,
+  );
 
   if (!feature) {
     throw new FeatureStateError(
@@ -194,7 +212,8 @@ export async function updateFeatureStatus(options: {
 
   if (options.status === "in-progress") {
     const otherActiveFeature = state.features.find(
-      (entry) => entry.slug !== options.slug && entry.status === "in-progress",
+      (entry) =>
+        entry.slug !== options.slug && entry.status === "in-progress",
     );
 
     if (otherActiveFeature) {
@@ -203,6 +222,11 @@ export async function updateFeatureStatus(options: {
       );
     }
   }
+
+  const resolvedMilestone =
+    options.milestone !== undefined
+      ? options.milestone
+      : feature.milestone;
 
   const timestamp = new Date().toISOString();
   const nextState: FeaturesState = {
@@ -214,6 +238,9 @@ export async function updateFeatureStatus(options: {
             ...entry,
             status: options.status,
             lastUpdated: timestamp,
+            ...(resolvedMilestone !== undefined
+              ? { milestone: resolvedMilestone }
+              : {}),
           }
         : entry,
     ),
