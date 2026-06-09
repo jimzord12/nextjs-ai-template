@@ -1578,4 +1578,226 @@ describe("status command", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("- completed issues: —");
   });
+
+  // --- Issue breakdown tests ---
+
+  it("shows issue breakdown for in-progress feature with issues", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "test-feature", status: "in-progress", milestone: 1 },
+      ],
+    });
+
+    const featureDir = join(
+      workspacePath,
+      ".scratch",
+      "features",
+      "001-test-feature",
+    );
+
+    await mkdir(join(featureDir, "issues"), { recursive: true });
+    await writeFile(join(featureDir, "issues", "01-some-issue.md"), "", "utf8");
+    await writeFile(
+      join(featureDir, "issues-status.json"),
+      JSON.stringify({
+        featureId: 1,
+        featureSlug: "test-feature",
+        featureStatus: "in-progress",
+        issues: [
+          {
+            id: 1,
+            title: "Fix config aliases",
+            status: "done",
+            method: "chore",
+            complexity: 2,
+            blockedBy: [],
+            filePath: ".scratch/features/001-test-feature/issues/01.md",
+          },
+          {
+            id: 2,
+            title: "Version pinning audit",
+            status: "done",
+            method: "tdd",
+            complexity: 3,
+            blockedBy: [],
+            filePath: ".scratch/features/001-test-feature/issues/02.md",
+          },
+          {
+            id: 4,
+            title: "Local CMS foundation",
+            status: "ready-for-agent",
+            method: "tdd",
+            complexity: 4,
+            blockedBy: [2],
+            filePath: ".scratch/features/001-test-feature/issues/04.md",
+          },
+        ],
+      }),
+      "utf8",
+    );
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("  - Issues:");
+    expect(result.stdout).toContain("    - #01 Fix config aliases  [done]");
+    expect(result.stdout).toContain("    - #02 Version pinning audit  [done]");
+    expect(result.stdout).toContain(
+      "    - #04 Local CMS foundation  [ready-for-agent]",
+    );
+  });
+
+  it("shows Issues: none for in-progress feature with no issues-status.json", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        {
+          id: 1,
+          slug: "no-issues-feature",
+          status: "in-progress",
+          milestone: 1,
+        },
+      ],
+    });
+
+    // No issues dir, no issues-status.json — just the feature registered
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("  - Issues: none");
+  });
+
+  it("shows Issues: none for in-progress feature with empty issues array", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "empty-issues", status: "in-progress", milestone: 1 },
+      ],
+    });
+
+    const featureDir = join(
+      workspacePath,
+      ".scratch",
+      "features",
+      "001-empty-issues",
+    );
+
+    await mkdir(join(featureDir, "issues"), { recursive: true });
+    await writeFile(join(featureDir, "issues", "01-issue.md"), "", "utf8");
+    await writeFile(
+      join(featureDir, "issues-status.json"),
+      JSON.stringify({
+        featureId: 1,
+        featureSlug: "empty-issues",
+        featureStatus: "in-progress",
+        issues: [],
+      }),
+      "utf8",
+    );
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("  - Issues: none");
+  });
+
+  it("does not show issue breakdown for todo feature with issues", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "todo-feature", status: "todo", milestone: 1 }],
+    });
+
+    const featureDir = join(
+      workspacePath,
+      ".scratch",
+      "features",
+      "001-todo-feature",
+    );
+
+    await mkdir(join(featureDir, "issues"), { recursive: true });
+    await writeFile(join(featureDir, "issues", "01-some-issue.md"), "", "utf8");
+    await writeFile(
+      join(featureDir, "issues-status.json"),
+      JSON.stringify({
+        featureId: 1,
+        featureSlug: "todo-feature",
+        featureStatus: "todo",
+        issues: [
+          {
+            id: 1,
+            title: "Some issue",
+            status: "ready-for-agent",
+            method: "tdd",
+            complexity: 2,
+            blockedBy: [],
+            filePath: ".scratch/features/001-todo-feature/issues/01.md",
+          },
+        ],
+      }),
+      "utf8",
+    );
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).not.toContain("  - Issues:");
+    expect(result.stdout).not.toContain("    - #01");
+  });
+
+  it("does not show issue breakdown for archived feature with issues", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        {
+          id: 1,
+          slug: "archived-feature",
+          status: "archived",
+          finalStatus: "done",
+          milestone: 1,
+        },
+      ],
+    });
+
+    const featureDir = join(
+      workspacePath,
+      ".scratch",
+      "features",
+      "001-archived-feature",
+    );
+
+    await mkdir(join(featureDir, "issues"), { recursive: true });
+    await writeFile(join(featureDir, "issues", "01-issue.md"), "", "utf8");
+    await writeFile(
+      join(featureDir, "issues-status.json"),
+      JSON.stringify({
+        featureId: 1,
+        featureSlug: "archived-feature",
+        featureStatus: "archived",
+        issues: [
+          {
+            id: 1,
+            title: "Done issue",
+            status: "done",
+            method: "tdd",
+            complexity: 1,
+            blockedBy: [],
+            filePath: ".scratch/features/001-archived-feature/issues/01.md",
+          },
+        ],
+      }),
+      "utf8",
+    );
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).not.toContain("  - Issues:");
+    expect(result.stdout).not.toContain("    - #01");
+  });
 });

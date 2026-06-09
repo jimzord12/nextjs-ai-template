@@ -2,6 +2,12 @@ import { readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
 import type { FeatureRecord, FeaturesState } from "./features-state";
 
+export type IssueBreakdownEntry = {
+  id: number;
+  title: string;
+  status: string;
+};
+
 export type FeatureArtifacts = {
   hasGrillSession: boolean;
   hasBrief: boolean;
@@ -210,6 +216,7 @@ export function formatStatusOutput(
   summary: MilestoneSummary,
   artifacts: Map<number, FeatureArtifacts>,
   features: FeatureRecord[],
+  issueBreakdowns: Map<number, IssueBreakdownEntry[]> = new Map(),
 ): StatusOutput {
   const stdoutLines: string[] = [];
   const stderrLines: string[] = [];
@@ -281,6 +288,23 @@ export function formatStatusOutput(
       `  - AI Review Passed: ${artifact.aiReviewPassed}`,
       `  - Human Review Passed: ${artifact.humanReviewPassed}`,
     );
+
+    // Issue breakdown — only for in-progress features
+    if (feature.status === "in-progress") {
+      const entries = issueBreakdowns.get(feature.id);
+      if (entries && entries.length > 0) {
+        const sorted = [...entries].sort((a, b) => a.id - b.id);
+        stdoutLines.push("  - Issues:");
+        for (const entry of sorted) {
+          const paddedId = String(entry.id).padStart(2, "0");
+          stdoutLines.push(
+            `    - #${paddedId} ${entry.title}  [${entry.status}]`,
+          );
+        }
+      } else {
+        stdoutLines.push("  - Issues: none");
+      }
+    }
   }
 
   return {

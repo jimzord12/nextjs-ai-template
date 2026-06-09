@@ -1,5 +1,5 @@
 Method: tdd
-Status: ready-for-agent
+Status: done
 Complexity: 2
 BlockedBy: 3
 
@@ -52,12 +52,14 @@ Extend the `describe("status command")` block in `cli.test.ts`:
 
 ## Acceptance criteria
 
-- [ ] In-progress features show issue breakdown with `#<id> <title> [<status>]` format
-- [ ] Issues listed in ascending ID order
-- [ ] Todo and archived features show no issue breakdown
-- [ ] In-progress feature with no issues shows `Issues: none`
-- [ ] All tests pass
+- [x] In-progress features show issue breakdown with `#<id> <title> [<status>]` format
+- [x] Issues listed in ascending ID order
+- [x] Todo and archived features show no issue breakdown
+- [x] In-progress feature with no issues shows `Issues: none`
+- [x] All tests pass
 
 ## Blocked by
 
 - `03-status-command-milestones-and-pipeline` — builds on top of the status command
+
+

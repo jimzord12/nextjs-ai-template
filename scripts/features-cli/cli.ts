@@ -18,6 +18,7 @@ import {
 import {
   computeMilestoneSummary,
   formatStatusOutput,
+  type IssueBreakdownEntry,
   scanAllFeatures,
 } from "./status-scanner";
 
@@ -95,7 +96,33 @@ export async function runIssuesManagerCli(
 
       const artifacts = await scanAllFeatures(options.cwd, state);
       const summary = computeMilestoneSummary(state.features);
-      const output = formatStatusOutput(summary, artifacts, state.features);
+
+      // Build issue breakdowns for in-progress features
+      const issueBreakdowns = new Map<number, IssueBreakdownEntry[]>();
+      for (const feature of state.features) {
+        if (feature.status !== "in-progress") continue;
+        try {
+          const issuesState = await readIssuesState(options.cwd, feature);
+          const entries: IssueBreakdownEntry[] = issuesState.issues.map(
+            (issue) => ({
+              id: issue.id,
+              title: issue.title,
+              status: issue.status,
+            }),
+          );
+          issueBreakdowns.set(feature.id, entries);
+        } catch {
+          // No issues-status.json or malformed — treat as no issues
+          issueBreakdowns.set(feature.id, []);
+        }
+      }
+
+      const output = formatStatusOutput(
+        summary,
+        artifacts,
+        state.features,
+        issueBreakdowns,
+      );
 
       return {
         exitCode: 0,

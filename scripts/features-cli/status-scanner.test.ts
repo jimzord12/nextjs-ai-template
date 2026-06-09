@@ -8,6 +8,7 @@ import type { FeatureRecord } from "./features-state";
 import {
   computeMilestoneSummary,
   formatStatusOutput,
+  type IssueBreakdownEntry,
   scanFeatureArtifacts,
 } from "./status-scanner";
 
@@ -314,6 +315,7 @@ describe("formatStatusOutput", () => {
       { groups: [], unassigned: [], hasMultipleActive: false },
       new Map(),
       [],
+      new Map(),
     );
 
     expect(result.stdout).toBe("No features registered.");
@@ -333,17 +335,22 @@ describe("formatStatusOutput", () => {
       }),
     ]);
 
-    const result = formatStatusOutput(summary, new Map(), [
-      makeFeature({ id: 1, slug: "a", milestone: 1, status: "in-progress" }),
-      makeFeature({ id: 2, slug: "b", milestone: 1, status: "todo" }),
-      makeFeature({
-        id: 3,
-        slug: "c",
-        milestone: 1,
-        status: "archived",
-        finalStatus: "done",
-      }),
-    ]);
+    const result = formatStatusOutput(
+      summary,
+      new Map(),
+      [
+        makeFeature({ id: 1, slug: "a", milestone: 1, status: "in-progress" }),
+        makeFeature({ id: 2, slug: "b", milestone: 1, status: "todo" }),
+        makeFeature({
+          id: 3,
+          slug: "c",
+          milestone: 1,
+          status: "archived",
+          finalStatus: "done",
+        }),
+      ],
+      new Map(),
+    );
 
     expect(result.stdout).toContain("=== Milestones ===");
     expect(result.stdout).toContain(
@@ -371,6 +378,7 @@ describe("formatStatusOutput", () => {
       { groups: [], unassigned: [feature], hasMultipleActive: false },
       artifacts,
       [feature],
+      new Map(),
     );
 
     expect(result.stdout).toContain("> Feature: 001-test-feature (todo)");
@@ -390,6 +398,7 @@ describe("formatStatusOutput", () => {
       { groups: [], unassigned: [feature], hasMultipleActive: false },
       new Map(),
       [feature],
+      new Map(),
     );
 
     expect(result.stderr).toContain(
@@ -403,6 +412,7 @@ describe("formatStatusOutput", () => {
       { groups: [], unassigned: [feature], hasMultipleActive: true },
       new Map(),
       [feature],
+      new Map(),
     );
 
     expect(result.stderr).toContain(
@@ -430,6 +440,7 @@ describe("formatStatusOutput", () => {
       { groups: [], unassigned: [feature], hasMultipleActive: false },
       artifacts,
       [feature],
+      new Map(),
     );
 
     expect(result.stdout).toContain("- completed issues: —");
@@ -455,8 +466,269 @@ describe("formatStatusOutput", () => {
       { groups: [], unassigned: [feature], hasMultipleActive: false },
       artifacts,
       [feature],
+      new Map(),
     );
 
     expect(result.stdout).not.toContain("- milestone:");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Step 4: Issue breakdown in formatStatusOutput
+// ---------------------------------------------------------------------------
+
+describe("formatStatusOutput — issue breakdown", () => {
+  function makeArtifacts(
+    overrides: Partial<import("./status-scanner").FeatureArtifacts> = {},
+  ): import("./status-scanner").FeatureArtifacts {
+    return {
+      hasGrillSession: false,
+      hasBrief: false,
+      hasPrd: false,
+      hasIssues: true,
+      issueCounts: { done: 0, total: 0 },
+      aiReviewPassed: false,
+      humanReviewPassed: false,
+      ...overrides,
+    };
+  }
+
+  function makeBreakdown(
+    entries: IssueBreakdownEntry[],
+  ): Map<number, IssueBreakdownEntry[]> {
+    const map = new Map<number, IssueBreakdownEntry[]>();
+    map.set(1, entries);
+    return map;
+  }
+
+  it("shows issue breakdown for in-progress feature with issues", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "active-feature",
+      status: "in-progress",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    const issues: IssueBreakdownEntry[] = [
+      { id: 1, title: "Fix config aliases", status: "done" },
+      { id: 2, title: "Version pinning audit", status: "done" },
+      { id: 3, title: "I18n routing skeleton", status: "done" },
+      { id: 4, title: "Local CMS foundation", status: "ready-for-agent" },
+    ];
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown(issues),
+    );
+
+    expect(result.stdout).toContain("  - Issues:");
+    expect(result.stdout).toContain("    - #01 Fix config aliases  [done]");
+    expect(result.stdout).toContain("    - #02 Version pinning audit  [done]");
+    expect(result.stdout).toContain("    - #03 I18n routing skeleton  [done]");
+    expect(result.stdout).toContain(
+      "    - #04 Local CMS foundation  [ready-for-agent]",
+    );
+  });
+
+  it("shows Issues: none for in-progress feature with no issues", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "empty-active",
+      status: "in-progress",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown([]),
+    );
+
+    expect(result.stdout).toContain("  - Issues: none");
+    expect(result.stdout).not.toMatch(/ {4}- #\d+/);
+  });
+
+  it("shows Issues: none for in-progress feature with no breakdown map entry", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "no-map-entry",
+      status: "in-progress",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    // Empty map — no entry for feature id 1
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      new Map(),
+    );
+
+    expect(result.stdout).toContain("  - Issues: none");
+  });
+
+  it("does not show issue breakdown for todo feature", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "todo-feature",
+      status: "todo",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    const issues: IssueBreakdownEntry[] = [
+      { id: 1, title: "Some issue", status: "ready-for-agent" },
+    ];
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown(issues),
+    );
+
+    expect(result.stdout).not.toContain("  - Issues:");
+    expect(result.stdout).not.toContain("    - #01");
+  });
+
+  it("does not show issue breakdown for archived feature", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "archived-feature",
+      status: "archived",
+      finalStatus: "done",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    const issues: IssueBreakdownEntry[] = [
+      { id: 1, title: "Done issue", status: "done" },
+    ];
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown(issues),
+    );
+
+    expect(result.stdout).not.toContain("  - Issues:");
+    expect(result.stdout).not.toContain("    - #01");
+  });
+
+  it("lists issues in ascending ID order", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "order-test",
+      status: "in-progress",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    // Pass issues in reverse order
+    const issues: IssueBreakdownEntry[] = [
+      { id: 5, title: "Fifth issue", status: "todo" },
+      { id: 2, title: "Second issue", status: "done" },
+      { id: 10, title: "Tenth issue", status: "ready-for-agent" },
+    ];
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown(issues),
+    );
+
+    const lines = result.stdout.split("\n");
+    const issueLines = lines.filter((l) => l.includes("    - #"));
+    expect(issueLines[0]).toContain("#02");
+    expect(issueLines[1]).toContain("#05");
+    expect(issueLines[2]).toContain("#10");
+  });
+
+  it("formats issue lines as #<id> <title>  [<status>]", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "format-test",
+      status: "in-progress",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    const issues: IssueBreakdownEntry[] = [
+      { id: 1, title: "Fix config", status: "done" },
+    ];
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown(issues),
+    );
+
+    expect(result.stdout).toContain("    - #01 Fix config  [done]");
+  });
+
+  it("pads issue IDs to 2 digits", () => {
+    const feature = makeFeature({
+      id: 1,
+      slug: "pad-test",
+      status: "in-progress",
+      milestone: 1,
+    });
+    const artifacts = new Map<
+      number,
+      import("./status-scanner").FeatureArtifacts
+    >();
+    artifacts.set(1, makeArtifacts());
+
+    const issues: IssueBreakdownEntry[] = [
+      { id: 1, title: "First", status: "done" },
+      { id: 10, title: "Tenth", status: "ready-for-agent" },
+    ];
+
+    const result = formatStatusOutput(
+      { groups: [], unassigned: [feature], hasMultipleActive: false },
+      artifacts,
+      [feature],
+      makeBreakdown(issues),
+    );
+
+    expect(result.stdout).toContain("    - #01 First  [done]");
+    expect(result.stdout).toContain("    - #10 Tenth  [ready-for-agent]");
   });
 });
