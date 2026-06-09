@@ -5,40 +5,39 @@ description: Automated feature-scoped review that verifies acceptance criteria, 
 
 # Review Feature
 
-Automated first-pass review of a completed feature. Produces a numbered review report at `.scratch/features/<feature-dir>/reviews/<N>-review.md`.
+Automated first-pass review of a completed feature. Produces a numbered review report under the feature directory.
 
 Not a replacement for human review — catches integration gaps, dead code, scope misses, and test gaps before human review.
 
 ## Quick start
 
-1. Identify the feature directory from `.scratch/` or user input
+1. Identify the feature directory from `.scratch/features/` or user input (e.g., `010-project-state-tracking`)
 2. Follow the process below
 3. Write the report to `.scratch/features/<feature-dir>/reviews/<N>-review.md`
 
-## Output path
+## Output convention
 
-Reviews are stored under the feature directory:
+Review reports live alongside the feature they belong to:
 
 ```
-.scratch/features/<feature-dir>/reviews/<N>-review.md
+.scratch/features/<feature-dir>/reviews/
+├── 01-review.md
+├── 02-review.md
+└── ...
 ```
 
-- `<feature-dir>` is the feature directory name (e.g., `010-project-state-tracking`)
-- `<N>` is an auto-incrementing zero-padded number: `01`, `02`, `03`, etc.
-- To determine the next number, scan the `reviews/` directory for existing `<N>-review.md` files and increment
-
-## Template
-
-Use [`docs/templates/FEATURE_REVIEW.template.md`](docs/templates/FEATURE_REVIEW.template.md) as the report structure. Fill in all sections based on the review findings.
+- **Path**: `.scratch/features/<feature-dir>/reviews/<N>-review.md`
+- **Numbering**: Auto-incrementing two-digit (`01`, `02`, …). Scan existing `reviews/` directory to determine the next number. If no reviews exist, start at `01`.
+- **Template**: Use [`docs/templates/FEATURE_REVIEW.template.md`](../../docs/templates/FEATURE_REVIEW.template.md) as the report structure.
 
 ## Process
 
 ### 1. Gather inputs
 
 Read in parallel:
-- `.scratch/<feature-name>/brief.md` — acceptance criteria and scope
-- `.scratch/<feature-name>/` — LLD document if it exists
-- `.scratch/<feature-name>/issues/` — all closed issues
+- `.scratch/features/<feature-dir>/brief.md` — acceptance criteria and scope
+- `.scratch/features/<feature-dir>/` — LLD document if it exists
+- `.scratch/features/<feature-dir>/issues/` — all closed issues
 - Git diff for files changed since the feature started (or file list from issues)
 
 ### 2. Verify acceptance criteria
@@ -77,9 +76,8 @@ If the feature is horizontal (infrastructure):
 
 ### 6. Produce report
 
-Determine the next review number by scanning `.scratch/features/<feature-dir>/reviews/` for existing `<N>-review.md` files.
-
-Write to `.scratch/features/<feature-dir>/reviews/<N>-review.md` using the template at `docs/templates/FEATURE_REVIEW.template.md`.
+1. Scan `.scratch/features/<feature-dir>/reviews/` for existing review files to determine the next number.
+2. Write the report to `.scratch/features/<feature-dir>/reviews/<N>-review.md` using the template at `docs/templates/FEATURE_REVIEW.template.md`.
 
 Recommendation logic:
 - **READY FOR HUMAN REVIEW** if all criteria PASS, QA clean, no critical findings

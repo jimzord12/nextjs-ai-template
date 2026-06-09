@@ -1,47 +1,45 @@
-# Feature Review: {{feature-slug}}
+# Feature Review: <feature-slug>
 
-> **Feature:** `{{feature-id}}-{{feature-slug}}`
-> **Date:** {{YYYY-MM-DD}}
-> **Attempt:** #{{N}}
-
----
+| Field     | Value                     |
+|-----------|---------------------------|
+| Feature   | `<feature-dir>`           |
+| Date      | `<YYYY-MM-DD>`            |
+| Attempt   | `<N>`                     |
 
 ## Summary
 
-{{PASS/FAIL}} — {{X}}/{{Y}} acceptance criteria met, {{Z}} findings
+<PASS/FAIL> — X/Y acceptance criteria met, Z findings.
 
 ## Acceptance Criteria
 
-| #  | Criterion | Status           | Evidence         |
-|----|-----------|------------------|------------------|
-| 1  | ...       | PASS / FAIL / UNCLEAR | `file.ts:symbol` |
-| 2  | ...       | PASS / FAIL / UNCLEAR | `file.ts:symbol` |
+| #  | Criterion | Status             | Evidence        |
+|----|-----------|--------------------|-----------------|
+| 1  | _…_       | PASS / FAIL / UNCLEAR | `file.ts:symbol` |
+| 2  | _…_       | PASS / FAIL / UNCLEAR | _…_              |
 
 ## QA Results
 
 | Check      | Result       | Details |
-|------------|--------------|---------|
-| typecheck  | PASS / FAIL  | ...     |
-| lint       | PASS / FAIL  | ...     |
-| test       | PASS / FAIL  | ...     |
+|------------|-------------|---------|
+| typecheck  | PASS / FAIL | _…_     |
+| lint       | PASS / FAIL | _…_     |
+| test       | PASS / FAIL | _…_     |
 
 ## Findings
 
-- [ORPHAN] export X in `file.ts` — no importers found
-- [DEAD] unreachable branch in `file.ts:L42`
-- [GAP] no test for X
+<!-- Use tags: [ORPHAN] [DEAD] [GAP] [MISMATCH] -->
+
+- _none_
 
 ## Downstream Impact
 
-_Include this section only for horizontal (infrastructure) features. For vertical features, write: "N/A — vertical feature."_
+<!-- Horizontal features only. Write "N/A — vertical feature" otherwise. -->
 
-- Compatibility check results against dependent features
-- Public API conformance with LLD specification
+_N/A — vertical feature_
 
 ## Recommendation
 
-**READY FOR HUMAN REVIEW** / **NEEDS FIXES BEFORE REVIEW**
+<!-- READY FOR HUMAN REVIEW | NEEDS FIXES BEFORE REVIEW -->
 
-_Recommendation logic:_
-- _READY FOR HUMAN REVIEW_ — all criteria PASS, QA clean, no critical findings
-- _NEEDS FIXES BEFORE REVIEW_ — any criterion FAILs, QA has errors, or critical orphans found
+**READY FOR HUMAN REVIEW** if all criteria PASS, QA clean, no critical findings.
+**NEEDS FIXES BEFORE REVIEW** if any criterion FAILs, QA has errors, or critical orphans found.

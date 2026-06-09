@@ -2,7 +2,7 @@
   "featureId": 10,
   "featureSlug": "project-state-tracking",
   "featureStatus": "in-progress",
-  "lastUpdated": "2026-06-09T20:18:52.860Z",
+  "lastUpdated": "2026-06-09T20:35:18.779Z",
   "issues": [
     {
       "id": 1,
@@ -34,7 +34,7 @@
     {
       "id": 4,
       "title": "Extend `status` command — issue breakdown for active features",
-      "status": "ready-for-agent",
+      "status": "done",
       "method": "tdd",
       "complexity": 2,
       "blockedBy": [3],
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "title": "Review artifact convention — template and `review-feature` skill update",
-      "status": "ready-for-agent",
+      "status": "done",
       "method": "chore",
       "complexity": 2,
       "blockedBy": [1],

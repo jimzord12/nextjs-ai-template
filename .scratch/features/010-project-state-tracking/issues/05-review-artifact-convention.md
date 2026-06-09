@@ -1,5 +1,5 @@
 Method: chore
-Status: ready-for-agent
+Status: done
 Complexity: 2
 BlockedBy: 1
 
@@ -39,12 +39,14 @@ Update the `review-feature` skill to:
 
 ## Acceptance criteria
 
-- [ ] `docs/templates/FEATURE_REVIEW.template.md` exists with structured review format
-- [ ] `review-feature` skill references new review path convention
-- [ ] `review-feature` skill references the new template
-- [ ] `docs/ROUTINES.md` pipeline table reflects new review artifact location
-- [ ] No references to `.qa/feature-reviews/` remain in skill or pipeline docs
+- [x] `docs/templates/FEATURE_REVIEW.template.md` exists with structured review format
+- [x] `review-feature` skill references new review path convention
+- [x] `review-feature` skill references the new template
+- [x] `docs/ROUTINES.md` pipeline table reflects new review artifact location
+- [x] No references to `.qa/feature-reviews/` remain in skill or pipeline docs
 
 ## Blocked by
 
 - `01-rename-to-features-cli` — must use the new CLI name in any updated docs
+
+
