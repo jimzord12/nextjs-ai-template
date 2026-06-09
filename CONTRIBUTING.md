@@ -24,6 +24,17 @@ GitHub Flow — nothing else:
 - All changes land via **pull request** from **short-lived branches**: `feat/*`, `fix/*`, `chore/*`, `docs/*`.
 - No `develop` branch. No release branches.
 - **Squash merge** preferred.
+- **Merge via `gh` CLI** — squash-merge and delete the remote branch in one command:
+  ```bash
+  gh pr merge <number> --squash --delete-branch
+  ```
+  Then pull the result locally:
+  ```bash
+  git switch main && git pull
+  ```
+  > **Note:** The `post-checkout` Husky hook automatically runs `git fetch --prune` when you switch to `main`, so stale remote-tracking refs from the just-deleted branch are cleaned up with no extra step.
+- **Stale remote refs are pruned automatically** — a Husky `post-checkout` hook runs `git fetch --prune` every time you switch to `main`. This removes ghost remote-tracking refs left behind after squash-merging PRs on GitHub. If you ever need to do it manually: `git fetch --prune`.
+- To clean up **local merged branches** in one shot, run `pnpm git:prune`. This also prunes remote refs as a first step.
 
 ## PR Requirements
 

@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ── Step 1: Prune stale remote-tracking refs ────────────────────────
+# Branches deleted on GitHub (e.g. after squash-merge) leave ghost refs
+# locally. This cleans them up.
+PRUNED=false
+PRUNE_OUTPUT=$(git fetch --prune 2>&1) || true
+if echo "$PRUNE_OUTPUT" | grep -q "pruned"; then
+  echo "$PRUNE_OUTPUT"
+  PRUNED=true
+else
+  echo "Remote-tracking refs are clean."
+fi
+
 DRY_RUN=false
 
 for arg in "$@"; do

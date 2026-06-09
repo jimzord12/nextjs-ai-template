@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Auto-prune stale remote-tracking refs when switching to main.
+# After squash-merging a PR on GitHub, the remote branch is deleted but
+# the local remote-tracking ref lingers as a ghost. This hook cleans those up.
+
+NEW_BRANCH="$1"
+
+if [ "$NEW_BRANCH" = "main" ]; then
+  PRUNE_OUTPUT=$(git fetch --prune 2>&1) || true
+  if echo "$PRUNE_OUTPUT" | grep -q "pruned"; then
+    echo ""
+    echo "🧹 Pruned stale remote-tracking refs:"
+    echo "$PRUNE_OUTPUT"
+  fi
+fi
