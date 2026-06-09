@@ -132,21 +132,21 @@ A 7-step pipeline from idea to verified feature. Each step produces a named arti
 |      |                   | **ADRs** — architectural decision records (sparse, only when criteria met)                                      | Irreversible or non-obvious decisions documented for future readers                                                                | `docs/adr/<NNNN>-<topic>.md`                       |
 | 4    | `to-issues`       | **Vertical-slice issues** — each with acceptance criteria, blocked-by, HITL/AFK label                           | Independently grabbable work units. Tracer bullets through all layers                                                              | `.scratch/<feature-name>/<slice-id>.md`            |
 | 5    | `do-issue`        | **Implemented code** — production code, tests, type definitions                                                 | The actual deliverable. Each issue's acceptance criteria are verifiable                                                            | `src/`, `tests/`                                   |
-| 6    | `review-feature`  | **Feature review report** — pass/fail per acceptance criterion, QA results, orphan detection, downstream impact | Automated gate between implementation and human sign-off. Catches integration gaps, dead code, and scope misses                    | `.qa/feature-reviews/<feature-name>.md`            |
+| 6    | `review-feature`  | **Feature review report** — pass/fail per acceptance criterion, QA results, orphan detection, downstream impact | Automated gate between implementation and human sign-off. Catches integration gaps, dead code, and scope misses                    | `.scratch/features/<feature-dir>/reviews/<N>-review.md` |
 | 7    | _(manual)_        | **Human sign-off** — approval or list of changes needed                                                         | Final authority. Human verifies the _experience_, not the plumbing                                                                 | Verbal / commit comment / issue status change      |
 
 ### Naming conventions
 
 - **Session state files**: `tmp/<slug>.grilling-session-state.md` — slug is a short kebab-case topic identifier
 - **Feature directories**: `.scratch/<feature-name>/` — one directory per feature, contains HLD section, LLD, and slice issues
-- **Feature review reports**: `.qa/feature-reviews/<feature-name>.md` — alongside existing QA reports in `.qa/`
+- **Feature review reports**: `.scratch/features/<feature-dir>/reviews/<N>-review.md` — auto-incrementing numbered reviews (01, 02, …) stored in the feature directory
 - **ADRs**: `docs/adr/<NNNN>-<topic>.md` — numbered, auto-incrementing
 
 ### Artifact lifecycle
 
 - `tmp/` files are session-scoped — disposable after the pipeline moves past them
 - `.scratch/` files live until the feature is shipped and verified — then they're archival
-- `.qa/feature-reviews/` follows the same gitignored pattern as the rest of `.qa/`
+- Feature review reports in `.scratch/features/<feature-dir>/reviews/` are archival alongside the feature's other artifacts
 - `CONTEXT.md` and ADRs are permanent — they accumulate across features
 
 ### Flow between features

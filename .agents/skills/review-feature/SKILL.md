@@ -5,15 +5,31 @@ description: Automated feature-scoped review that verifies acceptance criteria, 
 
 # Review Feature
 
-Automated first-pass review of a completed feature. Produces a report at `.qa/feature-reviews/<feature-name>.md`.
+Automated first-pass review of a completed feature. Produces a numbered review report at `.scratch/features/<feature-dir>/reviews/<N>-review.md`.
 
 Not a replacement for human review — catches integration gaps, dead code, scope misses, and test gaps before human review.
 
 ## Quick start
 
-1. Identify the feature name from `.scratch/` directories or user input
+1. Identify the feature directory from `.scratch/` or user input
 2. Follow the process below
-3. Write the report to `.qa/feature-reviews/<feature-name>.md`
+3. Write the report to `.scratch/features/<feature-dir>/reviews/<N>-review.md`
+
+## Output path
+
+Reviews are stored under the feature directory:
+
+```
+.scratch/features/<feature-dir>/reviews/<N>-review.md
+```
+
+- `<feature-dir>` is the feature directory name (e.g., `010-project-state-tracking`)
+- `<N>` is an auto-incrementing zero-padded number: `01`, `02`, `03`, etc.
+- To determine the next number, scan the `reviews/` directory for existing `<N>-review.md` files and increment
+
+## Template
+
+Use [`docs/templates/FEATURE_REVIEW.template.md`](docs/templates/FEATURE_REVIEW.template.md) as the report structure. Fill in all sections based on the review findings.
 
 ## Process
 
@@ -61,37 +77,9 @@ If the feature is horizontal (infrastructure):
 
 ### 6. Produce report
 
-Write to `.qa/feature-reviews/<feature-name>.md`:
+Determine the next review number by scanning `.scratch/features/<feature-dir>/reviews/` for existing `<N>-review.md` files.
 
-```md
-# Feature Review: <feature-name>
-
-## Summary
-<PASS/FAIL> — X/Y acceptance criteria met, Z findings
-
-## Acceptance Criteria
-| # | Criterion | Status | Evidence |
-|---|-----------|--------|----------|
-| 1 | ... | PASS/FAIL/UNCLEAR | file.ts:symbol |
-
-## QA Results
-| Check | Result | Details |
-|-------|--------|---------|
-| typecheck | PASS/FAIL | ... |
-| lint | PASS/FAIL | ... |
-| test | PASS/FAIL | ... |
-
-## Findings
-- [ORPHAN] export X in file.ts — no importers found
-- [DEAD] unreachable branch in file.ts:L42
-- [GAP] no test for X
-
-## Downstream Impact
-<horizontal only — compatibility check results, or "N/A — vertical feature">
-
-## Recommendation
-<READY FOR HUMAN REVIEW / NEEDS FIXES BEFORE REVIEW>
-```
+Write to `.scratch/features/<feature-dir>/reviews/<N>-review.md` using the template at `docs/templates/FEATURE_REVIEW.template.md`.
 
 Recommendation logic:
 - **READY FOR HUMAN REVIEW** if all criteria PASS, QA clean, no critical findings
