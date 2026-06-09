@@ -2,7 +2,7 @@
   "featureId": 10,
   "featureSlug": "project-state-tracking",
   "featureStatus": "in-progress",
-  "lastUpdated": "2026-06-09T20:09:39.165Z",
+  "lastUpdated": "2026-06-09T20:18:52.860Z",
   "issues": [
     {
       "id": 1,
@@ -25,7 +25,7 @@
     {
       "id": 3,
       "title": "Implement `status` command — milestones summary + feature pipeline state",
-      "status": "ready-for-agent",
+      "status": "done",
       "method": "tdd",
       "complexity": 4,
       "blockedBy": [2],

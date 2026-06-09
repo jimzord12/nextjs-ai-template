@@ -1,5 +1,5 @@
 Method: tdd
-Status: ready-for-agent
+Status: done
 Complexity: 4
 BlockedBy: 2
 
@@ -85,17 +85,19 @@ New `describe("status command")` block in `cli.test.ts`:
 
 ## Acceptance criteria
 
-- [ ] `features-cli status` outputs milestone summary section
-- [ ] `features-cli status` outputs per-feature pipeline state section
-- [ ] Milestone status correctly derived as `not-started`, `in-progress`, or `done`
-- [ ] Warning shown when multiple milestones have in-progress features
-- [ ] Warning shown for features without a milestone
-- [ ] All pipeline artifact checks correctly detect file/directory presence
-- [ ] `completed issues` shows count/total when issues exist, `—` when not
-- [ ] `Human Review Passed` is `true` only for `archived` + `finalStatus: done`
-- [ ] `AI Review Passed` is `true` when `reviews/` has `.md` files
-- [ ] All tests pass
+- [x] `features-cli status` outputs milestone summary section
+- [x] `features-cli status` outputs per-feature pipeline state section
+- [x] Milestone status correctly derived as `not-started`, `in-progress`, or `done`
+- [x] Warning shown when multiple milestones have in-progress features
+- [x] Warning shown for features without a milestone
+- [x] All pipeline artifact checks correctly detect file/directory presence
+- [x] `completed issues` shows count/total when issues exist, `—` when not
+- [x] `Human Review Passed` is `true` only for `archived` + `finalStatus: done`
+- [x] `AI Review Passed` is `true` when `reviews/` has `.md` files
+- [x] All tests pass
 
 ## Blocked by
 
 - `02-milestone-field-and-flag` — requires milestone field on feature records
+
+

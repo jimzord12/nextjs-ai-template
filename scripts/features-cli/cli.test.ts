@@ -1369,3 +1369,213 @@ describe("runIssuesManagerCli", () => {
     ).toBe(2);
   });
 });
+
+describe("status command", () => {
+  it("returns 'No features registered.' when no features exist", async () => {
+    const workspacePath = await createWorkspace({
+      features: [],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("No features registered.");
+    expect(result.stderr).toBe("");
+  });
+
+  it("shows milestone summary with not-started status", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "alpha", status: "todo", milestone: 1 },
+        { id: 2, slug: "beta", status: "todo", milestone: 1 },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("=== Milestones ===");
+    expect(result.stdout).toContain(
+      "M1  | 0/2 done  | 0 in-progress  | not-started",
+    );
+  });
+
+  it("shows milestone with in-progress status", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "alpha", status: "in-progress", milestone: 1 },
+        { id: 2, slug: "beta", status: "todo", milestone: 1 },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain(
+      "M1  | 0/2 done  | 1 in-progress  | in-progress",
+    );
+  });
+
+  it("shows milestone with done status", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        {
+          id: 1,
+          slug: "alpha",
+          status: "archived",
+          finalStatus: "done",
+          milestone: 1,
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("M1  | 1/1 done  | 0 in-progress  | done");
+  });
+
+  it("warns about multiple active milestones", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "a", status: "in-progress", milestone: 1 },
+        { id: 2, slug: "b", status: "in-progress", milestone: 2 },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toContain(
+      "⚠ Multiple milestones have in-progress features",
+    );
+  });
+
+  it("warns about features without milestone", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "no-mile", status: "todo" }],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toContain(
+      "⚠ 1 feature(s) have no milestone assigned",
+    );
+  });
+
+  it("shows full pipeline state for a feature with all artifacts", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "test-feature", status: "in-progress", milestone: 1 },
+      ],
+    });
+
+    const featureDir = join(
+      workspacePath,
+      ".scratch",
+      "features",
+      "001-test-feature",
+    );
+
+    await mkdir(join(featureDir, "issues"), { recursive: true });
+    await mkdir(join(featureDir, "reviews"), { recursive: true });
+    await writeFile(join(featureDir, "GRILL_SESSION.md"), "# Grill", "utf8");
+    await writeFile(join(featureDir, "BRIEF.md"), "# Brief", "utf8");
+    await writeFile(join(featureDir, "PRD.md"), "# PRD", "utf8");
+    await writeFile(join(featureDir, "issues", "01-some-issue.md"), "", "utf8");
+    await writeFile(join(featureDir, "reviews", "01-review.md"), "", "utf8");
+    await writeFile(
+      join(featureDir, "issues-status.json"),
+      JSON.stringify({
+        issues: [
+          { id: 1, status: "done" },
+          { id: 2, status: "done" },
+          { id: 3, status: "in-progress" },
+        ],
+      }),
+      "utf8",
+    );
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("- Has Grill Session: true");
+    expect(result.stdout).toContain("- Has Brief: true");
+    expect(result.stdout).toContain("- Has PRD: true");
+    expect(result.stdout).toContain("- Has issues: true");
+    expect(result.stdout).toContain("- completed issues: 2/3");
+    expect(result.stdout).toContain("- AI Review Passed: true");
+    expect(result.stdout).toContain("- Human Review Passed: false");
+  });
+
+  it("shows pipeline state with no artifacts as all false", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        { id: 1, slug: "empty-feature", status: "todo", milestone: 1 },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("- Has Grill Session: false");
+    expect(result.stdout).toContain("- Has Brief: false");
+    expect(result.stdout).toContain("- Has PRD: false");
+    expect(result.stdout).toContain("- Has issues: false");
+    expect(result.stdout).toContain("- completed issues: —");
+    expect(result.stdout).toContain("- AI Review Passed: false");
+    expect(result.stdout).toContain("- Human Review Passed: false");
+  });
+
+  it("shows Human Review Passed true for archived + done", async () => {
+    const workspacePath = await createWorkspace({
+      features: [
+        {
+          id: 1,
+          slug: "done-feature",
+          status: "archived",
+          finalStatus: "done",
+          milestone: 1,
+        },
+      ],
+    });
+
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("- Human Review Passed: true");
+  });
+
+  it("shows completed issues as dash when issues-status.json missing", async () => {
+    const workspacePath = await createWorkspace({
+      features: [{ id: 1, slug: "no-state", status: "todo", milestone: 1 }],
+    });
+
+    // No issues dir, no issues-status.json
+    const result = await runIssuesManagerCli(["status"], {
+      cwd: workspacePath,
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("- completed issues: —");
+  });
+});

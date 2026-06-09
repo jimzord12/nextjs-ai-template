@@ -15,6 +15,11 @@ import {
   updateIssueBlockers,
   updateIssueStatus,
 } from "./issues-state";
+import {
+  computeMilestoneSummary,
+  formatStatusOutput,
+  scanAllFeatures,
+} from "./status-scanner";
 
 export type CliResult = {
   exitCode: number;
@@ -74,6 +79,28 @@ export async function runIssuesManagerCli(
           `slug: ${feature.slug}`,
           `status: ${feature.status}`,
         ].join("\n"),
+      };
+    }
+
+    if (args[0] === "status") {
+      const state = await readFeaturesState(options.cwd);
+
+      if (state.features.length === 0) {
+        return {
+          exitCode: 0,
+          stderr: "",
+          stdout: "No features registered.",
+        };
+      }
+
+      const artifacts = await scanAllFeatures(options.cwd, state);
+      const summary = computeMilestoneSummary(state.features);
+      const output = formatStatusOutput(summary, artifacts, state.features);
+
+      return {
+        exitCode: 0,
+        stderr: output.stderr,
+        stdout: output.stdout,
       };
     }
 
@@ -312,7 +339,7 @@ export async function runIssuesManagerCli(
     return {
       exitCode: 1,
       stderr:
-        "Unknown command. Supported commands: list-issues, get-issue, get-feature, update-feature, update-blockers, update-status.",
+        "Unknown command. Supported commands: status, list-issues, get-issue, get-feature, update-feature, update-blockers, update-status.",
       stdout: "",
     };
   } catch (error) {
