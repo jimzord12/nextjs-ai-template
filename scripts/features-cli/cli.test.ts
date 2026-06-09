@@ -10,7 +10,16 @@ import { runIssuesManagerCli } from "./cli";
 
 const workspaces: string[] = [];
 const execFileAsync = promisify(execFile);
+<<<<<<<< HEAD:scripts/features-cli/cli.test.ts
 const binPath = join(process.cwd(), "scripts", "features-cli", "bin.ts");
+========
+const binPath = join(
+  process.cwd(),
+  "scripts",
+  "issues-manager-cli",
+  "bin.ts",
+);
+>>>>>>>> 22051e6 (feat: implement skill pipeline for milestone-driven development):scripts/issues-manager-cli/cli.test.ts
 const tsRuntime = process.platform === "win32" ? "tsx.cmd" : "tsx";
 const tsRuntimeArgs: [string, ...string[]] = [binPath];
 
@@ -87,6 +96,7 @@ async function writeIssueMarkdown(
   contents: string,
 ) {
   const featureDir = `${String(featureId).padStart(3, "0")}-${featureSlug}`;
+<<<<<<<< HEAD:scripts/features-cli/cli.test.ts
   const issuesDir = join(
     workspacePath,
     ".scratch",
@@ -94,6 +104,9 @@ async function writeIssueMarkdown(
     featureDir,
     "issues",
   );
+========
+  const issuesDir = join(workspacePath, ".scratch", "features", featureDir, "issues");
+>>>>>>>> 22051e6 (feat: implement skill pipeline for milestone-driven development):scripts/issues-manager-cli/cli.test.ts
 
   await mkdir(issuesDir, { recursive: true });
   await writeFile(join(issuesDir, fileName), contents, "utf8");
@@ -938,9 +951,13 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("id: 2");
     expect(result.stdout).toContain("Next actionable");
     expect(result.stdout).toContain("complexity: 3");
+<<<<<<<< HEAD:scripts/features-cli/cli.test.ts
     expect(result.stdout).toContain(
       ".scratch/features/001-issues-manager-cli/issues/02.md",
     );
+========
+    expect(result.stdout).toContain(".scratch/features/001-issues-manager-cli/issues/02.md");
+>>>>>>>> 22051e6 (feat: implement skill pipeline for milestone-driven development):scripts/issues-manager-cli/cli.test.ts
   });
 
   it("returns empty no-winner as success when feature has no issues", async () => {
@@ -1127,7 +1144,13 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("feature: issues-manager-cli");
     expect(result.stdout).toContain("issue: 2");
     expect(result.stdout).toContain("status: in-progress");
+<<<<<<<< HEAD:scripts/features-cli/cli.test.ts
     expect(result.stdout).toContain("issues/02-example.md");
+========
+    expect(result.stdout).toContain(
+      "issues/02-example.md",
+    );
+>>>>>>>> 22051e6 (feat: implement skill pipeline for milestone-driven development):scripts/issues-manager-cli/cli.test.ts
     expect(updatedMarkdown).toContain("Status: in-progress");
   });
 

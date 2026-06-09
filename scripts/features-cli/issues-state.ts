@@ -51,7 +51,14 @@ function getIssuesStatusPath(
   );
 }
 
+<<<<<<<< HEAD:scripts/features-cli/issues-state.ts
 function getIssueFilesDir(cwd: string, feature: { id: number; slug: string }) {
+========
+function getIssueFilesDir(
+  cwd: string,
+  feature: { id: number; slug: string },
+) {
+>>>>>>>> 22051e6 (feat: implement skill pipeline for milestone-driven development):scripts/issues-manager-cli/issues-state.ts
   return join(cwd, ".scratch", "features", formatFeatureDir(feature), "issues");
 }
 
