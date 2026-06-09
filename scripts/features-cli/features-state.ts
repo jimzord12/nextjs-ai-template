@@ -144,8 +144,7 @@ function validateFeatureRecord(
 
   if (
     candidate.milestone !== undefined &&
-    (!Number.isInteger(candidate.milestone) ||
-      Number(candidate.milestone) <= 0)
+    (!Number.isInteger(candidate.milestone) || Number(candidate.milestone) <= 0)
   ) {
     throw new FeatureStateError(
       `Invalid feature ${candidate.slug} in ${sourceLabel}. milestone must be a positive integer.`,
@@ -200,9 +199,7 @@ export async function updateFeatureStatus(options: {
   milestone?: number;
 }) {
   const state = await readFeaturesState(options.cwd);
-  const feature = state.features.find(
-    (entry) => entry.slug === options.slug,
-  );
+  const feature = state.features.find((entry) => entry.slug === options.slug);
 
   if (!feature) {
     throw new FeatureStateError(
@@ -212,8 +209,7 @@ export async function updateFeatureStatus(options: {
 
   if (options.status === "in-progress") {
     const otherActiveFeature = state.features.find(
-      (entry) =>
-        entry.slug !== options.slug && entry.status === "in-progress",
+      (entry) => entry.slug !== options.slug && entry.status === "in-progress",
     );
 
     if (otherActiveFeature) {
@@ -224,9 +220,7 @@ export async function updateFeatureStatus(options: {
   }
 
   const resolvedMilestone =
-    options.milestone !== undefined
-      ? options.milestone
-      : feature.milestone;
+    options.milestone !== undefined ? options.milestone : feature.milestone;
 
   const timestamp = new Date().toISOString();
   const nextState: FeaturesState = {

@@ -1273,8 +1273,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("Updated feature");
     expect(result.stdout).toContain("milestone: 1");
     expect(
-      persistedState.features.find((f) => f.slug === "test-feature")
-        ?.milestone,
+      persistedState.features.find((f) => f.slug === "test-feature")?.milestone,
     ).toBe(1);
   });
 
@@ -1308,9 +1307,7 @@ describe("runIssuesManagerCli", () => {
 
   it("update-feature <slug> --status in-progress preserves existing milestone", async () => {
     const workspacePath = await createWorkspace({
-      features: [
-        { id: 1, slug: "test-feature", status: "todo", milestone: 3 },
-      ],
+      features: [{ id: 1, slug: "test-feature", status: "todo", milestone: 3 }],
     });
 
     const result = await runIssuesManagerCli(
@@ -1330,8 +1327,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stderr).toBe("");
     expect(
-      persistedState.features.find((f) => f.slug === "test-feature")
-        ?.milestone,
+      persistedState.features.find((f) => f.slug === "test-feature")?.milestone,
     ).toBe(3);
   });
 
@@ -1369,8 +1365,7 @@ describe("runIssuesManagerCli", () => {
       persistedState.features.find((f) => f.slug === "test-feature")?.status,
     ).toBe("in-progress");
     expect(
-      persistedState.features.find((f) => f.slug === "test-feature")
-        ?.milestone,
+      persistedState.features.find((f) => f.slug === "test-feature")?.milestone,
     ).toBe(2);
   });
 });

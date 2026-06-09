@@ -19,9 +19,7 @@
       "status": "done",
       "method": "tdd",
       "complexity": 3,
-      "blockedBy": [
-        1
-      ],
+      "blockedBy": [1],
       "filePath": ".scratch/features/010-project-state-tracking/issues/02-milestone-field-and-flag.md"
     },
     {
@@ -30,9 +28,7 @@
       "status": "ready-for-agent",
       "method": "tdd",
       "complexity": 4,
-      "blockedBy": [
-        2
-      ],
+      "blockedBy": [2],
       "filePath": ".scratch/features/010-project-state-tracking/issues/03-status-command-milestones-and-pipeline.md"
     },
     {
@@ -41,9 +37,7 @@
       "status": "ready-for-agent",
       "method": "tdd",
       "complexity": 2,
-      "blockedBy": [
-        3
-      ],
+      "blockedBy": [3],
       "filePath": ".scratch/features/010-project-state-tracking/issues/04-status-command-issue-breakdown.md"
     },
     {
@@ -52,9 +46,7 @@
       "status": "ready-for-agent",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [
-        1
-      ],
+      "blockedBy": [1],
       "filePath": ".scratch/features/010-project-state-tracking/issues/05-review-artifact-convention.md"
     }
   ]

@@ -1,7 +1,11 @@
 // @vitest-environment node
 
 import { describe, expect, it } from "vitest";
-import { FeatureStateError, resolveCurrentFeature, validateFeaturesState } from "./features-state";
+import {
+  FeatureStateError,
+  resolveCurrentFeature,
+  validateFeaturesState,
+} from "./features-state";
 
 describe("resolveCurrentFeature", () => {
   it("returns the single in-progress feature", () => {
