@@ -3,19 +3,75 @@
     {
       "id": 1,
       "slug": "production-template-baseline",
-      "status": "in-progress",
-      "lastUpdated": "2026-06-07T18:38:28.646Z",
+      "status": "archived",
+      "lastUpdated": "2026-06-09T17:17:24.514Z",
       "finalStatus": null
     },
     {
       "id": 2,
       "slug": "issues-manager-cli",
       "status": "archived",
-      "lastUpdated": "2026-06-07T18:14:29.652Z",
+      "lastUpdated": "2026-06-09T17:17:24.765Z",
       "finalStatus": "done"
+    },
+    {
+      "id": 3,
+      "slug": "cms-adapter-interface",
+      "status": "archived",
+      "lastUpdated": "2026-06-09T19:44:02.771Z",
+      "finalStatus": null
+    },
+    {
+      "id": 4,
+      "slug": "content-model-schemas",
+      "status": "todo",
+      "lastUpdated": "2026-06-09T18:31:03.502Z",
+      "finalStatus": null
+    },
+    {
+      "id": 5,
+      "slug": "theme-completion",
+      "status": "todo",
+      "lastUpdated": "2026-06-09T18:31:03.730Z",
+      "finalStatus": null
+    },
+    {
+      "id": 6,
+      "slug": "content-loaders",
+      "status": "todo",
+      "lastUpdated": "2026-06-09T18:31:03.952Z",
+      "finalStatus": null
+    },
+    {
+      "id": 7,
+      "slug": "slice-renderer",
+      "status": "todo",
+      "lastUpdated": "2026-06-09T18:31:04.184Z",
+      "finalStatus": null
+    },
+    {
+      "id": 8,
+      "slug": "hybrid-routing",
+      "status": "todo",
+      "lastUpdated": "2026-06-09T18:31:04.414Z",
+      "finalStatus": null
+    },
+    {
+      "id": 9,
+      "slug": "hotel-example",
+      "status": "todo",
+      "lastUpdated": "2026-06-09T18:31:04.650Z",
+      "finalStatus": null
+    },
+    {
+      "id": 10,
+      "slug": "project-state-tracking",
+      "status": "in-progress",
+      "lastUpdated": "2026-06-09T19:54:38.035Z",
+      "finalStatus": null
     }
   ],
-  "lastUpdated": "2026-06-07T18:38:28.646Z",
-  "nextFeatureId": 3,
+  "lastUpdated": "2026-06-09T19:54:38.035Z",
+  "nextFeatureId": 11,
   "version": "1"
 }

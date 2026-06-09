@@ -90,7 +90,7 @@ Installed skills live in `.agents/skills/`. Invoke with `/skill-name`.
 | `vercel-composition-patterns`   | React composition patterns that scale — compound components, state management, React 19 APIs        |
 | `vercel-cli-with-tokens`        | Deploy and manage Vercel projects using token-based (non-interactive) CLI authentication            |
 | `vercel-optimize`               | Deep cost and performance optimization for Vercel projects, grounded in metrics and docs            |
-| `do-issue`                      | Discover and implement 1-3 ready-for-agent issues using the issues-manager CLI and method specified in each issue |
+| `do-issue`                      | Discover and implement 1-3 ready-for-agent issues using the Features CLI and method specified in each issue |
 | `complexity-rating`             | Assign Complexity ratings (1-5) to issues and recommend decomposition for Complexity 5 issues       |
 
 <!-- END:project-skills -->

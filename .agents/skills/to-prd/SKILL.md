@@ -11,12 +11,12 @@ Takes a resolved grilling session and produces a PRD with feature registry.
 
 ## Input
 
-- **Primary**: Grilling session at `.scratch/features/<id>-<slug>/GRILL_SESSION.md`. Determine the active feature directory by running `pnpm issues-manager get-feature` — this returns the feature `id` and `slug`. The session file contains resolved decisions from the grilling loop (decision tree nodes, constraints, conclusions).
+- **Primary**: Grilling session at `.scratch/features/<id>-<slug>/GRILL_SESSION.md`. Determine the active feature directory by running `pnpm features-cli get-feature` — this returns the feature `id` and `slug`. The session file contains resolved decisions from the grilling loop (decision tree nodes, constraints, conclusions).
 - **Fallback**: If no grilling session file exists, use the current conversation context.
 
 ## Process
 
-1. **Locate feature directory**. Run `pnpm issues-manager get-feature` to get the current feature `id` and `slug`. The feature directory is `.scratch/features/<id>-<slug>/`.
+1. **Locate feature directory**. Run `pnpm features-cli get-feature` to get the current feature `id` and `slug`. The feature directory is `.scratch/features/<id>-<slug>/`.
 
 2. **Gather context**. Read the grilling session file (`GRILL_SESSION.md`). Explore the repo to understand current state. Use the project's domain glossary (`CONTEXT.md`) vocabulary throughout, and respect ADRs in `docs/adr/`.
 

@@ -133,7 +133,7 @@ Update `nextFeatureId` to `<NNN + 1>`.
 #### d. Activate via CLI
 
 ```bash
-pnpm issues-manager update-feature <slug> --status todo
+pnpm features-cli update-feature <slug> --status todo
 ```
 
 ### 7. Confirm

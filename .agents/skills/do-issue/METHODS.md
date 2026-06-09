@@ -2,7 +2,7 @@
 
 Method-specific workflows dispatched by the `Method:` field in each issue.
 
-The issues-manager CLI lives at `scripts/issues-manager-cli/` and runs via `pnpm issues-manager <command>`.
+The Features CLI lives at `scripts/Features CLI/` and runs via `pnpm features-cli <command>`.
 
 ## TDD (`Method: tdd`)
 

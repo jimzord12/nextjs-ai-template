@@ -1,0 +1,53 @@
+{
+  "featureId": 10,
+  "featureSlug": "project-state-tracking",
+  "featureStatus": "in-progress",
+  "lastUpdated": "2026-06-09T19:54:38.034Z",
+  "issues": [
+    {
+      "id": 1,
+      "title": "Rename `issues-manager-cli` to `features-cli`",
+      "status": "done",
+      "method": "chore",
+      "complexity": 2,
+      "blockedBy": [],
+      "filePath": ".scratch/features/010-project-state-tracking/issues/01-rename-to-features-cli.md"
+    },
+    {
+      "id": 2,
+      "title": "Add `milestone` field to feature schema and `--milestone` flag",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [1],
+      "filePath": ".scratch/features/010-project-state-tracking/issues/02-milestone-field-and-flag.md"
+    },
+    {
+      "id": 3,
+      "title": "Implement `status` command — milestones summary + feature pipeline state",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 4,
+      "blockedBy": [2],
+      "filePath": ".scratch/features/010-project-state-tracking/issues/03-status-command-milestones-and-pipeline.md"
+    },
+    {
+      "id": 4,
+      "title": "Extend `status` command — issue breakdown for active features",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 2,
+      "blockedBy": [3],
+      "filePath": ".scratch/features/010-project-state-tracking/issues/04-status-command-issue-breakdown.md"
+    },
+    {
+      "id": 5,
+      "title": "Review artifact convention — template and `review-feature` skill update",
+      "status": "ready-for-agent",
+      "method": "chore",
+      "complexity": 2,
+      "blockedBy": [1],
+      "filePath": ".scratch/features/010-project-state-tracking/issues/05-review-artifact-convention.md"
+    }
+  ]
+}

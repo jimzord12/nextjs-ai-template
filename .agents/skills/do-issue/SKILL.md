@@ -1,20 +1,20 @@
 ---
 name: do-issue
-description: Discover and implement 1-3 ready-for-agent issues using the issues-manager CLI. Use when user says "do an issue", "pick up next issue", "implement issues", "what's next", "work on backlog", "execute issues", or asks to implement ready-for-agent issues from .scratch/.
+description: Discover and implement 1-3 ready-for-agent issues using the Features CLI. Use when user says "do an issue", "pick up next issue", "implement issues", "what's next", "work on backlog", "execute issues", or asks to implement ready-for-agent issues from .scratch/.
 ---
 
 # do-issue
 
 Orchestrate implementation of `ready-for-agent` issues from `.scratch/features/<index>-<slug>/issues/`.
 
-Uses the project-level issues-manager CLI at `scripts/issues-manager-cli/` (run via `pnpm issues-manager <command>`) to scan, select, and update issue state. Delegates all implementation to subagents — the orchestrator never writes production code.
+Uses the project-level Features CLI at `scripts/Features CLI/` (run via `pnpm features-cli <command>`) to scan, select, and update issue state. Delegates all implementation to subagents — the orchestrator never writes production code.
 
 ## Issues Manager CLI
 
-The CLI lives at `scripts/issues-manager-cli/` in the project root. Run via:
+The CLI lives at `scripts/Features CLI/` in the project root. Run via:
 
 ```
-pnpm issues-manager <command>
+pnpm features-cli <command>
 ```
 
 ### Commands
@@ -72,17 +72,17 @@ If a subagent's output is incomplete or incorrect, **re-delegate with sharper in
 ### 1. Scan for ready issues
 
 ```bash
-pnpm issues-manager list-issues --actionable
+pnpm features-cli list-issues --actionable
 ```
 
-If no actionable issues exist, run `pnpm issues-manager list-issues` to see all issues. If nothing is `ready-for-agent` at all, suggest `/triage` or `/to-issues` to create or triage issues.
+If no actionable issues exist, run `pnpm features-cli list-issues` to see all issues. If nothing is `ready-for-agent` at all, suggest `/triage` or `/to-issues` to create or triage issues.
 
 Present a numbered table:
 
 | # | ID | Issue | Feature | Complexity | Blocked by |
 |---|----|-------|---------|------------|------------|
 
-Also run `pnpm issues-manager get-issue --next` to highlight the recommended pick (lowest complexity, then lowest ID).
+Also run `pnpm features-cli get-issue --next` to highlight the recommended pick (lowest complexity, then lowest ID).
 
 ### 2. User picks 1–3
 
@@ -160,7 +160,7 @@ If anything fails, re-delegate to a subagent with specific instructions about wh
 For each completed issue:
 
 ```bash
-pnpm issues-manager update-status <id> --status done
+pnpm features-cli update-status <id> --status done
 ```
 
 Then open the issue markdown file and check off completed acceptance criteria: `[ ]` → `[x]`.

@@ -51,10 +51,7 @@ function getIssuesStatusPath(
   );
 }
 
-function getIssueFilesDir(
-  cwd: string,
-  feature: { id: number; slug: string },
-) {
+function getIssueFilesDir(cwd: string, feature: { id: number; slug: string }) {
   return join(cwd, ".scratch", "features", formatFeatureDir(feature), "issues");
 }
 

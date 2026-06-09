@@ -12,7 +12,7 @@ Break a PRD into independently-grabbable issues using vertical slices (tracer bu
 Read the PRD from `.scratch/features/<id>-<slug>/PRD.md`. Determine the current feature by running:
 
 ```
-pnpm issues-manager get-feature
+pnpm features-cli get-feature
 ```
 
 This returns the active feature's id, slug, and status. All issues are written to that feature's directory.
@@ -31,25 +31,25 @@ Write each issue file to:
 After writing all issue files, run:
 
 ```
-pnpm issues-manager list-issues
+pnpm features-cli list-issues
 ```
 
 to verify the CLI picked them up correctly and regenerated `issues-status.json`.
 
 ## CLI Integration
 
-All issue state management is handled through `pnpm issues-manager`. NEVER manually edit `issues-status.json`.
+All issue state management is handled through `pnpm features-cli`. NEVER manually edit `issues-status.json`.
 
 Available commands:
 
 | Command | Purpose |
 |---|---|
-| `pnpm issues-manager get-feature` | Show current feature id, slug, status |
-| `pnpm issues-manager list-issues` | List all issues for the current feature |
-| `pnpm issues-manager get-issue --next` | Show the next actionable unblocked issue |
-| `pnpm issues-manager update-status <id> --status <status>` | Transition an issue's status |
-| `pnpm issues-manager update-blockers <id> --blockers <none\|id[,id...]>` | Set blocker references |
-| `pnpm issues-manager update-feature <slug> --status <status>` | Update feature status (todo, in-progress, archived) |
+| `pnpm features-cli get-feature` | Show current feature id, slug, status |
+| `pnpm features-cli list-issues` | List all issues for the current feature |
+| `pnpm features-cli get-issue --next` | Show the next actionable unblocked issue |
+| `pnpm features-cli update-status <id> --status <status>` | Transition an issue's status |
+| `pnpm features-cli update-blockers <id> --blockers <none\|id[,id...]>` | Set blocker references |
+| `pnpm features-cli update-feature <slug> --status <status>` | Update feature status (todo, in-progress, archived) |
 
 ## Issue Frontmatter Format
 
@@ -88,7 +88,7 @@ BlockedBy: 3, 7
 
 ### 1. Gather context
 
-Run `pnpm issues-manager get-feature` to identify the active feature. Read the PRD from `.scratch/features/<id>-<slug>/PRD.md`.
+Run `pnpm features-cli get-feature` to identify the active feature. Read the PRD from `.scratch/features/<id>-<slug>/PRD.md`.
 
 ### 2. Explore the codebase (optional)
 
@@ -143,7 +143,7 @@ Use the issue template below for the file body.
 After writing all issue files, run:
 
 ```
-pnpm issues-manager list-issues
+pnpm features-cli list-issues
 ```
 
 Verify that:
@@ -153,7 +153,7 @@ Verify that:
 If issues need blocker adjustments, use:
 
 ```
-pnpm issues-manager update-blockers <id> --blockers <none|id[,id...]>
+pnpm features-cli update-blockers <id> --blockers <none|id[,id...]>
 ```
 
 <issue-template>

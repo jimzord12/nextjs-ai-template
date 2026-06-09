@@ -9,7 +9,7 @@ When invoked in the pipeline context (e.g. "grill this brief"), the skill operat
 
 ### Input
 
-1. Determine the active feature by running `pnpm issues-manager get-feature`. This returns the feature slug (e.g. `001-my-feature`).
+1. Determine the active feature by running `pnpm features-cli get-feature`. This returns the feature slug (e.g. `001-my-feature`).
 2. Read the brief from `.scratch/features/<slug>/BRIEF.md`. The brief is the primary input — the grilling session stress-tests it.
 
 ### Output
