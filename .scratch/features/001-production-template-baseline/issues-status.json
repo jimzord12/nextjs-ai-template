@@ -28,9 +28,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [
-        1
-      ],
+      "blockedBy": [1],
       "filePath": ".scratch/features/001-production-template-baseline/issues/03-i18n-routing-skeleton.md"
     },
     {
@@ -39,9 +37,7 @@
       "status": "done",
       "method": "tdd",
       "complexity": 4,
-      "blockedBy": [
-        3
-      ],
+      "blockedBy": [3],
       "filePath": ".scratch/features/001-production-template-baseline/issues/04-local-cms-foundation.md"
     },
     {
@@ -50,9 +46,7 @@
       "status": "done",
       "method": "tdd",
       "complexity": 3,
-      "blockedBy": [
-        3
-      ],
+      "blockedBy": [3],
       "filePath": ".scratch/features/001-production-template-baseline/issues/05-contact-form.md"
     },
     {
@@ -61,9 +55,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [
-        4
-      ],
+      "blockedBy": [4],
       "filePath": ".scratch/features/001-production-template-baseline/issues/06-hotel-homepage.md"
     },
     {
@@ -72,9 +64,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [
-        4
-      ],
+      "blockedBy": [4],
       "filePath": ".scratch/features/001-production-template-baseline/issues/07-hotel-rooms.md"
     },
     {
@@ -83,10 +73,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 2,
-      "blockedBy": [
-        6,
-        7
-      ],
+      "blockedBy": [6, 7],
       "filePath": ".scratch/features/001-production-template-baseline/issues/08-seo-routes.md"
     },
     {
@@ -95,9 +82,7 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [
-        2
-      ],
+      "blockedBy": [2],
       "filePath": ".scratch/features/001-production-template-baseline/issues/09-ci-pipeline.md"
     },
     {
@@ -106,9 +91,7 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [
-        6
-      ],
+      "blockedBy": [6],
       "filePath": ".scratch/features/001-production-template-baseline/issues/10-storybook.md"
     },
     {
@@ -117,10 +100,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [
-        6,
-        7
-      ],
+      "blockedBy": [6, 7],
       "filePath": ".scratch/features/001-production-template-baseline/issues/11-playwright-e2e.md"
     },
     {
@@ -129,9 +109,7 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [
-        2
-      ],
+      "blockedBy": [2],
       "filePath": ".scratch/features/001-production-template-baseline/issues/12-security-bundle.md"
     },
     {
@@ -140,9 +118,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 4,
-      "blockedBy": [
-        11
-      ],
+      "blockedBy": [11],
       "filePath": ".scratch/features/001-production-template-baseline/issues/13-performance-accessibility.md"
     },
     {
@@ -151,10 +127,7 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [
-        8,
-        11
-      ],
+      "blockedBy": [8, 11],
       "filePath": ".scratch/features/001-production-template-baseline/issues/14-seo-qa.md"
     },
     {
@@ -163,10 +136,7 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [
-        6,
-        7
-      ],
+      "blockedBy": [6, 7],
       "filePath": ".scratch/features/001-production-template-baseline/issues/15-reset-script.md"
     },
     {
@@ -175,9 +145,7 @@
       "status": "done",
       "method": "chore",
       "complexity": 4,
-      "blockedBy": [
-        13
-      ],
+      "blockedBy": [13],
       "filePath": ".scratch/features/001-production-template-baseline/issues/16-cross-browser-reporting.md"
     },
     {
@@ -186,9 +154,7 @@
       "status": "done",
       "method": "chore",
       "complexity": 3,
-      "blockedBy": [
-        16
-      ],
+      "blockedBy": [16],
       "filePath": ".scratch/features/001-production-template-baseline/issues/17-documentation.md"
     }
   ]
