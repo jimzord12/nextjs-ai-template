@@ -5,13 +5,13 @@ description: Discover and implement 1-3 ready-for-agent issues using the issues-
 
 # do-issue
 
-Orchestrate implementation of `ready-for-agent` issues from `.scratch/<feature>/issues/`.
+Orchestrate implementation of `ready-for-agent` issues from `.scratch/features/<index>-<slug>/issues/`.
 
-Uses the bundled issues-manager CLI to scan, select, and update issue state. Delegates all implementation to subagents — the orchestrator never writes production code.
+Uses the project-level issues-manager CLI at `scripts/issues-manager-cli/` (run via `pnpm issues-manager <command>`) to scan, select, and update issue state. Delegates all implementation to subagents — the orchestrator never writes production code.
 
 ## Issues Manager CLI
 
-The skill bundles a CLI at `scripts/issues-manager-cli/`. Run via:
+The CLI lives at `scripts/issues-manager-cli/` in the project root. Run via:
 
 ```
 pnpm issues-manager <command>
@@ -42,7 +42,7 @@ needs-triage → needs-info → ready-for-agent → in-progress → done
 
 ### Issue File Requirements
 
-Each issue in `.scratch/<feature>/issues/` must have these frontmatter fields:
+Each issue in `.scratch/features/<id>-<slug>/issues/` must have these frontmatter fields:
 
 - **`Method:`** — `tdd` or `chore` (see [METHODS.md](METHODS.md))
 - **`Status:`** — current state in the state machine
@@ -63,9 +63,9 @@ You are the **orchestrator, not the implementer**. Your job is to:
 7. **Close** — mark the issue done, check off acceptance criteria
 8. **Report** — summarise results
 
-**You MUST NOT implement code yourself.** Every line of production code, test code, or configuration must be written by a subagent. You may read files to build context for delegation, but you never edit files directly (except issue markdown status updates in step 7).
+**You MUST NOT implement code yourself.** Every line of production code, test code, or configuration must be written by a subagent. You may read files to build context for delegation, but you never edit files directly (except issue markdown status updates in step 7). **Never write code yourself — always delegate via a `task` subagent.**
 
-If a subagent's output is incomplete or incorrect, re-delegate with sharper instructions — do not fix it yourself.
+If a subagent's output is incomplete or incorrect, **re-delegate with sharper instructions — do NOT fix it yourself.**
 
 ## Workflow
 
@@ -125,16 +125,24 @@ Each subagent assignment MUST include:
 - The acceptance criteria as a verifiable checklist
 - Any file paths, conventions, or constraints discovered during context loading
 
+**TDD emphasis**: When the method is `tdd`, the subagent MUST follow strict red-green-refactor:
+1. **RED** — Write a failing test FIRST that defines the expected behavior
+2. **GREEN** — Implement the minimum code required to make the test pass
+3. **REFACTOR** — Clean up the code while keeping tests green
+4. **VERIFY** — Run `pnpm test` to confirm everything passes
+
+The subagent must not write implementation code before a failing test exists.
+
 ### 5. Judge output
 
-When a subagent returns, review its output critically:
+When a subagent returns, review its output critically against these checks:
 
-- Does every acceptance criterion have evidence of being met?
-- Did the subagent follow the correct method (TDD red-green-refactor, or chore steps)?
-- Are there obvious gaps — untested branches, missing error handling, hardcoded values?
-- Does the code match the project's existing style and conventions?
+- **Acceptance criteria**: Does every acceptance criterion have evidence of being met?
+- **Method fidelity**: Did the subagent follow the correct method? For TDD — strict red-green-refactor with tests written first. For chore — direct implementation without unnecessary ceremony.
+- **Style and conventions**: Does the code match the project's existing style and conventions? (See `docs/CONVENTIONS.md`.)
+- **Coverage gaps**: Are there untested branches, missing error handling, hardcoded values, or obvious gaps?
 
-**If the output is incomplete or incorrect:** re-delegate to a new subagent with a sharper brief that calls out exactly what was wrong. Do NOT fix it yourself.
+**If the output is incomplete or incorrect:** re-delegate to a new subagent with a sharper brief that calls out exactly what was wrong. **Do NOT fix it yourself — re-delegation is the only acceptable response to incomplete work.**
 
 **If the output is acceptable:** proceed to step 6.
 
@@ -143,8 +151,9 @@ When a subagent returns, review its output critically:
 After all subagents complete and pass judgment, run verification yourself:
 
 - `pnpm test` — all tests must pass
-- Build verification (`next build` or equivalent)
-- Fix any failures by re-delegating to a subagent with specific instructions about what broke
+- `pnpm build` — project must build successfully
+
+If anything fails, re-delegate to a subagent with specific instructions about what broke. Do NOT fix it yourself.
 
 ### 7. Mark done
 

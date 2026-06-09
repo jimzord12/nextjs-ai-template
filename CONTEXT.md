@@ -53,7 +53,7 @@ Running `scripts/reset-example.sh` to strip all Hotel Example content and pages,
 _Avoid_: Clean, clear, wipe, teardown
 
 **V1 Scope**:
-Phase 1 ships a working demo site with: Local CMS + Storyblok adapters, hybrid routing (catch-all + explicit), 3-4 slices, theme interface with 2-3 presets, i18n, minimal init script, CSS-only motion, and full QA pipeline. Hosting model is determined by CMS choice: local CMS → static export, external CMS → serverless. Generators, GSAP motion, TinaCMS adapter, and dev theme tool are Phase 2.
+Ships with: Local JSON + Sanity + Payload CMS adapters, a curated component library with unique marketing components, strong documentation, and well-defined developer+AI workflows. Includes: hybrid routing, theme system with presets, i18n, init script, CSS-only motion, and full QA pipeline. Hosting model is determined by CMS choice: local CMS → static export, external CMS → serverless. See `ROADMAP.md` for milestones. Post-V1: GSAP motion, dev theme tool, code generators.
 _Avoid_: Baseline, initial release, MVP
 
 **Theme**:

@@ -31,18 +31,12 @@ export async function runIssuesManagerCli(
       const featureFlagIndex = args.indexOf("--feature");
       const actionableOnly = args.includes("--actionable");
       const state = await readFeaturesState(options.cwd);
-      const featureSlug = resolveFeatureForIssueRead(
+      const feature = resolveFeatureForIssueRead(
         state,
         featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
-      ).slug;
+      );
 
-      if (!featureSlug) {
-        throw new FeatureStateError(
-          "Usage: list-issues [--feature <slug>] [--actionable]",
-        );
-      }
-
-      const issuesState = await readIssuesState(options.cwd, featureSlug);
+      const issuesState = await readIssuesState(options.cwd, feature);
       const issues = actionableOnly
         ? getActionableIssues(issuesState)
         : issuesState.issues;
@@ -183,7 +177,7 @@ export async function runIssuesManagerCli(
         featureFlagIndex >= 0 ? args[featureFlagIndex + 1] : undefined,
       );
 
-      const issuesState = await readIssuesState(options.cwd, feature.slug);
+      const issuesState = await readIssuesState(options.cwd, feature);
       const result = selectNextIssue(issuesState);
 
       if (result.kind === "winner") {

@@ -2,7 +2,7 @@
   "featureId": 1,
   "featureSlug": "production-template-baseline",
   "featureStatus": "in-progress",
-  "lastUpdated": "2026-06-07T18:38:28.646Z",
+  "lastUpdated": "2026-06-09T12:32:14.852Z",
   "issues": [
     {
       "id": 1,
@@ -11,7 +11,7 @@
       "method": "chore",
       "complexity": 1,
       "blockedBy": [],
-      "filePath": ".scratch/production-template-baseline/issues/01-fix-configuration-aliases.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/01-fix-configuration-aliases.md"
     },
     {
       "id": 2,
@@ -20,7 +20,7 @@
       "method": "chore",
       "complexity": 2,
       "blockedBy": [],
-      "filePath": ".scratch/production-template-baseline/issues/02-version-pinning-audit.md"
+      "filePath": ".scratch/features/001-production-template-baseline/issues/02-version-pinning-audit.md"
     },
     {
       "id": 3,
@@ -28,8 +28,10 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [1],
-      "filePath": ".scratch/production-template-baseline/issues/03-i18n-routing-skeleton.md"
+      "blockedBy": [
+        1
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/03-i18n-routing-skeleton.md"
     },
     {
       "id": 4,
@@ -37,8 +39,10 @@
       "status": "done",
       "method": "tdd",
       "complexity": 4,
-      "blockedBy": [3],
-      "filePath": ".scratch/production-template-baseline/issues/04-local-cms-foundation.md"
+      "blockedBy": [
+        3
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/04-local-cms-foundation.md"
     },
     {
       "id": 5,
@@ -46,8 +50,10 @@
       "status": "done",
       "method": "tdd",
       "complexity": 3,
-      "blockedBy": [3],
-      "filePath": ".scratch/production-template-baseline/issues/05-contact-form.md"
+      "blockedBy": [
+        3
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/05-contact-form.md"
     },
     {
       "id": 6,
@@ -55,8 +61,10 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [4],
-      "filePath": ".scratch/production-template-baseline/issues/06-hotel-homepage.md"
+      "blockedBy": [
+        4
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/06-hotel-homepage.md"
     },
     {
       "id": 7,
@@ -64,8 +72,10 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [4],
-      "filePath": ".scratch/production-template-baseline/issues/07-hotel-rooms.md"
+      "blockedBy": [
+        4
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/07-hotel-rooms.md"
     },
     {
       "id": 8,
@@ -73,8 +83,11 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 2,
-      "blockedBy": [6, 7],
-      "filePath": ".scratch/production-template-baseline/issues/08-seo-routes.md"
+      "blockedBy": [
+        6,
+        7
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/08-seo-routes.md"
     },
     {
       "id": 9,
@@ -82,8 +95,10 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [2],
-      "filePath": ".scratch/production-template-baseline/issues/09-ci-pipeline.md"
+      "blockedBy": [
+        2
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/09-ci-pipeline.md"
     },
     {
       "id": 10,
@@ -91,8 +106,10 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [6],
-      "filePath": ".scratch/production-template-baseline/issues/10-storybook.md"
+      "blockedBy": [
+        6
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/10-storybook.md"
     },
     {
       "id": 11,
@@ -100,8 +117,11 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [6, 7],
-      "filePath": ".scratch/production-template-baseline/issues/11-playwright-e2e.md"
+      "blockedBy": [
+        6,
+        7
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/11-playwright-e2e.md"
     },
     {
       "id": 12,
@@ -109,8 +129,10 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [2],
-      "filePath": ".scratch/production-template-baseline/issues/12-security-bundle.md"
+      "blockedBy": [
+        2
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/12-security-bundle.md"
     },
     {
       "id": 13,
@@ -118,8 +140,10 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 4,
-      "blockedBy": [11],
-      "filePath": ".scratch/production-template-baseline/issues/13-performance-accessibility.md"
+      "blockedBy": [
+        11
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/13-performance-accessibility.md"
     },
     {
       "id": 14,
@@ -127,8 +151,11 @@
       "status": "done",
       "method": "chore",
       "complexity": 2,
-      "blockedBy": [8, 11],
-      "filePath": ".scratch/production-template-baseline/issues/14-seo-qa.md"
+      "blockedBy": [
+        8,
+        11
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/14-seo-qa.md"
     },
     {
       "id": 15,
@@ -136,8 +163,11 @@
       "status": "done",
       "method": "scaffold",
       "complexity": 3,
-      "blockedBy": [6, 7],
-      "filePath": ".scratch/production-template-baseline/issues/15-reset-script.md"
+      "blockedBy": [
+        6,
+        7
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/15-reset-script.md"
     },
     {
       "id": 16,
@@ -145,8 +175,10 @@
       "status": "done",
       "method": "chore",
       "complexity": 4,
-      "blockedBy": [13],
-      "filePath": ".scratch/production-template-baseline/issues/16-cross-browser-reporting.md"
+      "blockedBy": [
+        13
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/16-cross-browser-reporting.md"
     },
     {
       "id": 17,
@@ -154,8 +186,10 @@
       "status": "done",
       "method": "chore",
       "complexity": 3,
-      "blockedBy": [16],
-      "filePath": ".scratch/production-template-baseline/issues/17-documentation.md"
+      "blockedBy": [
+        16
+      ],
+      "filePath": ".scratch/features/001-production-template-baseline/issues/17-documentation.md"
     }
   ]
 }

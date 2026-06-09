@@ -12,9 +12,6 @@ const workspaces: string[] = [];
 const execFileAsync = promisify(execFile);
 const binPath = join(
   process.cwd(),
-  ".agents",
-  "skills",
-  "do-issue",
   "scripts",
   "issues-manager-cli",
   "bin.ts",
@@ -57,6 +54,7 @@ async function writeIssuesState(
     }>;
   },
 ) {
+  const featureId = issuesState.featureId;
   const normalizedIssuesState = {
     ...issuesState,
     issues: issuesState.issues.map((issue) => ({
@@ -67,6 +65,7 @@ async function writeIssuesState(
 
   await writeIssuesStateFile(
     workspacePath,
+    featureId,
     featureSlug,
     JSON.stringify(normalizedIssuesState, null, 2),
   );
@@ -74,10 +73,12 @@ async function writeIssuesState(
 
 async function writeIssuesStateFile(
   workspacePath: string,
+  featureId: number,
   featureSlug: string,
   contents: string,
 ) {
-  const featurePath = join(workspacePath, ".scratch", featureSlug);
+  const featureDir = `${String(featureId).padStart(3, "0")}-${featureSlug}`;
+  const featurePath = join(workspacePath, ".scratch", "features", featureDir);
 
   await mkdir(featurePath, { recursive: true });
   await writeFile(join(featurePath, "issues-status.json"), contents, "utf8");
@@ -85,11 +86,13 @@ async function writeIssuesStateFile(
 
 async function writeIssueMarkdown(
   workspacePath: string,
+  featureId: number,
   featureSlug: string,
   fileName: string,
   contents: string,
 ) {
-  const issuesDir = join(workspacePath, ".scratch", featureSlug, "issues");
+  const featureDir = `${String(featureId).padStart(3, "0")}-${featureSlug}`;
+  const issuesDir = join(workspacePath, ".scratch", "features", featureDir, "issues");
 
   await mkdir(issuesDir, { recursive: true });
   await writeFile(join(issuesDir, fileName), contents, "utf8");
@@ -124,7 +127,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 3,
           filePath:
-            ".scratch/issues-manager-cli/issues/01-feature-scope-inspection-and-activation.md",
+            ".scratch/features/001-issues-manager-cli/issues/01-feature-scope-inspection-and-activation.md",
         },
         {
           id: 2,
@@ -133,7 +136,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 3,
           filePath:
-            ".scratch/issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
+            ".scratch/features/001-issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
         },
       ],
     });
@@ -151,10 +154,10 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("Derived feature scope title");
     expect(result.stdout).toContain("Derived inventory title");
     expect(result.stdout).toContain(
-      ".scratch/issues-manager-cli/issues/01-feature-scope-inspection-and-activation.md",
+      ".scratch/features/001-issues-manager-cli/issues/01-feature-scope-inspection-and-activation.md",
     );
     expect(result.stdout).toContain(
-      ".scratch/issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
+      ".scratch/features/001-issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
     );
   });
 
@@ -219,7 +222,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [3],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -228,7 +231,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 3,
           blockedBy: [4],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
         {
           id: 3,
@@ -237,7 +240,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/03.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/03.md",
         },
         {
           id: 4,
@@ -246,7 +249,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/04.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/04.md",
         },
       ],
     });
@@ -271,6 +274,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssuesStateFile(
       workspacePath,
+      1,
       "issues-manager-cli",
       JSON.stringify(
         {
@@ -284,7 +288,7 @@ describe("runIssuesManagerCli", () => {
               status: "ready-for-agent",
               method: "tdd",
               complexity: 3,
-              filePath: ".scratch/issues-manager-cli/issues/01.md",
+              filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
             },
           ],
         },
@@ -310,6 +314,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "01-legacy.md",
       [
@@ -328,6 +333,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-done.md",
       [
@@ -352,7 +358,8 @@ describe("runIssuesManagerCli", () => {
       join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
         "01-legacy.md",
       ),
@@ -363,7 +370,8 @@ describe("runIssuesManagerCli", () => {
         join(
           workspacePath,
           ".scratch",
-          "issues-manager-cli",
+          "features",
+          "001-issues-manager-cli",
           "issues-status.json",
         ),
         "utf8",
@@ -391,6 +399,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "01-target.md",
       [
@@ -409,6 +418,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-still-legacy.md",
       [
@@ -451,7 +461,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toBe("");
     expect(result.stderr).toContain("Missing derived issue state");
     expect(result.stderr).toContain(
-      ".scratch/issues-manager-cli/issues-status.json",
+      "features/001-issues-manager-cli/issues-status.json",
     );
   });
 
@@ -462,6 +472,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssuesStateFile(
       workspacePath,
+      1,
       "issues-manager-cli",
       "not json\n",
     );
@@ -477,7 +488,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toBe("");
     expect(result.stderr).toContain("Malformed derived issue state");
     expect(result.stderr).toContain(
-      ".scratch/issues-manager-cli/issues-status.json",
+      "features/001-issues-manager-cli/issues-status.json",
     );
   });
 
@@ -703,7 +714,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 3,
           filePath:
-            ".scratch/issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
+            ".scratch/features/001-issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
         },
       ],
     });
@@ -720,7 +731,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("slug: issues-manager-cli");
     expect(result.stdout).toContain("Derived inventory title");
     expect(result.stdout).toContain(
-      ".scratch/issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
+      ".scratch/features/001-issues-manager-cli/issues/02-issue-inventory-for-a-feature.md",
     );
     expect(result.stderr).toBe("");
   });
@@ -791,7 +802,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [2],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -800,7 +811,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
       ],
     });
@@ -826,6 +837,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "01-legacy.md",
       [
@@ -844,6 +856,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-done.md",
       [
@@ -890,7 +903,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -899,7 +912,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 3,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
         {
           id: 3,
@@ -908,7 +921,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 5,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/03.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/03.md",
         },
       ],
     });
@@ -924,7 +937,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("id: 2");
     expect(result.stdout).toContain("Next actionable");
     expect(result.stdout).toContain("complexity: 3");
-    expect(result.stdout).toContain(".scratch/issues-manager-cli/issues/02.md");
+    expect(result.stdout).toContain(".scratch/features/001-issues-manager-cli/issues/02.md");
   });
 
   it("returns empty no-winner as success when feature has no issues", async () => {
@@ -965,7 +978,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -974,7 +987,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
       ],
     });
@@ -1005,7 +1018,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 1,
           blockedBy: [2],
-          filePath: ".scratch/issues-manager-cli/issues/01.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/01.md",
         },
         {
           id: 2,
@@ -1014,7 +1027,7 @@ describe("runIssuesManagerCli", () => {
           method: "tdd",
           complexity: 2,
           blockedBy: [],
-          filePath: ".scratch/issues-manager-cli/issues/02.md",
+          filePath: ".scratch/features/001-issues-manager-cli/issues/02.md",
         },
       ],
     });
@@ -1074,6 +1087,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-example.md",
       [
@@ -1096,7 +1110,8 @@ describe("runIssuesManagerCli", () => {
       join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
         "02-example.md",
       ),
@@ -1110,7 +1125,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.stdout).toContain("issue: 2");
     expect(result.stdout).toContain("status: in-progress");
     expect(result.stdout).toContain(
-      ".scratch/issues-manager-cli/issues/02-example.md",
+      "issues/02-example.md",
     );
     expect(updatedMarkdown).toContain("Status: in-progress");
   });
@@ -1122,6 +1137,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-example.md",
       [
@@ -1151,6 +1167,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-example.md",
       [
@@ -1173,7 +1190,8 @@ describe("runIssuesManagerCli", () => {
       join(
         workspacePath,
         ".scratch",
-        "issues-manager-cli",
+        "features",
+        "001-issues-manager-cli",
         "issues",
         "02-example.md",
       ),
@@ -1192,6 +1210,7 @@ describe("runIssuesManagerCli", () => {
 
     await writeIssueMarkdown(
       workspacePath,
+      1,
       "issues-manager-cli",
       "02-example.md",
       [

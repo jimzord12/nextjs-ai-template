@@ -15,7 +15,7 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     include: [
       "src/**/*.test.{ts,tsx}",
-      ".agents/skills/do-issue/scripts/**/*.test.{ts,tsx}",
+      "scripts/**/*.test.{ts,tsx}",
     ],
     coverage: {
       provider: "v8",
