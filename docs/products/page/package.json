@@ -10,7 +10,8 @@
     "preview": "bunx serve dist",
     "typecheck": "bunx tsc --noEmit",
     "lint": "bunx biome check --apply .",
-    "test": "bun test"
+    "test": "bun test",
+    "clean:screenshots": "bun run scripts/clean-screenshots.ts"
   },
   "dependencies": {
     "@awesome.me/webawesome": "latest"

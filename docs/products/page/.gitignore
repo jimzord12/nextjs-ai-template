@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.lockb
 docs/products/page/screenshots/
+./screenshots/

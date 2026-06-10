@@ -53,6 +53,7 @@ bun run build        # production single-file HTML
 bun run typecheck    # tsc --noEmit
 bun run lint         # biome check --apply .
 bun test             # bun:test
+bun run clean:screenshots  # delete all files in screenshots/ and remove the directory
 ```
 
 ---
