@@ -1,0 +1,23 @@
+{
+  "name": "web-tiers-guide",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun ./src/index.html --console",
+    "build": "bun build ./src/index.html --minify --outfile=dist/web-tiers-guide.html",
+    "build:standalone": "bun build --compile --target=browser --minify ./src/index.html --outfile=dist/web-tiers-guide.html",
+    "preview": "bunx serve dist",
+    "typecheck": "bunx tsc --noEmit",
+    "lint": "bunx biome check --apply .",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@awesome.me/webawesome": "latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "@types/bun": "latest",
+    "@happy-dom/global-registrator": "latest"
+  }
+}
