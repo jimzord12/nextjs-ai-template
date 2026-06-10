@@ -66,11 +66,11 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 - [x] `#lang=en` in URL forces English on load
 - [x] CSS tokens produce correct values for both themes
 
----
+## M3 — Header & Hero ✅
 
-## M3 — Header & Hero 🔲
-
-> **Status: TODO**
+> **Status: DONE** — Completed 2026-06-10
+>
+> Verified via browser: header sticky + blur, bilingual copy switches, both cards render, all 4 animations fire.
 >
 > First visual impression. Sticky header + the car analogy opening.
 
@@ -86,11 +86,11 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 **Done when:**
 
-- [ ] Header sticks on scroll, blur backdrop visible, mobile shrinks to logo-only
-- [ ] Hero fills viewport with correct bilingual copy in both languages
-- [ ] Both car cards render with correct data (prices, bullets)
-- [ ] All 4 animations fire on page load (headline, left card, right card, chevron)
-- [ ] Animations disable with `prefers-reduced-motion: reduce`
+- [x] Header sticks on scroll, blur backdrop visible, mobile shrinks to logo-only
+- [x] Hero fills viewport with correct bilingual copy in both languages
+- [x] Both car cards render with correct data (prices, bullets)
+- [x] All 4 animations fire on page load (headline, left card, right card, chevron)
+- [x] Animations disable with `prefers-reduced-motion: reduce`
 
 ---
 

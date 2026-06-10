@@ -27,9 +27,6 @@ export const i18n: Record<Lang, Record<string, string>> = {
 
     'hero.bridge':
       'Αυτή η λογική ισχύει ακριβώς το ίδιο για τις ιστοσελίδες. Ορίστε τα πέντε επίπεδα.',
-
-    'test.greeting': 'Γεια σας! Οι μεταφράσεις λειτουργούν.',
-    'test.themeLabel': 'Θέμα:',
   },
   en: {
     'site.title': 'The Website Tiers Guide',
@@ -57,9 +54,6 @@ export const i18n: Record<Lang, Record<string, string>> = {
 
     'hero.bridge':
       'This same logic applies exactly to websites. Here are the five tiers.',
-
-    'test.greeting': 'Hello! Translations work.',
-    'test.themeLabel': 'Theme:',
   },
 }
 

@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Hero Section — full viewport car analogy opening
+   ========================================================================== */
+
+.hero {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 45%,
+      rgba(1, 105, 111, 0.06) 0%,
+      transparent 70%
+    ),
+    var(--color-surface);
+}
+
+.hero__eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text);
+  max-width: 720px;
+  margin-bottom: var(--space-8);
+  /* Animation */
+  clip-path: inset(0 0 100% 0);
+  animation: reveal-up 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 200ms;
+}
+
+.hero__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 640px;
+}
+
+.hero__card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  background: var(--color-surface-offset);
+  text-align: left;
+}
+
+.hero__card--left {
+  animation: slide-from-left 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 400ms;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.hero__card--right {
+  animation: slide-from-right 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 600ms;
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.hero__card-emoji {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.hero__card-title {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.hero__card-price {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
+}
+
+.hero__card-list {
+  margin-top: var(--space-3);
+  padding-left: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  list-style: disc;
+}
+
+.hero__card-list li {
+  margin-bottom: var(--space-1);
+}
+
+.hero__bridge {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  max-width: 560px;
+  margin-top: var(--space-8);
+}
+
+.hero__scroll-cta {
+  margin-top: var(--space-10);
+  animation: bounce-chevron 1.4s ease-in-out infinite;
+  color: var(--color-text-muted);
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---- Keyframes ---- */
+
+@keyframes reveal-up {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes slide-from-left {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-from-right {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce-chevron {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* ---- Reduced Motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__headline,
+  .hero__card--left,
+  .hero__card--right,
+  .hero__scroll-cta {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion must override all animation declarations */
+    animation: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: same justification — accessibility override */
+    transition: opacity 200ms ease !important;
+  }
+
+  .hero__headline {
+    clip-path: none;
+  }
+
+  .hero__card--left,
+  .hero__card--right {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 639px) {
+  .hero {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .hero__headline {
+    font-size: clamp(1.5rem, 6vw, 2.25rem);
+  }
+
+  .hero__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__bridge {
+    font-size: var(--text-base);
+  }
+}

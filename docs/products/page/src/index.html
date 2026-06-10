@@ -53,49 +53,46 @@
     </div>
   </header>
 
-  <!-- M2 Test Content -->
-  <main class="container section">
-    <section class="test-section">
-      <h1 data-i18n="test.greeting" style="font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-4);"></h1>
-      <p data-i18n="test.themeLabel" style="font-size: var(--text-sm); color: var(--color-text-muted); margin-bottom: var(--space-8);"></p>
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <p class="hero__eyebrow" data-i18n="hero.eyebrow"></p>
+      <h1 class="hero__headline" data-i18n="hero.headline"></h1>
 
-      <!-- Hero preview (verifies font switching + i18n) -->
-      <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); background: var(--color-surface-offset); margin-bottom: var(--space-8);">
-        <p data-i18n="hero.eyebrow" style="font-size: var(--text-sm); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--space-4);"></p>
-        <h2 data-i18n="hero.headline" style="font-family: var(--font-display); font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; line-height: 1.15; color: var(--color-text); max-width: 720px; margin-bottom: var(--space-6);"></h2>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
-          <!-- Left card -->
-          <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); background: var(--color-surface);">
-            <span style="font-size: 1.5rem;">🚗</span>
-            <h3 data-i18n="hero.card.left.title" style="font-weight: 700; margin-top: var(--space-2);"></h3>
-            <p data-i18n="hero.card.left.price" style="color: var(--color-text-muted); font-size: var(--text-sm);"></p>
-            <ul style="margin-top: var(--space-3); padding-left: var(--space-4); font-size: var(--text-sm); color: var(--color-text-muted);">
-              <li data-i18n="hero.card.left.bullet1"></li>
-              <li data-i18n="hero.card.left.bullet2"></li>
-              <li data-i18n="hero.card.left.bullet3"></li>
-            </ul>
-          </div>
-          <!-- Right card -->
-          <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); background: var(--color-surface);">
-            <span style="font-size: 1.5rem;">🚘</span>
-            <h3 data-i18n="hero.card.right.title" style="font-weight: 700; margin-top: var(--space-2);"></h3>
-            <p data-i18n="hero.card.right.price" style="color: var(--color-text-muted); font-size: var(--text-sm);"></p>
-            <ul style="margin-top: var(--space-3); padding-left: var(--space-4); font-size: var(--text-sm); color: var(--color-text-muted);">
-              <li data-i18n="hero.card.right.bullet1"></li>
-              <li data-i18n="hero.card.right.bullet2"></li>
-              <li data-i18n="hero.card.right.bullet3"></li>
-            </ul>
-          </div>
+      <div class="hero__cards">
+        <!-- Left card: City hatchback -->
+        <div class="hero__card hero__card--left">
+          <span class="hero__card-emoji" aria-hidden="true">🚗</span>
+          <h2 class="hero__card-title" data-i18n="hero.card.left.title"></h2>
+          <p class="hero__card-price" data-i18n="hero.card.left.price"></p>
+          <ul class="hero__card-list">
+            <li data-i18n="hero.card.left.bullet1"></li>
+            <li data-i18n="hero.card.left.bullet2"></li>
+            <li data-i18n="hero.card.left.bullet3"></li>
+          </ul>
         </div>
 
-        <p data-i18n="hero.bridge" style="font-size: var(--text-lg); font-weight: 500; color: var(--color-text-muted); max-width: 560px;"></p>
+        <!-- Right card: BMW 3 Series -->
+        <div class="hero__card hero__card--right">
+          <span class="hero__card-emoji" aria-hidden="true">🚘</span>
+          <h2 class="hero__card-title" data-i18n="hero.card.right.title"></h2>
+          <p class="hero__card-price" data-i18n="hero.card.right.price"></p>
+          <ul class="hero__card-list">
+            <li data-i18n="hero.card.right.bullet1"></li>
+            <li data-i18n="hero.card.right.bullet2"></li>
+            <li data-i18n="hero.card.right.bullet3"></li>
+          </ul>
+        </div>
       </div>
 
-      <!-- WA component test (kept from M1) -->
-      <wa-details summary="Web Awesome Test">
-        <p>If you can expand this, WA components work correctly.</p>
-      </wa-details>
+      <p class="hero__bridge" data-i18n="hero.bridge"></p>
+
+      <button class="hero__scroll-cta" type="button" aria-label="Scroll down">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img">
+          <title>Scroll down</title>
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
     </section>
   </main>
 </body>

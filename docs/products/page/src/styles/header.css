@@ -1,0 +1,119 @@
+/* ==========================================================================
+   Header — sticky site header with theme toggle and language switcher
+   Extracted from main.css M2 test styles (formalized in M3).
+   ========================================================================== */
+
+/* ---- Header Container ---- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  border-bottom: 1px solid var(--color-border);
+  height: 56px;
+  padding-inline: var(--space-6);
+  transition: background var(--transition-normal);
+}
+
+/* ---- Inner Layout ---- */
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 100%;
+}
+
+/* ---- Logo ---- */
+
+.site-header__logo {
+  display: flex;
+  color: currentColor;
+}
+
+/* ---- Title ---- */
+
+.site-header__title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+/* ---- Spacer ---- */
+
+.site-header__spacer {
+  flex: 1;
+}
+
+/* ---- Theme Toggle ---- */
+
+.site-header__toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 300ms ease,
+    background-color var(--transition-fast);
+}
+
+.site-header__toggle:hover {
+  background: var(--color-surface-offset);
+}
+
+.site-header__toggle:active {
+  transform: rotate(360deg);
+}
+
+/* ---- Theme Icon Visibility ---- */
+
+[data-theme="light"] .icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .icon-sun {
+  display: none;
+}
+
+/* ---- Language Pill ---- */
+
+.lang-pill {
+  display: inline-flex;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.lang-pill button {
+  padding: 4px 12px;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.lang-pill button[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 639px) {
+  .site-header {
+    height: 48px;
+    padding-inline: var(--space-3);
+  }
+
+  .site-header__title {
+    display: none;
+  }
+}
