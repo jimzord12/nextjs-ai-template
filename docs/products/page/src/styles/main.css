@@ -1,0 +1,36 @@
+/* M1 — Minimal skeleton styles. Tokens & theming arrive in M2. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100dvh;
+  color: #1a1918;
+  background: #f7f6f2;
+}
+
+main {
+  max-width: 72rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* FOUCE cloak — hide all WA elements until registered */
+.wa-cloak wa-details,
+.wa-cloak wa-radio-group,
+.wa-cloak wa-radio,
+.wa-cloak wa-tooltip {
+  visibility: hidden;
+}
