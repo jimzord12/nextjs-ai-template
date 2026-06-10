@@ -94,11 +94,13 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 ---
 
-## M4 — Tier Sections 🔲
+## M4 — Tier Sections ✅
 
-> **Status: TODO**
+> **Status: DONE** — Completed 2026-06-10
 >
-> The core content. Five tier cards with accordions, SVG illustrations, and scrollspy navigation.
+> Verified via Playwright: 5 sections render, 5 wa-details accordions register, scrollspy highlights active pill (tier-3 → pill 3), bilingual GR/EN content switches correctly, dark mode toggles, zero JS/console errors.
+>
+> The core content. Five tier cards with accordions and scrollspy navigation.
 
 **Scope:**
 
@@ -109,17 +111,17 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 - `<wa-details>` accordions per tier: What you get, What you don't get, 2-year outlook, Ideal for, TCO mini-bar
 - Full bilingual content for all 5 tiers (copy from SPEC §4)
 - TCO mini-bars per tier (small inline bar, pure CSS)
-- SVG illustrations per tier (inline SVG with CSS animations) — or emoji badge fallback
+- Text badge fallback (01–05 with tier accent colors)
 - Tier accent colors via `--tier-accent` per section
-- `src/i18n.ts` — add all tier content keys (~100+ keys per language)
+- `src/i18n.ts` — add all tier content keys (~130+ keys per language)
 
 **Done when:**
 
-- [ ] All 5 tier sections render with complete bilingual content
-- [ ] `<wa-details>` accordions expand/collapse with keyboard support
-- [ ] Scrollspy highlights the current tier in the orientation bar
-- [ ] Tier accent colors apply correctly to badges, borders, chips, bars
-- [ ] SVG illustrations display (or emoji fallback) with animations
+- [x] All 5 tier sections render with complete bilingual content
+- [x] `<wa-details>` accordions expand/collapse with keyboard support
+- [x] Scrollspy highlights the current tier in the orientation bar
+- [x] Tier accent colors apply correctly to badges, borders, chips, bars
+- [x] Badge fallback (01–05) displays with tier accent colors
 
 ---
 

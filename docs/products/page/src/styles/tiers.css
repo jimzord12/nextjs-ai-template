@@ -1,0 +1,416 @@
+/* ==========================================================================
+   Tier Sections — five quality tiers with orientation nav, header cards,
+   detail accordions, and TCO mini-bars.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Tier accent colours — scoped per modifier
+   --------------------------------------------------------------------------- */
+
+.tier-section--1 {
+  --tier-accent: #b07a00; /* Muted Amber */
+}
+
+.tier-section--2 {
+  --tier-accent: #006494; /* Steel Blue */
+}
+
+.tier-section--3 {
+  --tier-accent: #437a22; /* Slate Green */
+}
+
+.tier-section--4 {
+  --tier-accent: #01696f; /* Hydra Teal */
+}
+
+.tier-section--5 {
+  --tier-accent: #7a39bb; /* Deep Plum */
+}
+
+/* ---------------------------------------------------------------------------
+   Orientation Bar — sticky tier navigator
+   --------------------------------------------------------------------------- */
+
+.tier-nav {
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  border-bottom: 1px solid var(--color-border);
+  transition: background var(--transition-normal);
+}
+
+.tier-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  overflow-x: auto;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.tier-nav__pill {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.tier-nav__pill:hover {
+  background: var(--color-surface-offset);
+  color: var(--color-text);
+}
+
+.tier-nav__pill--active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* ---------------------------------------------------------------------------
+   Tier Section — scroll-reveal wrapper
+   --------------------------------------------------------------------------- */
+
+.tier-section {
+  padding: var(--space-16) var(--space-4);
+  scroll-margin-top: 112px; /* header 56px + nav 56px */
+}
+
+.tier-section.is-visible {
+  /* JS adds .is-visible via IntersectionObserver — styles applied to children */
+}
+
+/* ---------------------------------------------------------------------------
+   Tier Header — card with badge, car, name, price, verdict, chips
+   --------------------------------------------------------------------------- */
+
+.tier-header {
+  max-width: 720px;
+  margin-inline: auto;
+  background: var(--color-surface-offset);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  border-left: 4px solid var(--tier-accent);
+  /* scroll-reveal base state */
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tier-section.is-visible .tier-header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tier-header__badge {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--tier-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-4);
+  flex-shrink: 0;
+}
+
+.tier-header__car {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--tier-accent);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-1);
+}
+
+.tier-header__name {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin-bottom: var(--space-2);
+}
+
+.tier-header__price {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.tier-header__verdict {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-style: italic;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+
+.tier-header__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tier-header__chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--tier-accent);
+  color: var(--tier-accent);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Tier Body — accordion overriding Web Awesome <wa-details>
+   --------------------------------------------------------------------------- */
+
+.tier-body {
+  max-width: 720px;
+  margin-inline: auto;
+  margin-top: var(--space-6);
+  /* scroll-reveal base state */
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) 100ms,
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 100ms;
+}
+
+.tier-section.is-visible .tier-body {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tier-body__group {
+  margin-bottom: var(--space-6);
+}
+
+.tier-body__group-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.tier-body__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tier-body__list-item {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  padding: var(--space-1) 0;
+  padding-left: var(--space-5);
+  position: relative;
+}
+
+.tier-body__list-item::before {
+  content: "";
+  position: absolute;
+  left: var(--space-1);
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--tier-accent);
+}
+
+.tier-body__outlook {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  border-left: 3px solid var(--tier-accent);
+  padding-left: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+/* Override Web Awesome <wa-details> within tier body */
+
+.tier-body wa-details::part(base) {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+}
+
+.tier-body wa-details::part(header) {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  padding: var(--space-3) var(--space-4);
+}
+
+.tier-body wa-details[open]::part(header) {
+  color: var(--tier-accent);
+}
+
+.tier-body wa-details::part(content) {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.tier-body wa-details::part(summary-icon) {
+  color: var(--tier-accent);
+}
+
+/* ---------------------------------------------------------------------------
+   TCO Mini-Bar — 8px bar with solid/transparent accent segments
+   --------------------------------------------------------------------------- */
+
+.tier-tco {
+  margin-top: var(--space-6);
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.tier-tco__label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.tier-tco__bar {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--tier-accent) 15%, transparent);
+  overflow: hidden;
+  display: flex;
+}
+
+.tier-tco__build {
+  height: 100%;
+  background: var(--tier-accent);
+  border-radius: var(--radius-full) 0 0 var(--radius-full);
+  transition: width 800ms ease-out;
+}
+
+.tier-tco__ongoing {
+  height: 100%;
+  background: color-mix(in srgb, var(--tier-accent) 40%, transparent);
+  transition: width 800ms ease-out 100ms;
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced Motion — same pattern as hero.css
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tier-header,
+  .tier-body {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion must override all animation declarations */
+    animation: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: same justification — accessibility override */
+    transition: opacity 200ms ease !important;
+    /* biome-ignore lint/complexity/noImportantStyles: same justification — accessibility override */
+    transform: none !important;
+    opacity: 1;
+  }
+
+  .tier-tco__build,
+  .tier-tco__ongoing {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion must override all animation declarations */
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile — max-width 639px
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .tier-nav {
+    top: 48px;
+  }
+
+  .tier-nav__inner {
+    justify-content: flex-start;
+    padding: var(--space-2) var(--space-3);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tier-section {
+    padding: var(--space-10) var(--space-4);
+    scroll-margin-top: 96px; /* header 48px + nav ~48px */
+  }
+
+  .tier-header {
+    padding: var(--space-4);
+  }
+
+  .tier-header__badge {
+    width: 40px;
+    height: 40px;
+    font-size: var(--text-base);
+    margin-bottom: var(--space-3);
+  }
+
+  .tier-header__name {
+    font-size: var(--text-xl);
+  }
+
+  .tier-header__price {
+    font-size: var(--text-base);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Dark Theme
+   --------------------------------------------------------------------------- */
+
+[data-theme="dark"] .tier-nav {
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+}
+
+[data-theme="dark"] .tier-header {
+  background: var(--color-surface-offset);
+}
+
+[data-theme="dark"] .tier-header__chip {
+  color: var(--tier-accent);
+  border-color: color-mix(in srgb, var(--tier-accent) 50%, transparent);
+}
+
+[data-theme="dark"] .tier-tco__bar {
+  background: color-mix(in srgb, var(--tier-accent) 12%, transparent);
+}
+
+[data-theme="dark"] .tier-tco__ongoing {
+  background: color-mix(in srgb, var(--tier-accent) 30%, transparent);
+}

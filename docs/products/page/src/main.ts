@@ -5,6 +5,7 @@ import {
 import './wa.js'
 import type { Lang } from './i18n.js'
 import { initLang, setLang, updateLangToggle } from './i18n.js'
+import { initScrollSpy } from './scroll-spy.js'
 import type { Theme } from './theme.js'
 import { initTheme, toggleTheme } from './theme.js'
 
@@ -20,6 +21,9 @@ await allDefined()
 
 // Remove FOUCE cloak
 document.documentElement.classList.remove('wa-cloak')
+
+// Init scroll spy for tier sections
+initScrollSpy()
 
 // Wire up toggle buttons
 const themeBtn = document.querySelector<HTMLButtonElement>('#theme-toggle')
