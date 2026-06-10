@@ -1,0 +1,53 @@
+/* ── Universal ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Root & Document ── */
+html {
+  font-family: "Satoshi", sans-serif;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Body ── */
+body {
+  min-height: 100dvh;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+/* ── FOUCE Cloak ── */
+.wa-cloak wa-details,
+.wa-cloak wa-radio-group,
+.wa-cloak wa-radio,
+.wa-cloak wa-tooltip {
+  visibility: hidden;
+}
+
+/* ── Element Resets ── */
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+/* ── Focus Visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

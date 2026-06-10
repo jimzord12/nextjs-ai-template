@@ -18,7 +18,8 @@
       "!.qa",
       "!.next",
       "!out",
-      "!coverage"
+      "!coverage",
+      "!docs/products/page/**"
     ]
   },
   "formatter": {

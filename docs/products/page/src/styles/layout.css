@@ -1,0 +1,23 @@
+.container {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.container--narrow {
+  max-width: 56rem;
+}
+
+.section {
+  padding-block: var(--space-16);
+}
+
+.section--compact {
+  padding-block: var(--space-10);
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: var(--space-6);
+  }
+}

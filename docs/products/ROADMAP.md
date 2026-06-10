@@ -40,11 +40,10 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 ---
 
-## M2 — Design Foundation 🔲
+## M2 — Design Foundation ✅
 
-> **Status: TODO**
 >
-> CSS tokens, dark/light theme, and the i18n system. The skeleton responds to toggles.
+> **Status: DONE** — Completed 2026-06-10
 
 **Scope:**
 
@@ -62,10 +61,10 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 **Done when:**
 
-- [ ] Toggling GR↔EN switches all visible text and font families
-- [ ] Toggling dark↔light switches colors, persists on reload
-- [ ] `#lang=en` in URL forces English on load
-- [ ] CSS tokens produce correct values for both themes
+- [x] Toggling GR↔EN switches all visible text and font families
+- [x] Toggling dark↔light switches colors, persists on reload
+- [x] `#lang=en` in URL forces English on load
+- [x] CSS tokens produce correct values for both themes
 
 ---
 

@@ -9,10 +9,94 @@
   <script type="module" src="./main.ts"></script>
 </head>
 <body>
-  <main id="app">
-    <wa-details summary="Test Details">
-      <p>Web Awesome is working!</p>
-    </wa-details>
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <span class="site-header__logo" aria-hidden="true">
+        <svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <title>Logo</title>
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </span>
+      <span class="site-header__title" data-i18n="site.titleShort"></span>
+      <span class="site-header__spacer"></span>
+
+      <!-- Dark/Light toggle -->
+      <button
+        id="theme-toggle"
+        class="site-header__toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Toggle dark mode"
+      >
+        <svg class="icon-sun" role="img" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <title>Sun</title>
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" role="img" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <title>Moon</title>
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+
+      <!-- Language pill -->
+      <div class="lang-pill" role="group" aria-label="Language">
+        <button data-lang-toggle="gr" type="button" aria-pressed="true" aria-label="Ελληνικά">GR</button>
+        <button data-lang-toggle="en" type="button" aria-pressed="false" aria-label="English">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- M2 Test Content -->
+  <main class="container section">
+    <section class="test-section">
+      <h1 data-i18n="test.greeting" style="font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-4);"></h1>
+      <p data-i18n="test.themeLabel" style="font-size: var(--text-sm); color: var(--color-text-muted); margin-bottom: var(--space-8);"></p>
+
+      <!-- Hero preview (verifies font switching + i18n) -->
+      <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); background: var(--color-surface-offset); margin-bottom: var(--space-8);">
+        <p data-i18n="hero.eyebrow" style="font-size: var(--text-sm); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--space-4);"></p>
+        <h2 data-i18n="hero.headline" style="font-family: var(--font-display); font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; line-height: 1.15; color: var(--color-text); max-width: 720px; margin-bottom: var(--space-6);"></h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+          <!-- Left card -->
+          <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); background: var(--color-surface);">
+            <span style="font-size: 1.5rem;">🚗</span>
+            <h3 data-i18n="hero.card.left.title" style="font-weight: 700; margin-top: var(--space-2);"></h3>
+            <p data-i18n="hero.card.left.price" style="color: var(--color-text-muted); font-size: var(--text-sm);"></p>
+            <ul style="margin-top: var(--space-3); padding-left: var(--space-4); font-size: var(--text-sm); color: var(--color-text-muted);">
+              <li data-i18n="hero.card.left.bullet1"></li>
+              <li data-i18n="hero.card.left.bullet2"></li>
+              <li data-i18n="hero.card.left.bullet3"></li>
+            </ul>
+          </div>
+          <!-- Right card -->
+          <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); background: var(--color-surface);">
+            <span style="font-size: 1.5rem;">🚘</span>
+            <h3 data-i18n="hero.card.right.title" style="font-weight: 700; margin-top: var(--space-2);"></h3>
+            <p data-i18n="hero.card.right.price" style="color: var(--color-text-muted); font-size: var(--text-sm);"></p>
+            <ul style="margin-top: var(--space-3); padding-left: var(--space-4); font-size: var(--text-sm); color: var(--color-text-muted);">
+              <li data-i18n="hero.card.right.bullet1"></li>
+              <li data-i18n="hero.card.right.bullet2"></li>
+              <li data-i18n="hero.card.right.bullet3"></li>
+            </ul>
+          </div>
+        </div>
+
+        <p data-i18n="hero.bridge" style="font-size: var(--text-lg); font-weight: 500; color: var(--color-text-muted); max-width: 560px;"></p>
+      </div>
+
+      <!-- WA component test (kept from M1) -->
+      <wa-details summary="Web Awesome Test">
+        <p>If you can expand this, WA components work correctly.</p>
+      </wa-details>
+    </section>
   </main>
 </body>
 </html>

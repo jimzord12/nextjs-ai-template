@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun ./src/index.html --console",
-    "build": "bun build ./src/index.html --minify --outfile=dist/web-tiers-guide.html",
-    "build:standalone": "bun build --compile --target=browser --minify ./src/index.html --outfile=dist/web-tiers-guide.html",
+    "build": "bun build --compile --target=browser --minify ./src/index.html --outfile=dist/web-tiers-guide.html",
+    "build:dev": "bun build ./src/index.html --minify --outdir=dist --target=browser",
     "preview": "bunx serve dist",
     "typecheck": "bunx tsc --noEmit",
     "lint": "bunx biome check --apply .",
