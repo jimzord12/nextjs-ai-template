@@ -46,6 +46,7 @@
   font-size: var(--text-2xl);
   color: var(--color-text);
   margin-bottom: var(--space-8);
+  letter-spacing: -0.01em;
 }
 
 /* ---------------------------------------------------------------------------
@@ -53,11 +54,10 @@
    --------------------------------------------------------------------------- */
 
 .comparison-wrapper {
-  max-width: 1080px;
+  max-width: 960px;
   margin-inline: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  box-shadow: inset -8px 0 12px -8px rgba(0 0 0 / 0.08);
 }
 
 /* ---------------------------------------------------------------------------
@@ -115,13 +115,11 @@
   width: 24px;
   height: 24px;
   border-radius: var(--radius-full);
-  background: var(--tier-accent);
-  color: #fff;
+  border: 2px solid var(--tier-accent);
   font-size: var(--text-xs);
   font-weight: 700;
-  line-height: 1;
-  vertical-align: middle;
-  margin-right: var(--space-1);
+  color: var(--tier-accent);
+  margin-bottom: var(--space-1);
 }
 
 /* ---------------------------------------------------------------------------
@@ -162,12 +160,85 @@
   transition:
     opacity 300ms ease-out,
     transform 300ms ease-out;
-  transition-delay: calc(var(--i, 0) * 50ms);
+  transition-delay: var(--stagger, 0ms);
 }
 
 .comparison-table tbody tr.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------------
+   Row stagger delays — 14 rows, 50ms increments
+   --------------------------------------------------------------------------- */
+
+.comparison-table tbody tr:nth-child(1) {
+  --stagger: 0ms;
+}
+
+.comparison-table tbody tr:nth-child(2) {
+  --stagger: 50ms;
+}
+
+.comparison-table tbody tr:nth-child(3) {
+  --stagger: 100ms;
+}
+
+.comparison-table tbody tr:nth-child(4) {
+  --stagger: 150ms;
+}
+
+.comparison-table tbody tr:nth-child(5) {
+  --stagger: 200ms;
+}
+
+.comparison-table tbody tr:nth-child(6) {
+  --stagger: 250ms;
+}
+
+.comparison-table tbody tr:nth-child(7) {
+  --stagger: 300ms;
+}
+
+.comparison-table tbody tr:nth-child(8) {
+  --stagger: 350ms;
+}
+
+.comparison-table tbody tr:nth-child(9) {
+  --stagger: 400ms;
+}
+
+.comparison-table tbody tr:nth-child(10) {
+  --stagger: 450ms;
+}
+
+.comparison-table tbody tr:nth-child(11) {
+  --stagger: 500ms;
+}
+
+.comparison-table tbody tr:nth-child(12) {
+  --stagger: 550ms;
+}
+
+.comparison-table tbody tr:nth-child(13) {
+  --stagger: 600ms;
+}
+
+.comparison-table tbody tr:nth-child(14) {
+  --stagger: 650ms;
+}
+
+/* ---------------------------------------------------------------------------
+   Row hover dimming — focus attention on hovered row
+   --------------------------------------------------------------------------- */
+
+.comparison-table tbody:hover tr:not(:hover) {
+  opacity: 0.5;
+  transition: opacity var(--transition-fast);
+}
+
+.comparison-table tbody:hover tr:hover {
+  opacity: 1;
 }
 
 /* ---------------------------------------------------------------------------
@@ -187,17 +258,24 @@
    --------------------------------------------------------------------------- */
 
 @media (max-width: 639px) {
-  .comparison-section__title {
-    font-size: var(--text-xl);
+  .comparison-section {
+    padding: var(--space-8) var(--space-4);
   }
 
-  .comparison-table {
-    font-size: var(--text-xs);
+  .comparison-section__title {
+    font-size: var(--text-xl);
   }
 
   .comparison-table thead th,
   .comparison-table tbody td {
     padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+
+  .comparison-badge {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
   }
 }
 

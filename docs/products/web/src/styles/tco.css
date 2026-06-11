@@ -12,6 +12,7 @@
   margin-inline: auto;
   padding: var(--space-12) var(--space-4);
   text-align: center;
+  background: var(--color-surface-deep);
 }
 
 .tco-section__title {
@@ -20,11 +21,11 @@
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: var(--space-2);
+  letter-spacing: -0.01em;
 }
 
 .tco-section__subtitle {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   color: var(--color-text-muted);
   margin-bottom: var(--space-8);
 }
@@ -36,7 +37,7 @@
 .tco-chart {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 /* ---------------------------------------------------------------------------
@@ -48,6 +49,41 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  opacity: 0;
+  transform: translateX(-12px);
+  transition:
+    opacity 400ms ease-out,
+    transform 400ms ease-out;
+  transition-delay: var(--stagger, 0ms);
+}
+
+.tco-bar-row.is-animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---------------------------------------------------------------------------
+   Bar row stagger delays
+   --------------------------------------------------------------------------- */
+
+.tco-bar-row:nth-child(1) {
+  --stagger: 0ms;
+}
+
+.tco-bar-row:nth-child(2) {
+  --stagger: 100ms;
+}
+
+.tco-bar-row:nth-child(3) {
+  --stagger: 200ms;
+}
+
+.tco-bar-row:nth-child(4) {
+  --stagger: 300ms;
+}
+
+.tco-bar-row:nth-child(5) {
+  --stagger: 400ms;
 }
 
 /* ---------------------------------------------------------------------------
@@ -58,10 +94,12 @@
   flex: 0 0 140px;
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 700;
   color: var(--color-text);
   text-align: right;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 /* ---------------------------------------------------------------------------
@@ -117,10 +155,12 @@
   min-width: 90px;
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text);
   text-align: right;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 /* ---------------------------------------------------------------------------
@@ -130,6 +170,7 @@
 .tco-bar-row--1 .tco-build {
   background: var(--tier-build-1);
 }
+
 .tco-bar-row--1 .tco-ongoing {
   background: var(--tier-accent-1);
 }
@@ -137,6 +178,7 @@
 .tco-bar-row--2 .tco-build {
   background: var(--tier-build-2);
 }
+
 .tco-bar-row--2 .tco-ongoing {
   background: var(--tier-accent-2);
 }
@@ -144,6 +186,7 @@
 .tco-bar-row--3 .tco-build {
   background: var(--tier-build-3);
 }
+
 .tco-bar-row--3 .tco-ongoing {
   background: var(--tier-accent-3);
 }
@@ -151,6 +194,7 @@
 .tco-bar-row--4 .tco-build {
   background: var(--tier-build-4);
 }
+
 .tco-bar-row--4 .tco-ongoing {
   background: var(--tier-accent-4);
 }
@@ -158,6 +202,7 @@
 .tco-bar-row--5 .tco-build {
   background: var(--tier-build-5);
 }
+
 .tco-bar-row--5 .tco-ongoing {
   background: var(--tier-accent-5);
 }
@@ -172,19 +217,16 @@
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-3);
   background: var(--color-text);
   color: var(--color-surface);
-  font-family: var(--font-body);
   font-size: var(--text-xs);
-  line-height: 1.4;
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
-  white-space: pre-line;
-  pointer-events: none;
+  white-space: nowrap;
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--transition-fast);
-  z-index: 10;
+  z-index: 2;
 }
 
 .tco-bar-row:hover::after {
@@ -197,25 +239,23 @@
 
 .tco-legend {
   display: flex;
-  align-items: center;
   justify-content: center;
   gap: var(--space-6);
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
 }
 
 .tco-legend__item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
 
 .tco-legend__swatch {
   width: 12px;
   height: 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 2px;
 }
 
 .tco-legend__swatch--build {
@@ -231,12 +271,11 @@
    --------------------------------------------------------------------------- */
 
 .tco-conversion {
-  margin-top: var(--space-8);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--color-text);
-  text-align: center;
-  line-height: 1.6;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-6);
+  max-width: 520px;
+  margin-inline: auto;
 }
 
 .tco-conversion strong {
@@ -251,13 +290,17 @@
   .tco-bar,
   .tco-build,
   .tco-ongoing {
-    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion must override all animation declarations */
-    transition: none !important;
+    transition: none;
+  }
+
+  .tco-bar-row {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .tco-bar-row::after {
-    /* biome-ignore lint/complexity/noImportantStyles: same justification — accessibility override */
-    transition: none !important;
+    transition: none;
   }
 }
 
@@ -267,38 +310,55 @@
 
 @media (max-width: 639px) {
   .tco-section {
-    padding: var(--space-10) var(--space-4);
+    padding: var(--space-8) var(--space-4);
   }
 
-  .tco-section__title {
-    font-size: var(--text-xl);
+  .tco-chart {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tco-label {
+    flex: 0 0 80px;
+    font-size: var(--text-xs);
+  }
+
+  .tco-amount {
+    flex: 0 0 70px;
+    min-width: 70px;
+    font-size: var(--text-xs);
+  }
+
+  .tco-bar {
+    height: 28px;
+    min-width: 0;
   }
 
   .tco-bar-row {
     gap: var(--space-2);
   }
 
-  .tco-label {
-    flex: 0 0 32px;
-    font-size: var(--text-xs);
-  }
-
-  .tco-amount {
-    flex: 0 0 64px;
-    min-width: 64px;
-    font-size: var(--text-xs);
-  }
-
-  .tco-bar {
-    height: 28px;
-  }
-
   .tco-legend {
-    gap: var(--space-4);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
   }
 
-  .tco-legend__item {
+  .tco-conversion {
     font-size: var(--text-xs);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Desktop — left-align TCO title
+   --------------------------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+  .tco-section__title {
+    text-align: left;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 

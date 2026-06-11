@@ -10,12 +10,19 @@
   justify-content: center;
   text-align: center;
   padding: var(--space-8) var(--space-4);
+  overflow: hidden;
   background:
-    radial-gradient(
-      ellipse 80% 60% at 50% 45%,
-      rgba(1, 105, 111, 0.06) 0%,
-      transparent 70%
-    ),
+    radial-gradient(ellipse 60% 50% at 20% 30%, oklch(42% 0.12 195 / 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, oklch(76% 0.15 75 / 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 50%, oklch(42% 0.12 195 / 0.03) 0%, transparent 80%),
+    var(--color-surface);
+}
+
+[data-theme="dark"] .hero {
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 30%, oklch(58% 0.13 195 / 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, oklch(78% 0.16 80 / 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 50%, oklch(58% 0.13 195 / 0.05) 0%, transparent 80%),
     var(--color-surface);
 }
 
@@ -26,16 +33,20 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
+  opacity: 0;
+  animation: fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 200ms;
 }
 
 .hero__headline {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-size: var(--text-hero);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   color: var(--color-text);
-  max-width: 720px;
+  max-width: 680px;
   margin-bottom: var(--space-8);
   /* Animation */
   clip-path: inset(0 0 100% 0);
@@ -119,6 +130,27 @@
   background: none;
   border: none;
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-lang="en"] .hero__headline {
+  letter-spacing: var(--letter-spacing-display);
+}
+
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---- Keyframes ---- */
@@ -153,6 +185,13 @@
   }
 }
 
+@media (hover: hover) {
+  .hero__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
 /* ---- Reduced Motion ---- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -174,6 +213,21 @@
   .hero__card--right {
     opacity: 1;
     transform: none;
+  }
+
+  .hero__eyebrow {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Tablet — 640px to 1024px
+   --------------------------------------------------------------------------- */
+
+@media (min-width: 640px) and (max-width: 1024px) {
+  .hero__headline {
+    font-size: clamp(2rem, 6vw, 3.5rem);
   }
 }
 

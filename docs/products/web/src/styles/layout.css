@@ -9,15 +9,43 @@
 }
 
 .section {
-  padding-block: var(--space-16);
+  padding-block: var(--space-20);
 }
 
 .section--compact {
   padding-block: var(--space-10);
 }
 
+.tco-section,
+.quiz-section {
+  padding-block: var(--space-32);
+}
+
+.comparison-section {
+  padding-block: var(--space-24);
+}
+
 @media (min-width: 640px) {
   .container {
     padding-inline: var(--space-6);
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Noise texture overlay — fixed full-screen grain for Mediterranean Prestige
+   --------------------------------------------------------------------------- */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--noise);
+  opacity: 0.025;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 9999;
+}
+
+[data-theme="dark"] body::after {
+  opacity: 0.015;
 }

@@ -12,6 +12,7 @@
   margin-inline: auto;
   padding: var(--space-16) var(--space-4);
   text-align: center;
+  background: var(--color-surface-deep);
 }
 
 .quiz-section__title {
@@ -20,11 +21,11 @@
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: var(--space-2);
+  letter-spacing: -0.01em;
 }
 
 .quiz-section__subtitle {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: var(--text-sm);
   color: var(--color-text-muted);
   margin-bottom: var(--space-8);
 }
@@ -37,6 +38,8 @@
   position: relative;
   overflow: hidden;
   min-height: 320px;
+  max-width: 640px;
+  margin-inline: auto;
 }
 
 /* ---------------------------------------------------------------------------
@@ -56,8 +59,7 @@
   height: 100%;
   background: var(--color-primary);
   border-radius: var(--radius-full);
-  width: 0%;
-  transition: width var(--transition-normal);
+  transition: width 400ms ease-out;
 }
 
 /* ---------------------------------------------------------------------------
@@ -69,20 +71,20 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-6);
-  padding-top: var(--space-4);
+  justify-content: center;
+  padding: var(--space-6);
   opacity: 0;
-  pointer-events: none;
+  transform: translateX(100%);
   transition:
-    transform 350ms ease-in-out,
-    opacity 350ms;
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+  pointer-events: none;
 }
 
 .quiz-card--active {
   position: relative;
-  transform: translateX(0);
   opacity: 1;
+  transform: translateX(0);
   pointer-events: auto;
 }
 
@@ -101,17 +103,94 @@
    --------------------------------------------------------------------------- */
 
 .quiz-card__question {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
+  font-size: var(--text-lg);
+  font-weight: 500;
   color: var(--color-text);
-  line-height: 1.3;
-  max-width: 600px;
+  margin-bottom: var(--space-6);
+  line-height: 1.5;
 }
 
-/* wa-radio-group handles option styling — no custom CSS needed */
+/* Quiz option styling via Web Awesome radio overrides */
 
-/* wa-radio handles option styling — quiz-option rules removed */
+/* Stack radio options vertically with spacing */
+.quiz-card wa-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Individual option as a card — style the host element directly since WA radio has no ::part(base) */
+.quiz-card wa-radio {
+  display: flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-elevated);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+  width: 100%;
+}
+
+.quiz-card wa-radio::part(label) {
+  font-size: var(--text-base);
+  color: var(--color-text);
+  line-height: var(--line-height-body);
+  font-family: var(--font-body);
+}
+
+/* Hover state */
+.quiz-card wa-radio:not([checked]):hover {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface-elevated));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Selected/checked state */
+.quiz-card wa-radio[checked] {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 8%, var(--color-surface-elevated));
+  box-shadow: 0 0 0 1px var(--color-primary), var(--shadow-md);
+}
+
+.quiz-card wa-radio[checked]::part(label) {
+  font-weight: 500;
+}
+
+/* Control indicator */
+.quiz-card wa-radio::part(control) {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+  flex-shrink: 0;
+  margin-right: var(--space-3);
+}
+
+.quiz-card wa-radio[checked]::part(control) {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  box-shadow: inset 0 0 0 3px var(--color-surface-elevated);
+}
+
+/* Dark theme overrides for quiz options */
+[data-theme="dark"] .quiz-card wa-radio {
+  background: var(--color-surface-offset);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .quiz-card wa-radio[checked] {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface-offset));
+  border-color: var(--color-primary);
+}
 
 /* role="form" container styling */
 .quiz-container[role="form"] {
@@ -157,27 +236,35 @@
   max-width: 520px;
   width: 100%;
   margin-inline: auto;
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .quiz-result__card--tier1 {
   border-left: 4px solid var(--tier-accent-1);
 }
+
 .quiz-result__card--tier2 {
   border-left: 4px solid var(--tier-accent-2);
 }
+
 .quiz-result__card--tier3 {
   border-left: 4px solid var(--tier-accent-3);
 }
+
 .quiz-result__card--tier4 {
   border-left: 4px solid var(--tier-accent-4);
 }
+
 .quiz-result__card--tier5 {
   border-left: 4px solid var(--tier-accent-5);
 }
 
 .quiz-result__tier-name {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   font-weight: 700;
   color: var(--color-text);
 }
@@ -196,13 +283,13 @@
   justify-content: center;
   padding: var(--space-3) var(--space-8);
   margin-top: var(--space-2);
-  background: var(--color-primary);
-  color: #fff;
+  background: linear-gradient(135deg, var(--color-accent) 0%, oklch(68% 0.17 70) 100%);
+  color: #1a1918;
   border: none;
   border-radius: var(--radius-md);
   font-family: var(--font-body);
   font-size: var(--text-base);
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -221,14 +308,13 @@
 }
 
 .quiz-result__retake {
-  display: inline-block;
-  margin-top: var(--space-2);
+  background: none;
+  border: none;
   color: var(--color-text-muted);
-  font-family: var(--font-body);
   font-size: var(--text-sm);
-  text-decoration: underline;
-  text-underline-offset: 2px;
   cursor: pointer;
+  padding: var(--space-2);
+  text-decoration: underline;
   transition: color var(--transition-fast);
 }
 
@@ -239,6 +325,17 @@
 .quiz-result__retake:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Hover elevation — card lift on pointer devices
+   --------------------------------------------------------------------------- */
+
+@media (hover: hover) {
+  .quiz-result__card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -254,8 +351,7 @@
     transition: none;
   }
 
-  .quiz-result__cta,
-  .quiz-result__retake {
+  .quiz-result__card {
     transition: none;
   }
 }
@@ -266,26 +362,29 @@
 
 @media (max-width: 639px) {
   .quiz-section {
-    padding: var(--space-10) var(--space-4);
+    padding: var(--space-8) var(--space-4);
   }
 
-  .quiz-section__title {
-    font-size: var(--text-xl);
-  }
-
-  .quiz-section__subtitle {
-    font-size: var(--text-base);
+  .quiz-card {
+    padding: var(--space-4);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .quiz-card__question {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
   }
 
   .quiz-result__tier-name {
-    font-size: var(--text-xl);
+    font-size: var(--text-2xl);
   }
 
   .quiz-result__body {
+    font-size: var(--text-sm);
+  }
+
+  .quiz-result__cta {
+    padding: var(--space-2) var(--space-6);
     font-size: var(--text-sm);
   }
 }
@@ -294,7 +393,7 @@
    Dark Theme
    --------------------------------------------------------------------------- */
 
-/* quiz-option dark rules removed — wa-radio handles styling */
+/* Quiz option dark theme overrides are with the option rules above */
 
 [data-theme="dark"] .quiz-result__card {
   background: var(--color-surface-offset);
@@ -306,4 +405,8 @@
 
 [data-theme="dark"] .quiz-result {
   background: transparent;
+}
+
+[data-theme="dark"] .quiz-result__cta {
+  box-shadow: 0 4px 20px oklch(78% 0.16 80 / 0.25);
 }

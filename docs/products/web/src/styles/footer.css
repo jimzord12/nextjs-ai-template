@@ -3,9 +3,9 @@
    ========================================================================== */
 
 .site-footer {
-  padding-block: var(--space-12);
+  padding-block: var(--space-20);
   border-top: 1px solid var(--color-border);
-  background: var(--color-surface-offset);
+  background: var(--color-surface-deep);
 }
 
 .site-footer__inner {
@@ -20,7 +20,9 @@
 
 .site-footer__heading {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
   margin-bottom: var(--space-4);
 }
 
@@ -28,22 +30,37 @@
   color: var(--color-text-muted);
   max-width: 480px;
   margin-inline: auto;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
+  line-height: 1.6;
 }
 
 .site-footer__contact-btn {
   display: inline-block;
-  padding: var(--space-3) var(--space-8);
-  background: var(--color-primary);
-  color: white;
+  padding: var(--space-4) var(--space-12);
+  background: linear-gradient(135deg, var(--color-accent) 0%, oklch(68% 0.17 70) 100%);
+  color: #1a1918;
   border-radius: var(--radius-full);
   text-decoration: none;
-  font-weight: 500;
-  transition: background var(--transition-fast);
+  font-weight: 700;
+  font-size: var(--text-base);
+  box-shadow: 0 4px 16px oklch(76% 0.15 75 / 0.3);
+  transition:
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .site-footer__contact-btn:hover {
-  background: var(--color-primary-hover);
+  box-shadow: 0 6px 24px oklch(76% 0.15 75 / 0.4);
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .site-footer__contact-btn {
+  color: var(--color-text);
+  box-shadow: 0 4px 20px oklch(78% 0.16 80 / 0.25);
+}
+
+[data-theme="dark"] .site-footer__contact-btn:hover {
+  box-shadow: 0 6px 28px oklch(78% 0.16 80 / 0.35);
 }
 
 .site-footer__print-btn {
@@ -71,4 +88,30 @@
   border-top: 1px solid var(--color-border);
   color: var(--color-text-muted);
   font-size: var(--text-xs);
+}
+
+/* ---------------------------------------------------------------------------
+   Desktop — left-align footer inner
+   --------------------------------------------------------------------------- */
+
+@media (min-width: 640px) {
+  .site-footer__inner {
+    max-width: 560px;
+    text-align: left;
+    margin-inline: auto;
+  }
+
+  .site-footer__body {
+    margin-inline: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile — centered
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .site-footer__inner {
+    text-align: center;
+  }
 }

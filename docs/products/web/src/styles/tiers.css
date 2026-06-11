@@ -28,6 +28,91 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Tier-header accent escalation — per-tier gradient + border escalation
+   --------------------------------------------------------------------------- */
+
+.tier-section--1 .tier-header {
+  border-left: 4px solid var(--tier-accent-1);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tier-accent-1) 5%, transparent) 0%,
+      transparent 25%
+    ),
+    var(--color-surface-elevated);
+}
+
+.tier-section--2 .tier-header {
+  border-left: 4px solid var(--tier-accent-2);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tier-accent-2) 6%, transparent) 0%,
+      transparent 28%
+    ),
+    var(--color-surface-elevated);
+}
+
+.tier-section--3 .tier-header {
+  border-left: 4px solid var(--tier-accent-3);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tier-accent-3) 7%, transparent) 0%,
+      transparent 30%
+    ),
+    var(--color-surface-elevated);
+}
+
+.tier-section--4 .tier-header {
+  border-left: 6px solid var(--tier-accent-4);
+  max-width: 840px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tier-accent-4) 8%, transparent) 0%,
+      transparent 35%
+    ),
+    var(--color-surface-elevated);
+  box-shadow:
+    0 0 0 1px oklch(76% 0.15 75 / 0.15),
+    0 0 32px oklch(76% 0.15 75 / 0.06),
+    var(--shadow-lg);
+  position: relative;
+}
+
+.tier-section--4 .tier-header::after {
+  content: attr(data-recommended);
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  padding: var(--space-1) var(--space-4);
+  background: var(--color-accent);
+  color: #1a1918;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.tier-section--5 .tier-header {
+  border-left: 6px solid var(--tier-accent-5);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tier-accent-5) 8%, transparent) 0%,
+      transparent 40%
+    ),
+    var(--color-surface-elevated);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tier-accent-5) 20%, transparent),
+    0 4px 20px color-mix(in srgb, var(--tier-accent-5) 12%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
    Orientation Bar — sticky tier navigator
    --------------------------------------------------------------------------- */
 
@@ -40,6 +125,7 @@
   background: color-mix(in srgb, var(--color-surface) 85%, transparent);
   border-bottom: 1px solid var(--color-border);
   transition: background var(--transition-normal);
+  overflow: hidden;
 }
 
 .tier-nav__inner {
@@ -65,6 +151,8 @@
   color: var(--color-text-muted);
   cursor: pointer;
   white-space: nowrap;
+  scroll-snap-align: start;
+  min-height: 44px;
   transition:
     background-color var(--transition-fast),
     color var(--transition-fast),
@@ -89,6 +177,7 @@
 .tier-section {
   padding: var(--space-16) var(--space-4);
   scroll-margin-top: 112px; /* header 56px + nav 56px */
+  overflow: hidden;
 }
 
 .tier-section.is-visible {
@@ -99,26 +188,42 @@
    Tier Header — card with badge, car, name, price, verdict, chips
    --------------------------------------------------------------------------- */
 
+/* biome-ignore lint/style/noDescendingSpecificity: per-tier accent escalation has higher specificity by design */
 .tier-header {
-  max-width: 720px;
+  max-width: 800px;
   margin-inline: auto;
   background: var(--color-surface-offset);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   border-left: 4px solid var(--tier-accent);
+  box-shadow: var(--shadow-sm);
   /* scroll-reveal base state */
   opacity: 0;
   transform: translateY(24px);
   transition:
     opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow var(--transition-normal);
 }
+
+@media (hover: hover) {
+  .tier-header:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .tier-section--4 .tier-header:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+  }
+}
+
+/* Desktop hover escalation */
 
 .tier-section.is-visible .tier-header {
   opacity: 1;
   transform: translateY(0);
 }
-
 .tier-header__badge {
   width: 48px;
   height: 48px;
@@ -133,6 +238,23 @@
   font-size: var(--text-lg);
   margin-bottom: var(--space-4);
   flex-shrink: 0;
+  box-shadow: inset 0 2px 4px rgba(0 0 0 / 0.15);
+}
+
+.tier-section--4 .tier-header__badge {
+  width: 56px;
+  height: 56px;
+  box-shadow:
+    0 0 0 3px var(--color-surface-elevated),
+    0 0 0 5px var(--color-accent),
+    inset 0 2px 4px rgba(0 0 0 / 0.15);
+}
+
+.tier-section--5 .tier-header__badge {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--tier-accent-5), oklch(40% 0.2 310));
+  box-shadow: inset 0 2px 4px rgba(0 0 0 / 0.2);
 }
 
 .tier-header__car {
@@ -147,18 +269,20 @@
 
 .tier-header__name {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   font-weight: 700;
   color: var(--color-text);
-  line-height: 1.2;
+  line-height: 1.15;
   margin-bottom: var(--space-2);
 }
 
 .tier-header__price {
   font-family: var(--font-body);
-  font-size: var(--text-lg);
-  font-weight: 500;
-  color: var(--color-text-muted);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
   margin-bottom: var(--space-4);
 }
 
@@ -167,7 +291,8 @@
   font-size: var(--text-base);
   font-style: italic;
   color: var(--color-text-muted);
-  line-height: 1.5;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
   margin-bottom: var(--space-4);
 }
 
@@ -183,11 +308,55 @@
   font-family: var(--font-body);
   font-size: var(--text-xs);
   font-weight: 500;
-  padding: 2px var(--space-2);
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
   border: 1px solid var(--tier-accent);
   color: var(--tier-accent);
   white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.tier-header__chip:hover {
+  background: color-mix(in srgb, var(--tier-accent) 12%, transparent);
+}
+
+.tier-section--4 .tier-header__chip {
+  background: var(--tier-accent-4);
+  border-color: var(--tier-accent-4);
+  color: #1a1918;
+}
+
+.tier-section--5 .tier-header__chip {
+  background: var(--tier-accent-5);
+  border-color: var(--tier-accent-5);
+  color: white;
+}
+
+/* ---------------------------------------------------------------------------
+   Section bg alternation — tiers 2 & 4 get deep surface
+   --------------------------------------------------------------------------- */
+
+.tier-section--2,
+.tier-section--4 {
+  background: var(--color-surface-deep);
+}
+
+.tier-section--2 {
+  background: linear-gradient(
+    180deg,
+    var(--color-surface-deep) 0%,
+    color-mix(in srgb, var(--color-surface-deep) 95%, var(--tier-accent-2)) 100%
+  );
+}
+
+.tier-section--4 {
+  background: linear-gradient(
+    180deg,
+    var(--color-surface-deep) 0%,
+    color-mix(in srgb, var(--color-surface-deep) 95%, var(--tier-accent-4)) 100%
+  );
 }
 
 /* ---------------------------------------------------------------------------
@@ -328,10 +497,54 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Staggered reveals — tier-header children animate sequentially
+   --------------------------------------------------------------------------- */
+
+.tier-section:not(.is-visible) .tier-header__badge,
+.tier-section:not(.is-visible) .tier-header__car,
+.tier-section:not(.is-visible) .tier-header__name,
+.tier-section:not(.is-visible) .tier-header__price,
+.tier-section:not(.is-visible) .tier-header__verdict,
+.tier-section:not(.is-visible) .tier-header__chips {
+  opacity: 0;
+  transform: translateY(12px);
+  will-change: opacity, transform;
+}
+
+.tier-header > :nth-child(1) {
+  --stagger: 0ms;
+}
+.tier-header > :nth-child(2) {
+  --stagger: 80ms;
+}
+.tier-header > :nth-child(3) {
+  --stagger: 160ms;
+}
+.tier-header > :nth-child(4) {
+  --stagger: 240ms;
+}
+.tier-header > :nth-child(5) {
+  --stagger: 320ms;
+}
+.tier-header > :nth-child(6) {
+  --stagger: 400ms;
+}
+
+.tier-section.is-visible .tier-header > * {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--stagger, 0ms);
+}
+
+/* ---------------------------------------------------------------------------
    Reduced Motion — same pattern as hero.css
    --------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  /* biome-ignore lint/style/noDescendingSpecificity: reduced-motion must override tier accent escalation */
   .tier-header,
   .tier-body {
     /* biome-ignore lint/complexity/noImportantStyles: reduced-motion must override all animation declarations */
@@ -351,6 +564,25 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Tablet — 640px to 1024px
+   --------------------------------------------------------------------------- */
+
+@media (min-width: 640px) and (max-width: 1024px) {
+  .tier-header {
+    max-width: 680px;
+    padding: var(--space-8);
+  }
+
+  .tier-section--4 .tier-header {
+    max-width: 720px;
+  }
+
+  .tier-header__name {
+    font-size: clamp(1.5rem, 4vw, var(--text-3xl));
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Mobile — max-width 639px
    --------------------------------------------------------------------------- */
 
@@ -361,8 +593,8 @@
 
   .tier-nav__inner {
     justify-content: flex-start;
-    padding: var(--space-2) var(--space-3);
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
   }
 
   .tier-section {
@@ -370,6 +602,7 @@
     scroll-margin-top: 96px; /* header 48px + nav ~48px */
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: mobile override after per-tier accent escalation */
   .tier-header {
     padding: var(--space-4);
   }
@@ -399,12 +632,37 @@
 }
 
 [data-theme="dark"] .tier-header {
-  background: var(--color-surface-offset);
+  background: var(--color-surface-elevated);
+}
+
+[data-theme="dark"] .tier-section--4 .tier-header {
+  box-shadow:
+    0 0 0 1px oklch(76% 0.15 75 / 0.2),
+    0 0 40px oklch(76% 0.15 75 / 0.08),
+    var(--shadow-lg);
+}
+
+[data-theme="dark"] .tier-section--5 .tier-header {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tier-accent-5) 30%, transparent),
+    0 4px 28px color-mix(in srgb, var(--tier-accent-5) 18%, transparent);
 }
 
 [data-theme="dark"] .tier-header__chip {
   color: var(--tier-accent);
   border-color: color-mix(in srgb, var(--tier-accent) 50%, transparent);
+}
+
+[data-theme="dark"] .tier-section--4 .tier-header__chip {
+  background: var(--tier-accent-4);
+  border-color: var(--tier-accent-4);
+  color: #1a1918;
+}
+
+[data-theme="dark"] .tier-section--5 .tier-header__chip {
+  background: var(--tier-accent-5);
+  border-color: var(--tier-accent-5);
+  color: white;
 }
 
 [data-theme="dark"] .tier-tco__bar {
