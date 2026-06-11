@@ -1,7 +1,7 @@
 const TIER_COUNT = 5
 const OBSERVER_OPTIONS: IntersectionObserverInit = {
-  threshold: 0.3,
-  rootMargin: '-20% 0px -60% 0px',
+  threshold: [0.1, 0.3, 0.5],
+  rootMargin: '-10% 0px -60% 0px',
 }
 
 function sectionId(index: number): string {
@@ -41,9 +41,22 @@ export function initScrollSpy(): void {
     for (const entry of entries) {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible')
-        setActive(entry.target)
       }
     }
+    // Find the section closest to the top of the viewport
+    let best: Element | null = null
+    let bestTop = Infinity
+    for (const section of sections) {
+      const rect = section.getBoundingClientRect()
+      // Only consider sections in the upper half of viewport
+      if (rect.top < window.innerHeight * 0.5 && rect.top > -rect.height * 0.5) {
+        if (rect.top < bestTop) {
+          bestTop = rect.top
+          best = section
+        }
+      }
+    }
+    if (best) setActive(best)
   }, OBSERVER_OPTIONS)
 
   for (const section of sections) {
@@ -58,7 +71,13 @@ export function initScrollSpy(): void {
     pill.addEventListener('click', (e) => {
       e.preventDefault()
       const section = document.getElementById(sectionId(i + 1))
-      section?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      if (section) {
+        // Immediately set this pill active for instant feedback
+        if (activePill) activePill.classList.remove('tier-nav__pill--active')
+        pill.classList.add('tier-nav__pill--active')
+        activePill = pill
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
     })
   }
 }

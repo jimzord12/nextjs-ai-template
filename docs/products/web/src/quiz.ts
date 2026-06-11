@@ -299,7 +299,7 @@ export function initQuiz(): void {
   showCard(0)
 
   // Delegate radio change events
-  form.addEventListener('wa-change', onRadioChange as EventListener)
+  form.addEventListener('change', onRadioChange as EventListener)
 
   // Watch for language switches
   observeLangChange()
