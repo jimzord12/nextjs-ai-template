@@ -40,6 +40,7 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 - **TypeScript config:** Browser-targeted. Do NOT include `"types": ["bun"]` in tsconfig — it breaks DOM types.
 - **Dark/light theme:** CSS custom properties with `[data-theme]` toggle. Sync with WA `.wa-dark`.
 - **Print:** `@media print` forces light theme, hides interactive elements, expands accordions.
+- **Browser automation:** Use `playwright-cli` (installed globally) for all browser tasks — screenshots, visual testing, page interaction, PDF generation. NEVER use the built-in headless browser (puppeteer/Browser tool). The Playwright CLI skill is installed at `.claude/skills/playwright-cli/`. Run `playwright-cli --help` for available commands.
 
 ---
 

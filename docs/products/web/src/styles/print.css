@@ -131,27 +131,58 @@
   }
   /* ---- Mediterranean Prestige Print Overrides ---- */
 
-  body::after { display: none !important; }
-  .hero { background: white !important; }
-  [data-theme="dark"] .hero { background: white !important; }
-  .tier-header { box-shadow: none !important; }
-  .tier-section--4 .tier-header { box-shadow: none !important; }
-  .tier-section--4 .tier-header::after { display: none !important; }
-  .tier-section--5 .tier-header { box-shadow: none !important; }
-  .site-footer__contact-btn { box-shadow: none !important; background: #666 !important; color: white !important; }
-  .sticky-cta { display: none !important; }
-  .inline-cta { display: none !important; }
+  body::after {
+    display: none !important;
+  }
+  .hero {
+    background: white !important;
+  }
+  [data-theme="dark"] .hero {
+    background: white !important;
+  }
+  .tier-header {
+    box-shadow: none !important;
+  }
+  .tier-section--4 .tier-header {
+    box-shadow: none !important;
+  }
+  .tier-section--4 .tier-header::after {
+    display: none !important;
+  }
+  .tier-section--5 .tier-header {
+    box-shadow: none !important;
+  }
+  .site-footer__contact-btn {
+    box-shadow: none !important;
+    background: #666 !important;
+    color: white !important;
+  }
+  .sticky-cta {
+    display: none !important;
+  }
+  .inline-cta {
+    display: none !important;
+  }
 
   /* Hide atmospheric background elements */
-  .hero::before, .hero::after,
-  .tier-section::before, .tier-section::after,
+  .hero::before,
+  .hero::after,
+  .tier-section::before,
+  .tier-section::after,
   .tco-section::before,
-  .quiz-section::before, .quiz-section::after,
-  .comparison-section::before { display: none !important; }
+  .quiz-section::before,
+  .quiz-section::after,
+  .comparison-section::before {
+    display: none !important;
+  }
 
   .tier-section--2,
   .tier-section--4,
   .tco-section,
-  .quiz-section { background: white !important; }
-  .site-footer { background: white !important; }
+  .quiz-section {
+    background: white !important;
+  }
+  .site-footer {
+    background: white !important;
+  }
 }

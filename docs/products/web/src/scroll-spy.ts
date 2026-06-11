@@ -49,7 +49,10 @@ export function initScrollSpy(): void {
     for (const section of sections) {
       const rect = section.getBoundingClientRect()
       // Only consider sections in the upper half of viewport
-      if (rect.top < window.innerHeight * 0.5 && rect.top > -rect.height * 0.5) {
+      if (
+        rect.top < window.innerHeight * 0.5 &&
+        rect.top > -rect.height * 0.5
+      ) {
         if (rect.top < bestTop) {
           bestTop = rect.top
           best = section

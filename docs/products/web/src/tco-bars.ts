@@ -2,7 +2,9 @@ export function initTcoBars(): void {
   const rows = document.querySelectorAll<HTMLElement>('.tco-bar-row')
   if (rows.length === 0) return
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -10,9 +12,15 @@ export function initTcoBars(): void {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-animated')
 
-          const amounts = (entry.target as HTMLElement).querySelectorAll<HTMLElement>('.tco-amount')
+          const amounts = (
+            entry.target as HTMLElement
+          ).querySelectorAll<HTMLElement>('.tco-amount')
           for (const el of amounts) {
-            const raw = el.textContent?.replace(/[^\d.,]/g, '').replace(/\./g, '').replace(',', '.') ?? ''
+            const raw =
+              el.textContent
+                ?.replace(/[^\d.,]/g, '')
+                .replace(/\./g, '')
+                .replace(',', '.') ?? ''
             const target = parseFloat(raw)
             if (!Number.isNaN(target)) {
               if (reducedMotion) {
@@ -35,7 +43,11 @@ export function initTcoBars(): void {
   }
 }
 
-function animateCounter(element: HTMLElement, target: number, duration = 1200): void {
+function animateCounter(
+  element: HTMLElement,
+  target: number,
+  duration = 1200,
+): void {
   const start = performance.now()
   const format = (n: number) => `€${n.toLocaleString('el-GR')}`
 

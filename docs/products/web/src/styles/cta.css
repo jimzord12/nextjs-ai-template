@@ -24,7 +24,11 @@
 .sticky-cta__button {
   display: inline-block;
   padding: 14px 28px;
-  background: linear-gradient(135deg, var(--color-accent) 0%, oklch(68% 0.17 70) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    oklch(68% 0.17 70) 100%
+  );
   color: #1a1918;
   border-radius: var(--radius-full);
   font-family: var(--font-body);
@@ -34,7 +38,9 @@
   box-shadow:
     0 4px 20px oklch(76% 0.15 75 / 0.3),
     0 0 0 1px oklch(76% 0.15 75 / 0.1);
-  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+  transition:
+    box-shadow var(--transition-normal),
+    transform var(--transition-normal);
 }
 
 .sticky-cta__button:hover {
@@ -76,5 +82,7 @@
 
 /* Print */
 @media print {
-  .sticky-cta { display: none !important; }
+  .sticky-cta {
+    display: none !important;
+  }
 }

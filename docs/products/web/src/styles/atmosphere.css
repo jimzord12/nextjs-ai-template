@@ -14,7 +14,7 @@
 
 .hero::before,
 .hero::after {
-  content: '';
+  content: "";
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
@@ -26,7 +26,11 @@
 .hero::before {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, oklch(76% 0.15 75 / 0.4), transparent 70%);
+  background: radial-gradient(
+    circle,
+    oklch(76% 0.15 75 / 0.4),
+    transparent 70%
+  );
   top: -10%;
   right: -5%;
   animation-delay: -5s;
@@ -35,7 +39,11 @@
 .hero::after {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, oklch(48% 0.11 195 / 0.3), transparent 70%);
+  background: radial-gradient(
+    circle,
+    oklch(48% 0.11 195 / 0.3),
+    transparent 70%
+  );
   bottom: -15%;
   left: -5%;
   animation-delay: -12s;
@@ -51,7 +59,7 @@
 }
 
 .tier-section::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 300px;
   height: 300px;
@@ -82,11 +90,15 @@
 }
 
 .tco-section::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 600px;
   height: 200px;
-  background: linear-gradient(135deg, oklch(48% 0.11 195 / 0.06), oklch(76% 0.15 75 / 0.06));
+  background: linear-gradient(
+    135deg,
+    oklch(48% 0.11 195 / 0.06),
+    oklch(76% 0.15 75 / 0.06)
+  );
   border-radius: 50%;
   filter: blur(40px);
   top: 10%;
@@ -107,7 +119,7 @@
 
 .quiz-section::before,
 .quiz-section::after {
-  content: '';
+  content: "";
   position: absolute;
   border-radius: 50%;
   filter: blur(60px);
@@ -118,7 +130,11 @@
 .quiz-section::before {
   width: 350px;
   height: 350px;
-  background: radial-gradient(circle, oklch(76% 0.15 75 / 0.5), transparent 70%);
+  background: radial-gradient(
+    circle,
+    oklch(76% 0.15 75 / 0.5),
+    transparent 70%
+  );
   top: -10%;
   right: -10%;
   animation: float-orb 18s ease-in-out infinite;
@@ -127,7 +143,11 @@
 .quiz-section::after {
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, oklch(48% 0.11 195 / 0.4), transparent 70%);
+  background: radial-gradient(
+    circle,
+    oklch(48% 0.11 195 / 0.4),
+    transparent 70%
+  );
   bottom: -5%;
   left: -8%;
   animation: float-orb 22s ease-in-out infinite;
@@ -144,7 +164,7 @@
 }
 
 .comparison-section::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 200px;
@@ -159,7 +179,8 @@
    --------------------------------------------------------------------------- */
 
 @keyframes float-orb {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
   25% {
@@ -178,7 +199,7 @@
    --------------------------------------------------------------------------- */
 
 .tier-section::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background-image:
@@ -188,7 +209,11 @@
   opacity: 0.15;
   pointer-events: none;
   mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    black 20%,
+    transparent 70%
+  );
 }
 
 /* ---------------------------------------------------------------------------

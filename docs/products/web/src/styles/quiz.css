@@ -146,7 +146,11 @@
 /* Hover state */
 .quiz-card wa-radio:not([checked]):hover {
   border-color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface-elevated));
+  background: color-mix(
+    in srgb,
+    var(--color-primary) 4%,
+    var(--color-surface-elevated)
+  );
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
 }
@@ -154,8 +158,14 @@
 /* Selected/checked state */
 .quiz-card wa-radio[checked] {
   border-color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 8%, var(--color-surface-elevated));
-  box-shadow: 0 0 0 1px var(--color-primary), var(--shadow-md);
+  background: color-mix(
+    in srgb,
+    var(--color-primary) 8%,
+    var(--color-surface-elevated)
+  );
+  box-shadow:
+    0 0 0 1px var(--color-primary),
+    var(--shadow-md);
 }
 
 .quiz-card wa-radio[checked]::part(label) {
@@ -188,7 +198,11 @@
 }
 
 [data-theme="dark"] .quiz-card wa-radio[checked] {
-  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface-offset));
+  background: color-mix(
+    in srgb,
+    var(--color-primary) 12%,
+    var(--color-surface-offset)
+  );
   border-color: var(--color-primary);
 }
 
@@ -283,7 +297,11 @@
   justify-content: center;
   padding: var(--space-3) var(--space-8);
   margin-top: var(--space-2);
-  background: linear-gradient(135deg, var(--color-accent) 0%, oklch(68% 0.17 70) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    oklch(68% 0.17 70) 100%
+  );
   color: #1a1918;
   border: none;
   border-radius: var(--radius-md);

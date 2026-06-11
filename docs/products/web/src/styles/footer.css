@@ -37,7 +37,11 @@
 .site-footer__contact-btn {
   display: inline-block;
   padding: var(--space-4) var(--space-12);
-  background: linear-gradient(135deg, var(--color-accent) 0%, oklch(68% 0.17 70) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    oklch(68% 0.17 70) 100%
+  );
   color: #1a1918;
   border-radius: var(--radius-full);
   text-decoration: none;
