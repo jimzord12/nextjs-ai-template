@@ -55,3 +55,7 @@ tmp/
 .idea/
 
 # ai
+.claude/
+
+# screenshots
+docs/products/web/screenshots/
