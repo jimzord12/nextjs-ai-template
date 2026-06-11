@@ -8,23 +8,23 @@
    --------------------------------------------------------------------------- */
 
 .tier-section--1 {
-  --tier-accent: #b07a00; /* Muted Amber */
+  --tier-accent: var(--tier-accent-1);
 }
 
 .tier-section--2 {
-  --tier-accent: #006494; /* Steel Blue */
+  --tier-accent: var(--tier-accent-2);
 }
 
 .tier-section--3 {
-  --tier-accent: #437a22; /* Slate Green */
+  --tier-accent: var(--tier-accent-3);
 }
 
 .tier-section--4 {
-  --tier-accent: #01696f; /* Hydra Teal */
+  --tier-accent: var(--tier-accent-4);
 }
 
 .tier-section--5 {
-  --tier-accent: #7a39bb; /* Deep Plum */
+  --tier-accent: var(--tier-accent-5);
 }
 
 /* ---------------------------------------------------------------------------

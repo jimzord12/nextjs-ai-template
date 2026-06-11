@@ -1,0 +1,218 @@
+/* ==========================================================================
+   Comparison Section — feature matrix table with tier columns, sticky first
+   column, horizontal scroll, and staggered row reveal.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Tier accent colours — scoped per column via nth-child
+   --------------------------------------------------------------------------- */
+
+.comparison-table thead th:nth-child(2),
+.comparison-table tbody td:nth-child(2) {
+  --tier-accent: var(--tier-accent-1);
+}
+
+.comparison-table thead th:nth-child(3),
+.comparison-table tbody td:nth-child(3) {
+  --tier-accent: var(--tier-accent-2);
+}
+
+.comparison-table thead th:nth-child(4),
+.comparison-table tbody td:nth-child(4) {
+  --tier-accent: var(--tier-accent-3);
+}
+
+.comparison-table thead th:nth-child(5),
+.comparison-table tbody td:nth-child(5) {
+  --tier-accent: var(--tier-accent-4);
+}
+
+.comparison-table thead th:nth-child(6),
+.comparison-table tbody td:nth-child(6) {
+  --tier-accent: var(--tier-accent-5);
+}
+
+/* ---------------------------------------------------------------------------
+   Comparison Section — centered wrapper
+   --------------------------------------------------------------------------- */
+
+.comparison-section {
+  padding: var(--space-16) var(--space-4);
+  text-align: center;
+}
+
+.comparison-section__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-text);
+  margin-bottom: var(--space-8);
+}
+
+/* ---------------------------------------------------------------------------
+   Comparison Wrapper — horizontal scroll container
+   --------------------------------------------------------------------------- */
+
+.comparison-wrapper {
+  max-width: 1080px;
+  margin-inline: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: inset -8px 0 12px -8px rgba(0 0 0 / 0.08);
+}
+
+/* ---------------------------------------------------------------------------
+   Comparison Table — feature matrix
+   --------------------------------------------------------------------------- */
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.comparison-table thead th:nth-child(n + 2),
+.comparison-table tbody td:nth-child(n + 2) {
+  min-width: 90px;
+}
+
+/* ---------------------------------------------------------------------------
+   Table Header — tier columns with badge, accent name, bottom border
+   --------------------------------------------------------------------------- */
+
+.comparison-table thead th {
+  padding: var(--space-3) var(--space-4);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* First header column — feature name header, sticky left */
+.comparison-table thead th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: var(--color-surface);
+  text-align: left;
+}
+
+/* Tier columns — accent name + bottom border */
+.comparison-table thead th:nth-child(n + 2) {
+  color: var(--tier-accent);
+  border-bottom: 3px solid var(--tier-accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Comparison Badge — small inline circle for tier numbers
+   --------------------------------------------------------------------------- */
+
+.comparison-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--tier-accent);
+  color: #fff;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  margin-right: var(--space-1);
+}
+
+/* ---------------------------------------------------------------------------
+   Table Body — data cells
+   --------------------------------------------------------------------------- */
+
+.comparison-table tbody td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+/* First column — feature name, sticky left */
+.comparison-table tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--color-surface);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Tier cells — centered status icons */
+.comparison-table tbody td:nth-child(n + 2) {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+/* ---------------------------------------------------------------------------
+   Row Animation — staggered reveal via IntersectionObserver
+   --------------------------------------------------------------------------- */
+
+.comparison-table tbody tr {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+  transition-delay: calc(var(--i, 0) * 50ms);
+}
+
+.comparison-table tbody tr.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced Motion — instant appearance, no transform
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .comparison-table tbody tr {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile — max-width 639px
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .comparison-section__title {
+    font-size: var(--text-xl);
+  }
+
+  .comparison-table {
+    font-size: var(--text-xs);
+  }
+
+  .comparison-table thead th,
+  .comparison-table tbody td {
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Dark Theme
+   --------------------------------------------------------------------------- */
+
+[data-theme="dark"] .comparison-table thead th:first-child {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] .comparison-table tbody td:first-child {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] .comparison-wrapper {
+  box-shadow: inset -8px 0 12px -8px rgba(0 0 0 / 0.25);
+}

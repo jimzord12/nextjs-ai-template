@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Μάθετε πώς να επιλέξετε την κατάλληλη ιστοσελίδα για την επιχείρησή σας. Οδηγός 5 επιπέδων ποιότητας με πραγματικά κόστη και σύγκριση.">
+  <meta property="og:title" content="Ο Οδηγός της Ιστοσελίδας — Web Tiers Guide">
+  <meta property="og:description" content="Μάθετε πώς να επιλέξετε την κατάλληλη ιστοσελίδα για την επιχείρησή σας. Οδηγός 5 επιπέδων ποιότητας με πραγματικά κόστη και σύγκριση.">
+  <meta property="og:type" content="website">
   <title>Ο Οδηγός της Ιστοσελίδας — Web Tiers Guide</title>
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@400,700&f[]=satoshi@400,500,700&display=swap">
   <link rel="stylesheet" href="./styles/main.css">
   <script type="module" src="./main.ts"></script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link" data-i18n="a11y.skip-link">Skip to content</a>
   <!-- Sticky Header -->
   <header class="site-header">
     <div class="container site-header__inner">
@@ -54,7 +59,7 @@
   </header>
 
   <!-- Hero Section -->
-  <main>
+  <main id="main-content">
     <section class="hero">
       <p class="hero__eyebrow" data-i18n="hero.eyebrow"></p>
       <h1 class="hero__headline" data-i18n="hero.headline"></h1>
@@ -402,6 +407,125 @@
         </wa-details>
       </div>
     </section>
+    <!-- TCO Comparison Section -->
+    <section id="tco" class="tco-section">
+      <div class="container">
+        <h2 class="tco-section__title" data-i18n="tco.title"></h2>
+        <p class="tco-section__subtitle" data-i18n="tco.subtitle"></p>
+        <div class="tco-chart">
+          <div class="tco-bar-row tco-bar-row--1" style="--i:0" data-tooltip="" data-i18n-tooltip="tco.tier1.tooltip">
+            <span class="tco-label" data-i18n="tco.tier1.label"></span>
+            <div class="tco-bar" style="--total:51.8%; --build:5.4%" role="img" aria-label="Tier 1 total cost">
+              <div class="tco-segment tco-build"></div>
+              <div class="tco-segment tco-ongoing"></div>
+            </div>
+            <span class="tco-amount" data-i18n="tco.tier1.amount"></span>
+          </div>
+          <div class="tco-bar-row tco-bar-row--2" style="--i:1" data-tooltip="" data-i18n-tooltip="tco.tier2.tooltip">
+            <span class="tco-label" data-i18n="tco.tier2.label"></span>
+            <div class="tco-bar" style="--total:51.8%; --build:17.1%" role="img" aria-label="Tier 2 total cost">
+              <div class="tco-segment tco-build"></div>
+              <div class="tco-segment tco-ongoing"></div>
+            </div>
+            <span class="tco-amount" data-i18n="tco.tier2.amount"></span>
+          </div>
+          <div class="tco-bar-row tco-bar-row--3" style="--i:2" data-tooltip="" data-i18n-tooltip="tco.tier3.tooltip">
+            <span class="tco-label" data-i18n="tco.tier3.label"></span>
+            <div class="tco-bar" style="--total:30.6%; --build:17.1%" role="img" aria-label="Tier 3 total cost">
+              <div class="tco-segment tco-build"></div>
+              <div class="tco-segment tco-ongoing"></div>
+            </div>
+            <span class="tco-amount" data-i18n="tco.tier3.amount"></span>
+          </div>
+          <div class="tco-bar-row tco-bar-row--4" style="--i:3" data-tooltip="" data-i18n-tooltip="tco.tier4.tooltip">
+            <span class="tco-label" data-i18n="tco.tier4.label"></span>
+            <div class="tco-bar" style="--total:53.4%; --build:44.0%" role="img" aria-label="Tier 4 total cost">
+              <div class="tco-segment tco-build"></div>
+              <div class="tco-segment tco-ongoing"></div>
+            </div>
+            <span class="tco-amount" data-i18n="tco.tier4.amount"></span>
+          </div>
+          <div class="tco-bar-row tco-bar-row--5" style="--i:4" data-tooltip="" data-i18n-tooltip="tco.tier5.tooltip">
+            <span class="tco-label" data-i18n="tco.tier5.label"></span>
+            <div class="tco-bar" style="--total:100%; --build:88.1%" role="img" aria-label="Tier 5 total cost">
+              <div class="tco-segment tco-build"></div>
+              <div class="tco-segment tco-ongoing"></div>
+            </div>
+            <span class="tco-amount" data-i18n="tco.tier5.amount"></span>
+          </div>
+        </div>
+        <div class="tco-legend">
+          <span class="tco-legend__item"><span class="tco-legend__swatch tco-legend__swatch--build"></span> <span data-i18n="tco.legend.build"></span></span>
+          <span class="tco-legend__item"><span class="tco-legend__swatch tco-legend__swatch--ongoing"></span> <span data-i18n="tco.legend.ongoing"></span></span>
+        </div>
+        <p class="tco-conversion" data-i18n="tco.conversion"></p>
+      </div>
+    </section>
+    <!-- Decision Guide Quiz -->
+    <section id="quiz" class="quiz-section" aria-label="Decision guide quiz">
+      <div class="container">
+        <h2 class="quiz-section__title" data-i18n="quiz.title"></h2>
+        <p class="quiz-section__subtitle" data-i18n="quiz.subtitle"></p>
+        <div class="quiz-form" role="form" aria-label="Decision guide quiz">
+          <div class="quiz-progress">
+            <div class="quiz-progress__fill"></div>
+          </div>
+          <div class="quiz-container" aria-live="polite" aria-atomic="true"></div>
+          <div class="quiz-result" hidden></div>
+        </div>
+      </div>
+    </section>
+    <!-- Comparison Checklist -->
+    <section id="comparison" class="comparison-section">
+      <div class="container">
+        <h2 class="comparison-section__title" data-i18n="comparison.title"></h2>
+        <div class="comparison-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"><span class="comparison-badge" style="background:var(--tier-accent-1)">1</span> <span data-i18n="comparison.tier1"></span></th>
+                <th scope="col"><span class="comparison-badge" style="background:var(--tier-accent-2)">2</span> <span data-i18n="comparison.tier2"></span></th>
+                <th scope="col"><span class="comparison-badge" style="background:var(--tier-accent-3)">3</span> <span data-i18n="comparison.tier3"></span></th>
+                <th scope="col"><span class="comparison-badge" style="background:var(--tier-accent-4)">4</span> <span data-i18n="comparison.tier4"></span></th>
+                <th scope="col"><span class="comparison-badge" style="background:var(--tier-accent-5)">5</span> <span data-i18n="comparison.tier5"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td data-i18n="comparison.feature1"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature2"></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature3"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature4"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature5"></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature6"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature7"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature8"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature9"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature10"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature11"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature12"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature13"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+              <tr><td data-i18n="comparison.feature14"></td><td><span role="img" aria-label="No">❌</span></td><td><span role="img" aria-label="Partial">🔶</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td><td><span role="img" aria-label="Yes">✅</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </main>
+  <footer class="site-footer" id="footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__cta">
+        <h2 class="site-footer__heading" data-i18n="footer.heading"></h2>
+        <p class="site-footer__body" data-i18n="footer.body"></p>
+        <a href="mailto:hello@example.com" class="site-footer__contact-btn" data-i18n="footer.cta">Get in touch</a>
+      </div>
+      <div class="site-footer__actions">
+        <button id="print-btn" class="site-footer__print-btn" type="button" data-i18n="footer.print"></button>
+      </div>
+      <div class="site-footer__credits">
+        <p data-i18n="footer.credits"></p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

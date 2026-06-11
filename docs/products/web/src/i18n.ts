@@ -236,6 +236,99 @@ export const i18n: Record<Lang, Record<string, string>> = {
     'tier5.tco.build': '~€9.000',
     'tier5.tco.ongoing': '~€650',
     'tier5.tco.total': '~€9.650',
+
+    'quiz.title': 'Βρείτε το ιδανικό Tier',
+    'quiz.subtitle':
+      'Απαντήστε σε 4 ερωτήσεις και θα σας προτείνουμε το κατάλληλο επίπεδο.',
+    'quiz.q1.question':
+      'Πόσο συχνά χρειάζεστε να αλλάζετε περιεχόμενο στη σελίδα;',
+    'quiz.q1.optionA': 'Σπάνια — το φτιάχνουμε και το ξεχνάμε',
+    'quiz.q1.optionB': 'Λίγες φορές τον χρόνο',
+    'quiz.q1.optionC': 'Κάθε εβδομάδα ή συχνότερα',
+    'quiz.q2.question': 'Τι ρόλο παίζει η ιστοσελίδα στην επιχείρησή σας;',
+    'quiz.q2.optionA': 'Απλά υπάρχει — δεν φέρνει πελάτες',
+    'quiz.q2.optionB': 'Φέρνει κάποιους πελάτες, αλλά όχι κύρια πηγή',
+    'quiz.q2.optionC': 'Είναι το κύριο κανάλι πωλήσεων',
+    'quiz.q3.question': 'Πόσο σημαντικό είναι να εμφανίζεστε στην Google;',
+    'quiz.q3.optionA': 'Καθόλου — οι πελάτες έρχονται με παραπομπές',
+    'quiz.q3.optionB': 'Αρκετά σημαντικό',
+    'quiz.q3.optionC': 'Πολύ σημαντικό — χωρίς Google δεν υπάρχει επιχείρηση',
+    'quiz.q4.question': 'Πόσο σημαντική είναι η αξιοπιστία και η ασφάλεια;',
+    'quiz.q4.optionA': 'Δεν με νοιάζει — αρκεί να υπάρχει κάτι',
+    'quiz.q4.optionB': 'Πρέπει να δουλεύει πάντα',
+    'quiz.q4.optionC':
+      'Κρίσιμο για την επιχείρηση — downtime = χαμένες πωλήσεις',
+    'quiz.progress': 'Ερώτηση {n}/4',
+    'quiz.result.heading': 'Η πρότασή μας',
+    'quiz.result.tier1.text': 'Μια απλή σελίδα αρκεί για να υπάρχετε online.',
+    'quiz.result.tier2.text': 'Χρειάζεστε κάτι πιο επαγγελματικό με ευελιξία.',
+    'quiz.result.tier3.text':
+      'Η ταχύτητα και η εμφάνιση στη Google είναι προτεραιότητα.',
+    'quiz.result.tier4.text':
+      'Χρειάζεστε επαγγελματική εμφάνιση και ανεξαρτησία περιεχομένου.',
+    'quiz.result.tier5.text':
+      'Η σελίδα σας είναι κρίσιμο κεφάλαιο — αξίζει κορυφαία ποιότητα.',
+    'quiz.result.cta': 'Δείτε το {tier}',
+    'quiz.result.retake': 'Ξανακάντε το τεστ',
+
+    // TCO Section
+    'tco.title': 'Κόστος 3ετίας: Η πραγματική εικόνα',
+    'tco.subtitle':
+      'Συμπεριλαμβάνει κατασκευή, φιλοξενία, ασφάλεια, επισκευές, ανακατασκευή.',
+    'tco.legend.build': 'Κατασκευή',
+    'tco.legend.ongoing': 'Εκρήνα (3 έτη)',
+    'tco.tier1.label': 'FB Template',
+    'tco.tier1.amount': '€5.000',
+    'tco.tier1.tooltip':
+      'Κατασκευή €525 + Φιλοξενία €60/έτ. × 3 + Συντήρηση €600 + Κίνδυνος ασφαλείας €800 + Κίνδυνος ανακατασκευής €2.275 = Σύνολο €5.000',
+    'tco.tier2.label': 'WP Semi',
+    'tco.tier2.amount': '€5.000',
+    'tco.tier2.tooltip':
+      'Κατασκευή €1.650 + Φιλοξενία €80/έτ. × 3 + Άδειες €300 + Συντήρηση €450 + Κίνδυνος ασφαλείας €400 + Κίνδυνος ανακατασκευής €1.720 = Σύνολο €5.000',
+    'tco.tier3.label': 'Next.js Quick',
+    'tco.tier3.amount': '€2.950',
+    'tco.tier3.tooltip':
+      'Κατασκευή €1.650 + Φιλοξενία €30/έτ. × 3 + Συντήρηση €300 + Κίνδυνος ανακατασκευής €270 = Σύνολο €2.950',
+    'tco.tier4.label': 'Next.js + CMS',
+    'tco.tier4.amount': '€5.150',
+    'tco.tier4.tooltip':
+      'Κατασκευή €4.250 + Φιλοξενία €40/έτ. × 3 + Άδειες €150 + Συντήρηση €300 = Σύνολο €5.150',
+    'tco.tier5.label': 'Enterprise',
+    'tco.tier5.amount': '€9.650',
+    'tco.tier5.tooltip':
+      'Κατασκευή €8.500 + Φιλοξενία €60/έτ. × 3 + Άδειες €240 + Συντήρηση €360 = Σύνολο €9.650',
+    'tco.conversion':
+      'Το Tier 3 κοστίζει λιγότερο και στην κατασκευή και στην συντήρηση — με Lighthouse σκορ 90+.',
+
+    // Comparison Section
+    'comparison.title': 'Σύγκριση με μια ματιά',
+    'comparison.feature1': 'Προσαρμοσμένο design',
+    'comparison.feature2': 'Φιλικό σε κινητά',
+    'comparison.feature3': 'Βασικό SEO',
+    'comparison.feature4': 'CMS (αυτόνομη επεξεργασία)',
+    'comparison.feature5': 'SSL / Ασφάλεια',
+    'comparison.feature6': 'Lighthouse > 90',
+    'comparison.feature7': 'Συντήρηση (maintenance)',
+    'comparison.feature8': 'Ανεξαρτησία περιεχομένου',
+    'comparison.feature9': 'Δομημένα δεδομένα (JSON-LD)',
+    'comparison.feature10': 'Βελτιστοποίηση ταχύτητας',
+    'comparison.feature11': 'Έλεγχος εκδόσεων (Git)',
+    'comparison.feature12': 'Αυτοματοποιημένα tests',
+    'comparison.feature13': 'Τεκμηρίωση / Εγχειρίδιο',
+    'comparison.feature14': 'Αντοχή 3 ετών',
+    'comparison.tier1': 'WP Template',
+    'comparison.tier2': 'WP Semi',
+    'comparison.tier3': 'Next.js Quick',
+    'comparison.tier4': 'Next.js + CMS',
+    'comparison.tier5': 'Enterprise',
+    'footer.heading': 'Έτοιμοι για επόμενο βήμα;',
+    'footer.body':
+      'Ανακαλύψτε ποιο επίπεδο ιστοσελίδας ταιριάζει στην επιχείρησή σας. Επικοινωνήστε μαζί μας για μια δωρεάν συμβουλευτική συνεδρία.',
+    'footer.cta': 'Επικοινωνήστε μαζί μας',
+    'footer.print': '📥 Εξαγωγή σε PDF',
+    'footer.credits':
+      'Δημιουργήθηκε με φροντίδα για Έλληνες επιχειρηματίες. © 2026',
+    'a11y.skip-link': 'Μετάβαση στο περιεχόμενο',
   },
   en: {
     'site.title': 'The Website Tiers Guide',
@@ -467,6 +560,94 @@ export const i18n: Record<Lang, Record<string, string>> = {
     'tier5.tco.build': '~€9,000',
     'tier5.tco.ongoing': '~€650',
     'tier5.tco.total': '~€9,650',
+
+    'quiz.title': 'Find your ideal Tier',
+    'quiz.subtitle': "Answer 4 questions and we'll recommend the right tier.",
+    'quiz.q1.question': 'How often do you need to update your website content?',
+    'quiz.q1.optionA': 'Rarely — set it and forget it',
+    'quiz.q1.optionB': 'A few times a year',
+    'quiz.q1.optionC': 'Every week or more',
+    'quiz.q2.question': 'What role does the website play in your business?',
+    'quiz.q2.optionA': "Just exists — doesn't bring clients",
+    'quiz.q2.optionB': 'Brings some clients, but not the main source',
+    'quiz.q2.optionC': 'Primary sales channel',
+    'quiz.q3.question': 'How important is appearing on Google?',
+    'quiz.q3.optionA': 'Not at all — clients come via referrals',
+    'quiz.q3.optionB': 'Fairly important',
+    'quiz.q3.optionC': 'Very important — without Google there is no business',
+    'quiz.q4.question': 'How important are reliability and security?',
+    'quiz.q4.optionA': "Don't care — anything online is fine",
+    'quiz.q4.optionB': 'Must work always',
+    'quiz.q4.optionC': 'Critical for business — downtime = lost sales',
+    'quiz.progress': 'Question {n}/4',
+    'quiz.result.heading': 'Our recommendation',
+    'quiz.result.tier1.text': 'A simple page is enough to exist online.',
+    'quiz.result.tier2.text':
+      'You need something more professional with flexibility.',
+    'quiz.result.tier3.text': 'Speed and Google visibility are priorities.',
+    'quiz.result.tier4.text':
+      'You need professional presence and content independence.',
+    'quiz.result.tier5.text':
+      'Your site is a critical asset — it deserves top-tier quality.',
+    'quiz.result.cta': 'See {tier}',
+    'quiz.result.retake': 'Retake quiz',
+
+    // TCO Section
+    'tco.title': '3-Year Cost: The Real Picture',
+    'tco.subtitle': 'Includes build, hosting, security, repairs, and rebuild.',
+    'tco.legend.build': 'Build',
+    'tco.legend.ongoing': 'Ongoing (3 yrs)',
+    'tco.tier1.label': 'WP Template',
+    'tco.tier1.amount': '€5,000',
+    'tco.tier1.tooltip':
+      'Build €525 + Hosting €60/yr × 3 + Maintenance €600 + Security incident risk €800 + Rebuild risk €2,275 = Total €5,000',
+    'tco.tier2.label': 'WP Semi',
+    'tco.tier2.amount': '€5,000',
+    'tco.tier2.tooltip':
+      'Build €1,650 + Hosting €80/yr × 3 + Licenses €300 + Maintenance €450 + Security risk €400 + Rebuild risk €1,720 = Total €5,000',
+    'tco.tier3.label': 'Next.js Quick',
+    'tco.tier3.amount': '€2,950',
+    'tco.tier3.tooltip':
+      'Build €1,650 + Hosting €30/yr × 3 + Maintenance €300 + Rebuild risk €270 = Total €2,950',
+    'tco.tier4.label': 'Next.js + CMS',
+    'tco.tier4.amount': '€5,150',
+    'tco.tier4.tooltip':
+      'Build €4,250 + Hosting €40/yr × 3 + Licenses €150 + Maintenance €300 = Total €5,150',
+    'tco.tier5.label': 'Enterprise',
+    'tco.tier5.amount': '€9,650',
+    'tco.tier5.tooltip':
+      'Build €8,500 + Hosting €60/yr × 3 + Licenses €240 + Maintenance €360 = Total €9,650',
+    'tco.conversion':
+      'Tier 3 costs less to build *and* less to maintain — with 90+ Lighthouse scores.',
+
+    // Comparison Section
+    'comparison.title': 'Comparison at a Glance',
+    'comparison.feature1': 'Custom design',
+    'comparison.feature2': 'Mobile responsive',
+    'comparison.feature3': 'SEO setup',
+    'comparison.feature4': 'CMS (self-editing)',
+    'comparison.feature5': 'SSL / Security',
+    'comparison.feature6': 'Lighthouse > 90',
+    'comparison.feature7': 'Ongoing maintenance',
+    'comparison.feature8': 'Content editing independence',
+    'comparison.feature9': 'Structured data (JSON-LD)',
+    'comparison.feature10': 'Performance optimization',
+    'comparison.feature11': 'Version control',
+    'comparison.feature12': 'Automated testing',
+    'comparison.feature13': 'Documentation',
+    'comparison.feature14': '3-year durability',
+    'comparison.tier1': 'WP Template',
+    'comparison.tier2': 'WP Semi',
+    'comparison.tier3': 'Next.js Quick',
+    'comparison.tier4': 'Next.js + CMS',
+    'comparison.tier5': 'Enterprise',
+    'footer.heading': 'Ready for the next step?',
+    'footer.body':
+      'Discover which website tier fits your business. Contact us for a free consultation session.',
+    'footer.cta': 'Get in touch',
+    'footer.print': '📥 Export as PDF',
+    'footer.credits': 'Crafted with care for Greek business owners. © 2026',
+    'a11y.skip-link': 'Skip to content',
   },
 }
 
@@ -474,7 +655,12 @@ export function getLang(): Lang {
   const hash = location.hash.match(/(?:^|#)lang=(gr|en)(?:&|$)/)
   if (hash) return hash[1] as Lang
 
-  const stored = localStorage.getItem('lang')
+  let stored: string | null = null
+  try {
+    stored = localStorage.getItem('lang')
+  } catch {
+    /* storage unavailable */
+  }
   if (stored === 'gr' || stored === 'en') return stored
 
   return 'gr'
@@ -482,6 +668,7 @@ export function getLang(): Lang {
 
 export function setLang(lang: Lang): void {
   document.documentElement.setAttribute('data-lang', lang)
+  document.documentElement.lang = lang === 'gr' ? 'el' : 'en'
 
   const keys = i18n[lang]
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n]')) {
@@ -492,7 +679,22 @@ export function setLang(lang: Lang): void {
     }
   }
 
-  localStorage.setItem('lang', lang)
+  for (const el of document.querySelectorAll<HTMLElement>(
+    '[data-i18n-tooltip]',
+  )) {
+    const key = el.dataset.i18nTooltip
+    if (key) {
+      const value = keys?.[key]
+      if (value !== undefined) el.setAttribute('data-tooltip', value)
+    }
+  }
+  document.title = keys?.['site.title'] ?? document.title
+
+  try {
+    localStorage.setItem('lang', lang)
+  } catch {
+    /* storage unavailable */
+  }
   history.replaceState(null, '', `#lang=${lang}`)
 
   updateLangToggle(lang)

@@ -28,7 +28,7 @@ bun run build:standalone
 | `bun run lint` | Biome check + auto-fix |
 | `bun test` | Run tests via `bun:test` |
 
-All commands run from this directory (`docs/products/page/`).
+All commands run from this directory (`docs/products/web/`).
 
 ## Manual Testing
 
@@ -81,7 +81,7 @@ Should exit with no errors.
 ## Project Structure
 
 ```
-page/
+web/
 ├── src/
 │   ├── index.html          # HTML entrypoint (wa-cloak, fonts, main.ts)
 │   ├── main.ts             # WA init: setBasePath → allDefined → remove cloak

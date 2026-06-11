@@ -3,9 +3,13 @@ import {
   setBasePath,
 } from '@awesome.me/webawesome/dist/webawesome.js'
 import './wa.js'
+import { initComparisonObserver } from './comparison-observer.js'
 import type { Lang } from './i18n.js'
 import { initLang, setLang, updateLangToggle } from './i18n.js'
+import { initPrint } from './print.js'
+import { initQuiz } from './quiz.js'
 import { initScrollSpy } from './scroll-spy.js'
+import { initTcoBars } from './tco-bars.js'
 import type { Theme } from './theme.js'
 import { initTheme, toggleTheme } from './theme.js'
 
@@ -26,17 +30,28 @@ void (async () => {
   // Init scroll spy for tier sections
   initScrollSpy()
 
+  initTcoBars()
+  initComparisonObserver()
+  initQuiz()
+  initPrint()
+
   // Wire up toggle buttons
-  const themeBtn =
-    document.querySelector<HTMLButtonElement>('#theme-toggle')
+  const themeBtn = document.querySelector<HTMLButtonElement>('#theme-toggle')
   if (themeBtn) {
+    const isDark =
+      document.documentElement.getAttribute('data-theme') === 'dark'
+    themeBtn.setAttribute('aria-pressed', String(isDark))
     themeBtn.setAttribute(
-      'aria-pressed',
-      String(document.documentElement.getAttribute('data-theme') === 'dark'),
+      'aria-label',
+      isDark ? 'Switch to light mode' : 'Switch to dark mode',
     )
     themeBtn.addEventListener('click', () => {
       const next: Theme = toggleTheme()
       themeBtn.setAttribute('aria-pressed', String(next === 'dark'))
+      themeBtn.setAttribute(
+        'aria-label',
+        next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
+      )
     })
   }
 

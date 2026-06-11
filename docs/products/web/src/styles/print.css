@@ -1,0 +1,132 @@
+/* ==========================================================================
+   Print Stylesheet — SPEC §11
+   Forces light theme, hides interactive UI, expands accordions,
+   preserves tier accent colors, A4 page layout.
+   ========================================================================== */
+
+/* ---- Page Setup (top-level — @page cannot nest) ---- */
+
+@page {
+  size: A4;
+  margin: 15mm 12mm;
+}
+
+@media print {
+  /* ---- Color Preservation ---- */
+
+  *,
+  *::before,
+  *::after {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* ---- Force Light Theme ---- */
+
+  [data-theme="dark"] {
+    --color-surface: #f7f6f2;
+    --color-surface-offset: #eeedea;
+    --color-text: #1a1918;
+    --color-text-muted: #6b6860;
+    --color-border: #d8d6d0;
+    --color-primary: oklch(46% 0.09 192);
+  }
+
+  [data-theme="dark"] .site-header {
+    background: rgba(247, 246, 242, 0.85);
+  }
+
+  /* ---- General Print Improvements ---- */
+
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  /* Show link URLs inline */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: var(--color-text-muted);
+    word-break: break-all;
+  }
+
+  /* Remove decorative backgrounds and shadows */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .hero {
+    background: white;
+  }
+
+  .tier-section,
+  .tco-section,
+  .comparison-section,
+  .site-footer {
+    background: white;
+  }
+
+  /* ---- Hide Interactive / Decorative Elements ---- */
+
+  .site-header,
+  .tier-nav,
+  #theme-toggle,
+  [data-lang-toggle],
+  .quiz-section,
+  .hero__scroll-cta,
+  .hero__cards button,
+  .hero__cards .hero__card a,
+  .site-footer__print-btn {
+    display: none !important;
+  }
+
+  /* ---- Expand Accordions ---- */
+
+  /* wa-details: ensure content is visible even if JS hasn't set open attr */
+  wa-details::part(content) {
+    display: block !important;
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  wa-details::part(summary-icon) {
+    display: none;
+  }
+
+  /* ---- Page Breaks Between Tier Sections ---- */
+
+  .tier-section {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .tier-section:last-of-type {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  /* Keep tier headings with their content */
+  .tier-header {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* ---- Footer Visible in Print ---- */
+
+  .site-footer {
+    page-break-before: auto;
+  }
+}

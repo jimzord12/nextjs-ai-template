@@ -1,0 +1,337 @@
+/* ==========================================================================
+   TCO Section — stacked horizontal bar chart comparing total cost of
+   ownership across five tiers.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Section wrapper
+   --------------------------------------------------------------------------- */
+
+.tco-section {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: var(--space-12) var(--space-4);
+  text-align: center;
+}
+
+.tco-section__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.tco-section__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-8);
+}
+
+/* ---------------------------------------------------------------------------
+   Chart container
+   --------------------------------------------------------------------------- */
+
+.tco-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---------------------------------------------------------------------------
+   Bar row — label | bar | amount
+   --------------------------------------------------------------------------- */
+
+.tco-bar-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ---------------------------------------------------------------------------
+   Left label
+   --------------------------------------------------------------------------- */
+
+.tco-label {
+  flex: 0 0 140px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Bar track
+   --------------------------------------------------------------------------- */
+
+.tco-bar {
+  flex: 1 1 0;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-offset);
+  overflow: hidden;
+  display: flex;
+  width: 0;
+  transition: width 800ms ease-out;
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+.tco-bar-row.is-animated .tco-bar {
+  width: var(--total);
+}
+
+/* ---------------------------------------------------------------------------
+   Segments inside bar
+   --------------------------------------------------------------------------- */
+
+.tco-segment {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+
+.tco-build {
+  height: 100%;
+  width: var(--build);
+  transition: width 800ms ease-out;
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+.tco-ongoing {
+  height: 100%;
+  flex: 1 1 0;
+  transition: width 800ms ease-out;
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+/* ---------------------------------------------------------------------------
+   Right amount
+   --------------------------------------------------------------------------- */
+
+.tco-amount {
+  flex: 0 0 90px;
+  min-width: 90px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Tier accent colours — build light / ongoing dark
+   --------------------------------------------------------------------------- */
+
+.tco-bar-row--1 .tco-build {
+  background: var(--tier-build-1);
+}
+.tco-bar-row--1 .tco-ongoing {
+  background: var(--tier-accent-1);
+}
+
+.tco-bar-row--2 .tco-build {
+  background: var(--tier-build-2);
+}
+.tco-bar-row--2 .tco-ongoing {
+  background: var(--tier-accent-2);
+}
+
+.tco-bar-row--3 .tco-build {
+  background: var(--tier-build-3);
+}
+.tco-bar-row--3 .tco-ongoing {
+  background: var(--tier-accent-3);
+}
+
+.tco-bar-row--4 .tco-build {
+  background: var(--tier-build-4);
+}
+.tco-bar-row--4 .tco-ongoing {
+  background: var(--tier-accent-4);
+}
+
+.tco-bar-row--5 .tco-build {
+  background: var(--tier-build-5);
+}
+.tco-bar-row--5 .tco-ongoing {
+  background: var(--tier-accent-5);
+}
+
+/* ---------------------------------------------------------------------------
+   Hover tooltip (pure CSS, positioned above bar)
+   --------------------------------------------------------------------------- */
+
+.tco-bar-row::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  white-space: pre-line;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 10;
+}
+
+.tco-bar-row:hover::after {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Legend — build / ongoing swatches
+   --------------------------------------------------------------------------- */
+
+.tco-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.tco-legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.tco-legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-sm);
+}
+
+.tco-legend__swatch--build {
+  background: var(--color-text-muted);
+}
+
+.tco-legend__swatch--ongoing {
+  background: var(--color-text);
+}
+
+/* ---------------------------------------------------------------------------
+   Conversion copy — paragraph below chart
+   --------------------------------------------------------------------------- */
+
+.tco-conversion {
+  margin-top: var(--space-8);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.tco-conversion strong {
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced Motion — disable transitions
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tco-bar,
+  .tco-build,
+  .tco-ongoing {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion must override all animation declarations */
+    transition: none !important;
+  }
+
+  .tco-bar-row::after {
+    /* biome-ignore lint/complexity/noImportantStyles: same justification — accessibility override */
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile — max-width 639px
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .tco-section {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .tco-section__title {
+    font-size: var(--text-xl);
+  }
+
+  .tco-bar-row {
+    gap: var(--space-2);
+  }
+
+  .tco-label {
+    flex: 0 0 32px;
+    font-size: var(--text-xs);
+  }
+
+  .tco-amount {
+    flex: 0 0 64px;
+    min-width: 64px;
+    font-size: var(--text-xs);
+  }
+
+  .tco-bar {
+    height: 28px;
+  }
+
+  .tco-legend {
+    gap: var(--space-4);
+  }
+
+  .tco-legend__item {
+    font-size: var(--text-xs);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Dark Theme
+   --------------------------------------------------------------------------- */
+
+[data-theme="dark"] .tco-bar {
+  background: var(--color-surface-offset);
+}
+
+[data-theme="dark"] .tco-label,
+[data-theme="dark"] .tco-amount {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .tco-section__title {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .tco-section__subtitle {
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .tco-legend__item {
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .tco-conversion {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .tco-bar-row::after {
+  background: var(--color-surface);
+  color: var(--color-text);
+}

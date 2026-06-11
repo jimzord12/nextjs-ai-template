@@ -13,6 +13,18 @@
   --color-text-muted: #6b6860;
   --color-border: #d8d6d0;
 
+  /* ---- Tier Accent Colors ---- */
+  --tier-accent-1: #b07a00; /* Muted Amber */
+  --tier-accent-2: #006494; /* Steel Blue */
+  --tier-accent-3: #437a22; /* Slate Green */
+  --tier-accent-4: #01696f; /* Hydra Teal */
+  --tier-accent-5: #7a39bb; /* Deep Plum */
+  --tier-build-1: #e8af34;
+  --tier-build-2: #5591c7;
+  --tier-build-3: #6daa45;
+  --tier-build-4: #4f98a3;
+  --tier-build-5: #a86fdf;
+
   /* ---- Typography ---- */
   --font-display: "Satoshi", sans-serif;
   --font-body: "Satoshi", sans-serif;

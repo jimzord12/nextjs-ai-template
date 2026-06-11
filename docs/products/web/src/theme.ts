@@ -3,7 +3,12 @@ export type Theme = 'light' | 'dark'
 const STORAGE_KEY = 'theme'
 
 export function getTheme(): Theme {
-  const stored = localStorage.getItem(STORAGE_KEY)
+  let stored: string | null = null
+  try {
+    stored = localStorage.getItem(STORAGE_KEY)
+  } catch {
+    /* storage unavailable */
+  }
   if (stored === 'dark' || stored === 'light') return stored
   return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
@@ -16,7 +21,11 @@ export function setTheme(theme: Theme): void {
   } else {
     el.classList.remove('wa-dark')
   }
-  localStorage.setItem(STORAGE_KEY, theme)
+  try {
+    localStorage.setItem(STORAGE_KEY, theme)
+  } catch {
+    /* storage unavailable */
+  }
 }
 
 export function toggleTheme(): Theme {
@@ -31,7 +40,13 @@ export function initTheme(): void {
   const mq = matchMedia('(prefers-color-scheme: dark)')
   mq.addEventListener('change', (e) => {
     // Only auto-switch when user has no explicit localStorage preference
-    if (!localStorage.getItem(STORAGE_KEY)) {
+    let hasPref = false
+    try {
+      hasPref = !!localStorage.getItem(STORAGE_KEY)
+    } catch {
+      /* storage unavailable */
+    }
+    if (!hasPref) {
       setTheme(e.matches ? 'dark' : 'light')
     }
   })

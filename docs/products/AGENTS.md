@@ -17,7 +17,7 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 | `content/product-tiers.json` | Structured tier data (pricing, TCO, hours, pros/cons) |
 | `content/Greek Web Development Market *.md` | Market research — pricing & quality benchmarks |
 | `tech-stack/TECH_STACK.md` | Bun + Web Awesome patterns, gotchas, and configuration (**mandatory read**) |
-| `page/` | Implementation directory — Bun project root |
+| `web/` | Implementation directory — Bun project root |
 
 ---
 
@@ -25,7 +25,7 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 1. **Read `SPEC.md`** for content, copy, behavior, and design decisions. It overrides everything else.
 2. **Read `ROADMAP.md`** for the current milestone scope and done-when criteria.
 3. **Read `tech-stack/TECH_STACK.md`** — mandatory. You MUST read this before writing any Bun or Web Awesome code. It contains critical gotchas (import paths, FOUCE, TS config traps) that will break the build if ignored.
-4. Check `page/` for existing implementation state before writing code.
+4. Check `web/` for existing implementation state before writing code.
 5. **Update `ROADMAP.md` milestones.** Each milestone has a `Status:` line and `Done when:` checkboxes. When you start a milestone, set its status to `IN PROGRESS` and add the date. When you complete a milestone, set status to `DONE`, add the completion date, and check all done-when boxes (`[x]`). Check them off one by one as you verify each criterion — never batch-check without proof.
 
 ---
@@ -45,7 +45,7 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 ## Build Commands
 
-All commands run from `docs/products/page/`:
+All commands run from `docs/products/web/`:
 
 ```bash
 bun dev              # dev server (bun ./src/index.html)

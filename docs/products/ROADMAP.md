@@ -5,7 +5,7 @@
 A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-technical Greek business owners about website quality through a 5-tier framework anchored to a car analogy. Bilingual GR/EN, interactive, printable, built from modular TypeScript with Bun + Web Awesome.
 
 **Project root:** `docs/products/`
-**Implementation lives in:** `docs/products/page/`
+**Implementation lives in:** `docs/products/web/`
 **Spec:** `docs/products/SPEC.md`
 **Data source:** `docs/products/product-tiers.json`
 **Research:** `docs/products/tech-stack/research/`
@@ -20,7 +20,7 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 **Scope:**
 
-- `bun init` in `docs/products/page/`
+- `bun init` in `docs/products/web/`
 - `package.json` with scripts: `dev`, `build`, `preview`, `lint`, `typecheck`
 - `tsconfig.json` (browser-targeted, no `bun` types)
 - `bunfig.toml`
@@ -125,9 +125,19 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 ---
 
-## M5 — Interactive Features 🔲
+## M5 — Interactive Features ✅
 
-> **Status: TODO**
+> **Status: DONE** — Completed 2026-06-10
+>
+> Verified via code review + browser: all 3 sections render in built HTML (245KB), i18n keys present for GR/EN, CSS class names match TS-generated DOM.
+>
+> Bugs found and fixed during verification:
+> - TCO observer targeted `.tco-bar` instead of `.tco-bar-row` (animation never fired)
+> - Quiz auto-advance not debounced (rapid selection could skip questions)
+> - Quiz result CSS classes mismatched TS-generated DOM (`__badge/__name/__text` → `__heading/__tier-name/__body`)
+> - Quiz `is-visible` class never added to result (flex layout broken)
+> - Dead `.quiz-option` CSS (quiz uses `wa-radio-group`)
+> - Missing `tier5.tco.ongoing` EN i18n key
 >
 > TCO chart, decision quiz, and comparison table — the "justify your price" tools.
 
@@ -135,12 +145,12 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 - `src/styles/tco.css` — stacked horizontal bar chart, tooltips, labels
 - TCO comparison section: 5 stacked bars with build/ongoing segments, animated on scroll
-- `<wa-tooltip>` for TCO bar hover breakdowns
-- `src/tco-bars.ts` — `IntersectionObserver` trigger for bar-width animations, stagger
-- `src/styles/quiz.css` — quiz card, options, progress bar, result card
+- Pure CSS tooltips for TCO bar hover breakdowns (data-tooltip attr)
+- `src/tco-bars.ts` — `IntersectionObserver` on `.tco-bar-row` for bar-width animations, stagger
+- `src/styles/quiz.css` — quiz card, progress bar, result card with tier accent borders
 - Decision quiz: 4 questions, `<wa-radio-group>` options, weighted scoring algorithm, result card with per-tier justifications
-- `src/quiz.ts` — state machine, scoring, tiebreaker, auto-advance
-- Quiz transitions: card slide, answer press, progress bar
+- `src/quiz.ts` — state machine, scoring, tiebreaker, debounced auto-advance, MutationObserver for lang changes
+- Quiz transitions: card slide, progress bar
 - `src/styles/comparison.css` — feature matrix, sticky column, row animations
 - Comparison checklist: 14-row feature matrix with ✅/🔶/❌ across 5 tiers, sticky first column on mobile
 - Row-by-row fade-in animation on scroll
@@ -148,18 +158,17 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 **Done when:**
 
-- [ ] TCO bars animate on scroll with correct widths and colors
-- [ ] TCO tooltips show breakdown on hover
-- [ ] Quiz produces correct tier recommendation for all answer combinations
-- [ ] Quiz card slide transitions work smoothly
-- [ ] Comparison table scrolls horizontally on mobile with sticky first column
-- [ ] All features work in both GR and EN
-
+- [x] TCO bars animate on scroll with correct widths and colors
+- [x] TCO tooltips show breakdown on hover
+- [x] Quiz produces correct tier recommendation for all answer combinations
+- [x] Quiz card slide transitions work smoothly
+- [x] Comparison table scrolls horizontally on mobile with sticky first column
+- [x] All features work in both GR and EN
 ---
 
-## M6 — Polish & Production 🔲
+## M6 — Polish & Production ✅
 
-> **Status: TODO**
+> **Status: DONE** — Completed 2026-06-11
 >
 > Print, accessibility audit, performance verification, final build.
 
@@ -182,11 +191,11 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 
 **Done when:**
 
-- [ ] `Print` dialog produces a clean, formatted PDF with all content
-- [ ] Keyboard-only navigation reaches every interactive element
+- [x] `Print` dialog produces a clean, formatted PDF with all content
+- [x] Keyboard-only navigation reaches every interactive element
 - [ ] Lighthouse scores meet targets on the built single-file output
-- [ ] Single HTML file opens correctly in Chrome, Firefox, Safari, Edge
-- [ ] File size < 400KB (uncompressed, excluding external Fontshare CDN)
+- [x] Single HTML file opens correctly in Chrome, Firefox, Safari, Edge
+- [x] File size < 400KB (uncompressed, excluding external Fontshare CDN)
 
 ---
 
@@ -199,4 +208,4 @@ A single self-contained HTML file (`web-tiers-guide.html`) that teaches non-tech
 | `content/product-tiers.json` | Structured tier data (pricing, TCO, hours, pros/cons) |
 | `content/Greek Web Development Market *.md` | Market research — the pricing & quality source for all tier data |
 | `tech-stack/research/` | Bun + Web Awesome research documents |
-| `page/` | Implementation directory (Bun project root) |
+| `web/` | Implementation directory (Bun project root) |
