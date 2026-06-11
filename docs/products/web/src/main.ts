@@ -10,6 +10,7 @@ import { initPrint } from './print.js'
 import { initQuiz } from './quiz.js'
 import { initScrollSpy } from './scroll-spy.js'
 import { initTcoBars } from './tco-bars.js'
+import { initStickyCta } from './sticky-cta.js'
 import type { Theme } from './theme.js'
 import { initTheme, toggleTheme } from './theme.js'
 
@@ -34,6 +35,7 @@ void (async () => {
   initComparisonObserver()
   initQuiz()
   initPrint()
+  initStickyCta()
 
   // Wire up toggle buttons
   const themeBtn = document.querySelector<HTMLButtonElement>('#theme-toggle')

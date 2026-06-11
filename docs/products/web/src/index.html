@@ -8,7 +8,9 @@
   <meta property="og:description" content="Μάθετε πώς να επιλέξετε την κατάλληλη ιστοσελίδα για την επιχείρησή σας. Οδηγός 5 επιπέδων ποιότητας με πραγματικά κόστη και σύγκριση.">
   <meta property="og:type" content="website">
   <title>Ο Οδηγός της Ιστοσελίδας — Web Tiers Guide</title>
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@400,700&f[]=satoshi@400,500,700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="./styles/main.css">
   <script type="module" src="./main.ts"></script>
 </head>
@@ -292,10 +294,18 @@
       </div>
     </section>
 
+    <!-- Inline Quiz CTA -->
+    <div class="inline-cta container">
+      <p class="inline-cta__text">
+        <span data-i18n="inline-cta.text"></span>
+        <a href="#quiz" class="inline-cta__link" data-i18n="inline-cta.link"></a>
+      </p>
+    </div>
+
     <!-- Tier 4 -->
     <section id="tier-4" class="tier-section tier-section--4">
       <div class="container container--narrow">
-        <div class="tier-header">
+        <div class="tier-header" data-recommended="Προτεινόμενο">
           <span class="tier-header__badge" aria-hidden="true">04</span>
           <span class="tier-header__car" data-i18n="tier4.car"></span>
           <h2 class="tier-header__name" data-i18n="tier4.name"></h2>
@@ -518,7 +528,9 @@
         <h2 class="site-footer__heading" data-i18n="footer.heading"></h2>
         <p class="site-footer__body" data-i18n="footer.body"></p>
         <a href="mailto:hello@example.com" class="site-footer__contact-btn" data-i18n="footer.cta">Get in touch</a>
+        <a href="#quiz" class="site-footer__quiz-link" data-i18n="footer.quiz-link"></a>
       </div>
+      <p class="site-footer__trust" data-i18n="footer.trust"></p>
       <div class="site-footer__actions">
         <button id="print-btn" class="site-footer__print-btn" type="button" data-i18n="footer.print"></button>
       </div>
@@ -527,5 +539,8 @@
       </div>
     </div>
   </footer>
+  <div class="sticky-cta" id="sticky-cta" hidden>
+    <a href="#footer" class="sticky-cta__button" data-i18n="cta.sticky"></a>
+  </div>
 </body>
 </html>

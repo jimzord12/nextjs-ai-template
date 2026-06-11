@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Inline CTA — mid-page callout between Tier 3 and Tier 4
+   ========================================================================== */
+
+.inline-cta {
+  text-align: center;
+  padding: var(--space-10) var(--space-4);
+  position: relative;
+}
+
+.inline-cta__text {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.inline-cta__link {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  margin-top: var(--space-2);
+}
+
+.inline-cta__link:hover {
+  color: var(--color-accent-hover);
+}
+
+.inline-cta__link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Dark theme */
+[data-theme="dark"] .inline-cta__link:hover {
+  color: var(--color-accent-hover);
+}

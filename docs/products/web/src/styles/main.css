@@ -8,9 +8,11 @@
 @import "./layout.css";
 @import "./header.css";
 @import "./hero.css";
-@import "./tiers.css";
+@import "./atmosphere.css";
 @import "./tco.css";
+@import "./inline-cta.css";
 @import "./comparison.css";
 @import "./quiz.css";
 @import "./print.css";
 @import "./footer.css";
+@import "./cta.css";

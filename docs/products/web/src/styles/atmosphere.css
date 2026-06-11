@@ -1,0 +1,271 @@
+/* ==========================================================================
+   Atmospheric Background — floating shapes, gradient blobs, subtle motion
+   Adds depth and life to the premium conversion site.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Hero atmosphere — animated gradient orbs behind hero content
+   --------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: float-orb 20s ease-in-out infinite;
+}
+
+.hero::before {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, oklch(76% 0.15 75 / 0.4), transparent 70%);
+  top: -10%;
+  right: -5%;
+  animation-delay: -5s;
+}
+
+.hero::after {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, oklch(48% 0.11 195 / 0.3), transparent 70%);
+  bottom: -15%;
+  left: -5%;
+  animation-delay: -12s;
+}
+
+/* ---------------------------------------------------------------------------
+   Tier sections — subtle accent-aligned side glow
+   --------------------------------------------------------------------------- */
+
+.tier-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.tier-section::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--tier-accent), transparent 70%);
+  opacity: 0.04;
+  filter: blur(60px);
+  pointer-events: none;
+  top: 20%;
+  right: -5%;
+  animation: float-orb 25s ease-in-out infinite;
+}
+
+.tier-section--2::before,
+.tier-section--4::before {
+  right: auto;
+  left: -5%;
+  animation-delay: -8s;
+}
+
+/* ---------------------------------------------------------------------------
+   TCO section — wide gradient band behind chart
+   --------------------------------------------------------------------------- */
+
+.tco-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.tco-section::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 200px;
+  background: linear-gradient(135deg, oklch(48% 0.11 195 / 0.06), oklch(76% 0.15 75 / 0.06));
+  border-radius: 50%;
+  filter: blur(40px);
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: float-orb 30s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Quiz section — dual accent orbs
+   --------------------------------------------------------------------------- */
+
+.quiz-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-section::before,
+.quiz-section::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.quiz-section::before {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, oklch(76% 0.15 75 / 0.5), transparent 70%);
+  top: -10%;
+  right: -10%;
+  animation: float-orb 18s ease-in-out infinite;
+}
+
+.quiz-section::after {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, oklch(48% 0.11 195 / 0.4), transparent 70%);
+  bottom: -5%;
+  left: -8%;
+  animation: float-orb 22s ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+/* ---------------------------------------------------------------------------
+   Comparison section — subtle top glow
+   --------------------------------------------------------------------------- */
+
+.comparison-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.comparison-section::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(180deg, oklch(48% 0.11 195 / 0.03), transparent);
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Keyframes
+   --------------------------------------------------------------------------- */
+
+@keyframes float-orb {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.05);
+  }
+  50% {
+    transform: translate(-15px, 15px) scale(0.95);
+  }
+  75% {
+    transform: translate(10px, 25px) scale(1.02);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Decorative grid lines — very subtle background grid on tier sections
+   --------------------------------------------------------------------------- */
+
+.tier-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.15;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced Motion
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero::after,
+  .tier-section::before,
+  .tco-section::before,
+  .quiz-section::before,
+  .quiz-section::after {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Dark Theme — stronger orb opacity for visibility on dark bg
+   --------------------------------------------------------------------------- */
+
+[data-theme="dark"] .hero::before {
+  opacity: 0.1;
+}
+
+[data-theme="dark"] .hero::after {
+  opacity: 0.08;
+}
+
+[data-theme="dark"] .tier-section::before {
+  opacity: 0.06;
+}
+
+[data-theme="dark"] .tco-section::before {
+  opacity: 0.08;
+}
+
+[data-theme="dark"] .quiz-section::before {
+  opacity: 0.06;
+}
+
+[data-theme="dark"] .quiz-section::after {
+  opacity: 0.05;
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile — reduce orb sizes
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .hero::before {
+    width: 250px;
+    height: 250px;
+  }
+
+  .hero::after {
+    width: 200px;
+    height: 200px;
+  }
+
+  .tier-section::before {
+    width: 150px;
+    height: 150px;
+  }
+
+  .tco-section::before {
+    width: 300px;
+    height: 100px;
+  }
+
+  .quiz-section::before {
+    width: 180px;
+    height: 180px;
+  }
+
+  .quiz-section::after {
+    width: 120px;
+    height: 120px;
+  }
+}

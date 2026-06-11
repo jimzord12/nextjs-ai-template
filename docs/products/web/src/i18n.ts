@@ -329,6 +329,11 @@ export const i18n: Record<Lang, Record<string, string>> = {
     'footer.credits':
       'Δημιουργήθηκε με φροντίδα για Έλληνες επιχειρηματίες. © 2026',
     'a11y.skip-link': 'Μετάβαση στο περιεχόμενο',
+    'cta.sticky': 'Μιλήστε μαζί μας',
+    'footer.quiz-link': '→ Ξεκινήστε το Quiz',
+    'footer.trust': '50+ επιχειρήσεις εμπιστεύονται τον οδηγό μας',
+    'inline-cta.text': 'Ανακαλύψτε γρήγορα ποιο επίπεδο σας ταιριάζει — ',
+    'inline-cta.link': '→ Ξεκινήστε το Quiz',
   },
   en: {
     'site.title': 'The Website Tiers Guide',
@@ -648,6 +653,11 @@ export const i18n: Record<Lang, Record<string, string>> = {
     'footer.print': '📥 Export as PDF',
     'footer.credits': 'Crafted with care for Greek business owners. © 2026',
     'a11y.skip-link': 'Skip to content',
+    'cta.sticky': 'Talk to us',
+    'footer.quiz-link': '→ Take the Quiz',
+    'footer.trust': '50+ businesses trust our guide',
+    'inline-cta.text': 'Quickly find which tier fits you — ',
+    'inline-cta.link': '→ Take the Quiz',
   },
 }
 
