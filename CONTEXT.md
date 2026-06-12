@@ -67,6 +67,10 @@ _Avoid_: Theme variant, color scheme, preset
 Deferred. For now, project setup uses a simple bootstrap method (GitHub template, `npx degit`, or manual checklist). A scaffolding CLI may be built when volume justifies it.
 _Avoid_: Scaffold, setup wizard, bootstrap, create-jz-app
 
+**Tier 2 Fork**:
+A separate GitHub repository created by forking this repo when the first Tier 2 client appears. Adds Sanity adapter, server runtime, blog, CI, analytics. Shares no code dependency with this repo. Common patterns may be extracted into a shared package when 3+ projects of each tier exist. Monorepo restructuring happens only when there's real evidence of shared code.
+_Avoid_: Tier 2 template, second template, monorepo package
+
 **QA Report**:
 Generated HTML files in `.qa/` from the QA pipeline (Lighthouse, axe, bundle analysis, security audit). You screenshot key metrics into a client-facing summary. Not hosted — local files only.
 _Avoid_: Test report, audit report, compliance report
