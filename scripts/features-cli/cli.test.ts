@@ -461,7 +461,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.exitCode).toBe(1);
     expect(result.stdout).toBe("");
     expect(result.stderr).toContain("Missing derived issue state");
-    expect(result.stderr).toContain(
+    expect(result.stderr.replaceAll("\\", "/")).toContain(
       "features/001-issues-manager-cli/issues-status.json",
     );
   });
@@ -488,7 +488,7 @@ describe("runIssuesManagerCli", () => {
     expect(result.exitCode).toBe(1);
     expect(result.stdout).toBe("");
     expect(result.stderr).toContain("Malformed derived issue state");
-    expect(result.stderr).toContain(
+    expect(result.stderr.replaceAll("\\", "/")).toContain(
       "features/001-issues-manager-cli/issues-status.json",
     );
   });
@@ -652,6 +652,7 @@ describe("runIssuesManagerCli", () => {
       [...tsRuntimeArgs, "get-feature"],
       {
         cwd: workspacePath,
+        shell: true,
       },
     );
 
@@ -676,6 +677,7 @@ describe("runIssuesManagerCli", () => {
       ],
       {
         cwd: workspacePath,
+        shell: true,
       },
     );
 
@@ -725,6 +727,7 @@ describe("runIssuesManagerCli", () => {
       [...tsRuntimeArgs, "list-issues"],
       {
         cwd: workspacePath,
+        shell: true,
       },
     );
 
@@ -773,6 +776,7 @@ describe("runIssuesManagerCli", () => {
       ],
       {
         cwd: workspacePath,
+        shell: true,
       },
     );
 
@@ -822,6 +826,7 @@ describe("runIssuesManagerCli", () => {
       [...tsRuntimeArgs, "list-issues", "--actionable"],
       {
         cwd: workspacePath,
+        shell: true,
       },
     );
 
@@ -876,6 +881,7 @@ describe("runIssuesManagerCli", () => {
       [...tsRuntimeArgs, "update-blockers", "1", "--blockers", "2"],
       {
         cwd: workspacePath,
+        shell: true,
       },
     );
 
