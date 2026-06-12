@@ -4,9 +4,7 @@
 
 Critical dependencies — Next.js, React, React DOM, TypeScript, Tailwind CSS, and `@tailwindcss/postcss` — are pinned to exact versions in `package.json`. Transitive copies of React and TypeScript are forced to the same version via `pnpm.overrides`.
 
-**Why exact pins:** This template is a starting point agencies copy into client projects. A caret-range upgrade mid-project can silently break builds or change rendering behaviour. Exact pins guarantee that `pnpm install` today produces the same result as `pnpm install` six months from now.
-
-**When to relax:** Pinning trades freshness for stability. Relax a pin when you intentionally want to adopt a new major or minor version. Run `pnpm update <pkg>` after changing the version string, then run the full test suite before committing.
+**Why exact pins:** This template is the starting point for each client project. A caret-range upgrade mid-project can silently break builds or change rendering behaviour. Exact pins guarantee that `pnpm install` today produces the same result as `pnpm install` six months from now.
 
 **Security auditing:** `pnpm audit:ci` runs `pnpm audit --audit-level high` and exits non-zero if critical or high-severity CVEs are found. This is the CI gate — it does not block `pnpm install` locally, but it will fail the pipeline. Resolve CVEs by updating the affected package to a patched version (which may require relaxing a pin).
 
@@ -194,4 +192,4 @@ The theme is based on shadcn's **base-nova** preset with custom warm tones.
 
 **Example test** (`src/test/button.test.tsx`): smoke test that renders the shadcn Button and asserts it appears in the document.
 
-**Test fixtures**: `src/test/fixtures/` exists for test data. Hotel Example adds `content/` and `content-invalid/` subdirectories; these are removed by Reset.
+**Test fixtures**: `src/test/fixtures/` exists for test data. Populated per project as needed.

@@ -1,15 +1,14 @@
 # Next.js AI Template
 
-A multi-CMS marketing website template for agencies. Supports multiple CMS backends through a shared adapter pattern, with typed slice rendering, theme system, i18n, and a full QA pipeline. Ships with a demo site that proves the architecture end-to-end.
-
+A marketing website template for a solo freelancer. Ships as a Tier 1 static-export site powered by a Local JSON CMS, with theme system, i18n, and a full QA pipeline. Tier 2 (Sanity, server runtime, blog) is a separate fork for when the client needs it.
 ## Language
 
-**Agency**:
-The primary user of this template — a team that builds and delivers marketing sites for clients.
-_Avoid_: Template user, developer, end user
+**Freelancer**:
+You — the solo developer who uses this template to deliver marketing sites for clients.
+_Avoid_: Agency, template user, developer, team
 
 **Client**:
-The agency's customer who receives the delivered site.
+Your customer who receives the delivered site.
 _Avoid_: End user, customer, stakeholder
 
 **Local CMS**:
@@ -44,37 +43,41 @@ _Avoid_: Data fetcher, getter, API
 A full-width content section that a CMS editor selects and orders on a page (e.g., Hero, Feature Grid, Testimonials, CTA Band). Each slice maps 1:1 to a React component in the slice registry and receives normalized data from the CMS adapter pipeline. Not the same as a Content Component — a Content Component is the data shape; a Slice is the rendering unit.
 _Avoid_: Section, block, widget, panel
 
-**Hotel Example**:
-The demo content that ships with the template — a hotel marketing site with rooms, reviews, a contact form, and full i18n. Stripped by the reset script.
-_Avoid_: Demo site, example app, sample content
+**Demo Site**:
+Skipped. This template ships as a bare skeleton with empty content directories. No demo content is included.
+_Avoid_: Hotel Example, example app, sample content
 
 **Reset**:
-Running `scripts/reset-example.sh` to strip all Hotel Example content and pages, leaving a bare i18n skeleton with empty content directories.
+Running `scripts/reset-example.sh` to strip all content and pages, leaving a bare i18n skeleton with empty content directories.
 _Avoid_: Clean, clear, wipe, teardown
 
-**V1 Scope**:
-Ships with: Local JSON + Sanity + Payload CMS adapters, a curated component library with unique marketing components, strong documentation, and well-defined developer+AI workflows. Includes: hybrid routing, theme system with presets, i18n, init script, CSS-only motion, and full QA pipeline. Hosting model is determined by CMS choice: local CMS → static export, external CMS → serverless. See `ROADMAP.md` for milestones. Post-V1: GSAP motion, dev theme tool, code generators.
-_Avoid_: Baseline, initial release, MVP
+**Tier 1 Scope (Current)**:
+Static-export only. Local JSON CMS. Single landing page up to a handful of pages. No external CMS, no server runtime, no CI. Theme system, i18n, CSS-only motion, and full QA pipeline. Deploys to Vercel (or any static host). Tier 2 is a separate fork with Sanity, server runtime, blog, CI, and analytics — built when the first Tier 2 client appears.
+_Avoid_: Baseline, MVP, V1
 
 **Theme**:
 A configuration interface that maps semantic design tokens (primary color, secondary color, heading font, body font, border-radius, etc.) to concrete Tailwind CSS values. Components reference semantic tokens, never raw Tailwind values. Applied via CSS custom properties.
 _Avoid_: Skin, look, visual preset
 
 **Theme Instance**:
-A concrete set of harmonious values filling the Theme interface. Agencies compose 4-5 theme instances to present to a client. The client picks one, optionally tweaks 2-3 tokens.
+A concrete set of harmonious values filling the Theme interface. You compose 2-3 theme instances to present to a client. The client picks one, optionally tweaks a few tokens.
 _Avoid_: Theme variant, color scheme, preset
 
 **Init Script**:
-An in-repo setup script (`pnpm init` or similar) that asks 2-3 questions (CMS choice, project name, locale) and configures the template accordingly. Sets `next.config.ts`, swaps the adapter, and adjusts for static or serverless hosting.
-_Avoid_: Scaffold, setup wizard, bootstrap
+Deferred. For now, project setup uses a simple bootstrap method (GitHub template, `npx degit`, or manual checklist). A scaffolding CLI may be built when volume justifies it.
+_Avoid_: Scaffold, setup wizard, bootstrap, create-jz-app
+
+**Tier 2 Fork**:
+A separate GitHub repository created by forking this repo when the first Tier 2 client appears. Adds Sanity adapter, server runtime, blog, CI, analytics. Shares no code dependency with this repo. Common patterns may be extracted into a shared package when 3+ projects of each tier exist. Monorepo restructuring happens only when there's real evidence of shared code.
+_Avoid_: Tier 2 template, second template, monorepo package
 
 **QA Report**:
-Generated HTML files in `.qa/` from the QA pipeline (Lighthouse, axe, bundle analysis, security audit). The agency screenshots these into a client deck. Not hosted — local files only.
+Generated HTML files in `.qa/` from the QA pipeline (Lighthouse, axe, bundle analysis, security audit). You screenshot key metrics into a client-facing summary. Not hosted — local files only.
 _Avoid_: Test report, audit report, compliance report
 
 ## Locales
 
-i18n is built into the core. Locales are URL-prefixed, including the default (`/en/`, `/el/`, `/de/`). Root `/` redirects to `/en/`. The CMS adapter interface includes locale as a parameter. Agencies delivering single-language sites configure one locale.
+i18n is built into the core. Locales are URL-prefixed, including the default (`/en/`, `/el/`, `/de/`). Root `/` redirects to `/en/`. The CMS adapter interface includes locale as a parameter. Single-language sites configure one locale.
 
 - **en** — English (default)
 - **el** — Greek
@@ -82,18 +85,17 @@ i18n is built into the core. Locales are URL-prefixed, including the default (`/
 
 ## Route Structure
 
-Hybrid routing: a catch-all `[[...slug]]` route handles CMS-driven pages (most pages). Explicit routes handle pages needing custom server logic (contact forms, search, auth). All routes live inside `[locale]/(marketing)/`.
+Static routing: Tier 1 uses explicit page routes (no catch-all `[[...slug]]` needed for a small site). All routes live inside `[locale]/(marketing)/`.
 
 ```
 src/app/
   [locale]/
     (marketing)/
-      [[...slug]]/
-        page.tsx      → CMS-driven pages (default)
-        loading.tsx
-        not-found.tsx
+      page.tsx        → Homepage
+      about/
+        page.tsx      → About page (if needed)
       contact/
-        page.tsx      → Explicit route (custom logic)
+        page.tsx      → Contact (third-party form)
       layout.tsx      → Marketing layout
     layout.tsx        → Locale providers
   layout.tsx          → Root layout

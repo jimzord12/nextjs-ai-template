@@ -16,7 +16,7 @@ This umbrella script runs all QA categories sequentially and collects reports in
 | ----------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `pnpm qa:performance`   | Runs Unlighthouse against the production build and enforces Performance budget ≥ 90             | `.unlighthouse/`                                     |
 | `pnpm qa:a11y`          | Runs axe-core accessibility scans against all pages, asserts 0 critical/serious WCAG violations | Playwright HTML report                               |
-| `pnpm qa:seo`           | Runs Lighthouse SEO audits against all locale pages, asserts each page meets the current SEO score gate (≥ 80; target 100 after the Hotel Example's SEO work is complete) | `.qa/seo-result-<locale>.report.html`, `.qa/seo-summary.json` |
+| `pnpm qa:seo`           | Runs Lighthouse SEO audits against all locale pages, asserts each page meets the SEO score gate (≥ 80) | `.qa/seo-result-<locale>.report.html`, `.qa/seo-summary.json` |
 | `pnpm qa:security`      | Runs `pnpm audit --audit-level high`, exits non-zero on critical/high CVEs                      | Terminal output                                      |
 | `pnpm qa:bundle`        | Runs bundle analysis via `@next/bundle-analyzer` (sets `ANALYZE=true`), opens interactive client/bundle size report in browser | Browser (client/server bundle treemaps)              |
 | `pnpm qa:cross-browser` | Runs full Playwright suite across Chromium, Firefox, and WebKit                                 | Playwright HTML report                               |
@@ -41,7 +41,7 @@ After `pnpm qa` completes:
 
 ## QA Delivery Package
 
-The `.qa/` directory is the QA delivery package — the artifact an Agency screenshots into a Client deck.
+The `.qa/` directory is the QA delivery package — the artifact you screenshot into a client-facing summary.
 
 ### What to capture
 

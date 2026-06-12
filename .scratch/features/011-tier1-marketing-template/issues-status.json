@@ -1,0 +1,134 @@
+{
+  "featureId": 11,
+  "featureSlug": "tier1-marketing-template",
+  "featureStatus": "in-progress",
+  "lastUpdated": "2026-06-12T22:16:32.422Z",
+  "issues": [
+    {
+      "id": 1,
+      "title": "Static export configuration",
+      "status": "ready-for-agent",
+      "method": "chore",
+      "complexity": 1,
+      "blockedBy": [],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/01-static-export-configuration.md"
+    },
+    {
+      "id": 2,
+      "title": "CMS adapter interface + content model schemas + LocalCmsAdapter",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [1],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/02-cms-adapter-schemas-loader.md"
+    },
+    {
+      "id": 3,
+      "title": "SliceRenderer pipeline + home page renders from JSON",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [2],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/03-slice-renderer-home-page.md"
+    },
+    {
+      "id": 4,
+      "title": "Theme token system",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/04-theme-token-system.md"
+    },
+    {
+      "id": 5,
+      "title": "Content model: all remaining schemas + Site Settings + Testimonials",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 2,
+      "blockedBy": [2],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/05-content-model-remaining-schemas.md"
+    },
+    {
+      "id": 6,
+      "title": "Navigation + Footer layout components",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 2,
+      "blockedBy": [3, 4, 5],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/06-navigation-footer.md"
+    },
+    {
+      "id": 7,
+      "title": "Hero + Features slice components",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [3, 4, 5],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/07-hero-features-slices.md"
+    },
+    {
+      "id": 8,
+      "title": "Testimonials + FAQ slice components",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 2,
+      "blockedBy": [5, 7],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/08-testimonials-faq-slices.md"
+    },
+    {
+      "id": 9,
+      "title": "CTA Band slice + Formspree provider",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [5, 7],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/09-cta-band-formspree.md"
+    },
+    {
+      "id": 10,
+      "title": "Web3Forms CTA provider",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 1,
+      "blockedBy": [9],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/10-web3forms-provider.md"
+    },
+    {
+      "id": 11,
+      "title": "SEO: metadata + sitemap + robots + canonical + hreflang",
+      "status": "ready-for-agent",
+      "method": "tdd",
+      "complexity": 3,
+      "blockedBy": [6, 7],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/11-seo-metadata-sitemap.md"
+    },
+    {
+      "id": 12,
+      "title": "QA core: Lighthouse + axe-core + security audit",
+      "status": "ready-for-agent",
+      "method": "scaffold",
+      "complexity": 3,
+      "blockedBy": [8, 9, 11],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/12-qa-core-lighthouse-axe-security.md"
+    },
+    {
+      "id": 13,
+      "title": "QA reports + bundle analyzer + responsive viewport tests",
+      "status": "ready-for-agent",
+      "method": "scaffold",
+      "complexity": 2,
+      "blockedBy": [12],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/13-qa-reports-bundle-responsive.md"
+    },
+    {
+      "id": 14,
+      "title": "Reset script",
+      "status": "ready-for-agent",
+      "method": "chore",
+      "complexity": 2,
+      "blockedBy": [13],
+      "filePath": ".scratch/features/011-tier1-marketing-template/issues/14-reset-script.md"
+    }
+  ]
+}
