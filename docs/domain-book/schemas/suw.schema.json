@@ -45,10 +45,7 @@
       "type": "string"
     },
     "stage": {
-      "enum": [
-        "pre_implementation",
-        "implementation"
-      ]
+      "enum": ["pre_implementation", "implementation"]
     },
     "target_depth": {
       "type": "integer",
@@ -87,12 +84,7 @@
       }
     },
     "ai_activity": {
-      "enum": [
-        "interrogate",
-        "synthesize",
-        "review",
-        "promote"
-      ]
+      "enum": ["interrogate", "synthesize", "review", "promote"]
     },
     "created_at": {
       "type": "string",

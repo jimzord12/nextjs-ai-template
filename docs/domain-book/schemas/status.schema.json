@@ -24,10 +24,7 @@
     },
     "summary": {
       "type": "object",
-      "required": [
-        "total_suws",
-        "by_state"
-      ],
+      "required": ["total_suws", "by_state"],
       "properties": {
         "total_suws": {
           "type": "integer",
@@ -67,10 +64,7 @@
       "additionalProperties": false
     },
     "next_suw": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     },
     "remaining_suw_for_implementation": {
       "type": "array",
