@@ -25,7 +25,7 @@
     "qa": "bash scripts/qa-report.sh",
     "qa:full": "bash scripts/run-quality-gates.sh",
     "prepare": "husky",
-    "audit:ci": "pnpm audit --audit-level high",
+    "audit:ci": "pnpm audit --audit-level critical",
     "git:prune": "bash scripts/git-prune-merged.sh",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
