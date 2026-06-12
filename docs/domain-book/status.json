@@ -1,0 +1,20 @@
+{
+  "createdAt": "2026-06-12T00:00:00Z",
+  "updatedAt": "2026-06-12T00:00:00Z",
+  "version": "2.0.0-draft",
+  "summary": {
+    "total_suws": 0,
+    "by_state": {
+      "planned": 0,
+      "ready": 0,
+      "inprogress": 0,
+      "review": 0,
+      "completed": 0,
+      "promoted": 0,
+      "blocked": 0,
+      "needsrevision": 0
+    }
+  },
+  "next_suw": null,
+  "remaining_suw_for_implementation": []
+}

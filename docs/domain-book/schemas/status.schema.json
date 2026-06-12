@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Domain Book Status",
+  "type": "object",
+  "required": [
+    "createdAt",
+    "updatedAt",
+    "version",
+    "summary",
+    "next_suw",
+    "remaining_suw_for_implementation"
+  ],
+  "properties": {
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_suws", "by_state"],
+      "properties": {
+        "total_suws": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_state": {
+          "type": "object",
+          "properties": {
+            "planned": {
+              "type": "integer"
+            },
+            "ready": {
+              "type": "integer"
+            },
+            "inprogress": {
+              "type": "integer"
+            },
+            "review": {
+              "type": "integer"
+            },
+            "completed": {
+              "type": "integer"
+            },
+            "promoted": {
+              "type": "integer"
+            },
+            "blocked": {
+              "type": "integer"
+            },
+            "needsrevision": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "next_suw": {
+      "type": ["string", "null"]
+    },
+    "remaining_suw_for_implementation": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

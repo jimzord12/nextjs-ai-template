@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SUW State",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "slug",
+    "state",
+    "status_goal",
+    "stage",
+    "target_depth",
+    "completion_criteria",
+    "dependencies",
+    "target_sections",
+    "related_sections",
+    "ai_activity",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^SUW-\\d{3}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "planned",
+        "ready",
+        "inprogress",
+        "review",
+        "completed",
+        "promoted",
+        "blocked",
+        "needsrevision"
+      ]
+    },
+    "status_goal": {
+      "type": "string"
+    },
+    "stage": {
+      "enum": ["pre_implementation", "implementation"]
+    },
+    "target_depth": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "completion_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^SUW-\\d{3}$"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "target_sections": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_sections": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ai_activity": {
+      "enum": ["interrogate", "synthesize", "review", "promote"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

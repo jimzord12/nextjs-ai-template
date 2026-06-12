@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -20,6 +20,8 @@
 # Playwright HTML report output
 /playwright-report/
 /playwright-reports/
+# Playwright state
+.playwright/
 
 # next.js
 /.next/
@@ -28,6 +30,7 @@
 # production
 /build
 /storybook-static
+dist/
 
 # misc
 .DS_Store
@@ -55,3 +58,8 @@ tmp/
 .idea/
 
 # ai
+.claude/
+.gemini/
+
+# screenshots
+docs/products/web/screenshots/
