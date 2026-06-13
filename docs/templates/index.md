@@ -2,6 +2,12 @@
 
 Reusable templates organized by category.
 
+## Roadmap
+
+Template for the product roadmap that seeds the Feature Delivery Pipeline.
+
+- [`ROADMAP.template.md`](ROADMAP.template.md) — milestone roadmap (`M1`, `M2`, …) with scope blocks and "Done when" checklists, parsed by the `milestone-to-briefs` skill
+
 ## Grilling
 
 Templates for grilling sessions (design decision interviews).
@@ -14,12 +20,6 @@ Templates for grilling sessions (design decision interviews).
 Templates for automated feature review reports.
 
 - [`FEATURE_REVIEW.template.md`](FEATURE_REVIEW.template.md) — feature review report with acceptance criteria verdicts, QA results, findings, and recommendation
-
-## Feature Review
-
-Templates for feature review reports.
-
-- [`FEATURE_REVIEW.template.md`](FEATURE_REVIEW.template.md) — structured review report with acceptance criteria, QA results, findings, and recommendation
 
 ## UI
 
