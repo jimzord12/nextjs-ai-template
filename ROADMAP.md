@@ -135,7 +135,7 @@ V1 delivers: 3 CMS adapters (Local JSON, Sanity, Payload), a library of custom c
 - AI Workflows:
   - `AGENTS.md` — agent instructions reflecting final V1 architecture
   - `.agents/skills/` — project skills calibrated for V1 capabilities
-  - Feature delivery workflow documented end-to-end: grill-with-docs → to-prd → to-issues → do-issue → review-feature → sign-off
+  - Feature delivery workflow documented end-to-end: milestone-to-briefs → grill-with-docs → to-prd → to-issues → do-issue → review-feature → sign-off
   - Context files (`CONTEXT.md`, `docs/adr/`) updated to reflect V1 decisions
   - Workflow test: an AI agent can pick up a fresh issue and deliver it without human clarification
 
