@@ -9,7 +9,7 @@
     "ignoreUnknown": false,
     "includes": [
       "**",
-      "!!**/.agents/skills/vercel-*",
+      "!!**/.agents/**/vercel-*",
       "!storybook-static",
       "!playwright-report",
       "!lhci-reports",
