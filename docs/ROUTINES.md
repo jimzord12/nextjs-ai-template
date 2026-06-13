@@ -117,45 +117,48 @@ Automated tests cover Chromium, Firefox, and WebKit via Playwright. The followin
 
 ## Feature Delivery Pipeline
 
-A 7-step pipeline from idea to verified feature. Each step produces a named artifact that the next step consumes.
+A 7-step pipeline from roadmap milestone to verified feature. Each step produces a named artifact that the next step consumes. Every feature's artifacts live together in one directory: `.scratch/features/<id>-<slug>/`.
+
+The [`features-cli`](../features-cli.md) tool is the connective tissue across the whole pipeline — it tracks which feature is active, registers features, manages issue state and blockers, and reports overall project state. Skills resolve the active feature with `pnpm features-cli get-feature` and never hand-edit the status JSON files.
 
 ### Pipeline
 
-| Step | Skill             | Produces                                                                                                        | Why                                                                                                                                | Lives at                                           |
-| ---- | ----------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| 1    | `grill-with-docs` | **Grilling session state** — decision tree (N1–Nn nodes), constraints, open leaves                              | Machine-readable checkpoint of resolved decisions. Enables downstream skills to run in fresh sessions without conversation history | `tmp/<slug>.grilling-session-state.md`             |
-| 2    | `to-prd`          | **HLD document** — problem statement, user stories, implementation decisions, testing decisions, out-of-scope   | Single source of truth for _what_ we're building and _why_. User stories feed acceptance criteria downstream                       | Issue tracker (`.scratch/<feature>/`)              |
-|      |                   | **Feature registry** — ordered list of features with name, type (vertical/horizontal), phase, dependencies      | Build sequence map. Answers "what's next?" and "what's blocked by what?"                                                           | Section within HLD issue                           |
-|      |                   | **Feature briefs** — mini-PRD per feature (scope, acceptance criteria, in/out of scope)                         | Input to per-feature LLD grilling. Keeps each session focused on one feature's boundaries                                          | One issue per feature (`.scratch/<feature-name>/`) |
-| 3    | `grill-with-docs` | **LLD document** — per-feature low-level design (interfaces, data flow, contracts, file layout)                 | Turns "what" into "how." The implementable spec for `to-issues` to decompose                                                       | `.scratch/<feature-name>/`                         |
-|      |                   | **CONTEXT.md updates** — new/resolved domain terms                                                              | Terminology captured inline. Prevents glossary drift                                                                               | `CONTEXT.md`                                       |
-|      |                   | **ADRs** — architectural decision records (sparse, only when criteria met)                                      | Irreversible or non-obvious decisions documented for future readers                                                                | `docs/adr/<NNNN>-<topic>.md`                       |
-| 4    | `to-issues`       | **Vertical-slice issues** — each with acceptance criteria, blocked-by, HITL/AFK label                           | Independently grabbable work units. Tracer bullets through all layers                                                              | `.scratch/<feature-name>/<slice-id>.md`            |
-| 5    | `do-issue`        | **Implemented code** — production code, tests, type definitions                                                 | The actual deliverable. Each issue's acceptance criteria are verifiable                                                            | `src/`, `tests/`                                   |
-| 6    | `review-feature`  | **Feature review report** — pass/fail per acceptance criterion, QA results, orphan detection, downstream impact | Automated gate between implementation and human sign-off. Catches integration gaps, dead code, and scope misses                    | `.scratch/features/<feature-dir>/reviews/<N>-review.md` |
-| 7    | _(manual)_        | **Human sign-off** — approval or list of changes needed                                                         | Final authority. Human verifies the _experience_, not the plumbing                                                                 | Verbal / commit comment / issue status change      |
+| Step | Skill                | Produces                                                                                                        | Why                                                                                                                                | Lives at                                                  |
+| ---- | -------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| 1    | `milestone-to-briefs`| **Feature briefs** — one mini-PRD per feature (scope, acceptance criteria, in/out of scope), plus each feature registered in `features-status.json` | Decomposes one roadmap milestone into independently-buildable features. Establishes the build order (type/phase/dependencies)      | `.scratch/features/<id>-<slug>/BRIEF.md`                  |
+| 2    | `grill-with-docs`    | **Grilling session state** — decision tree (N1–Nn nodes), constraints, open leaves; plus inline `CONTEXT.md`/ADR updates | Stress-tests the brief against the domain model. Resumable machine-readable checkpoint — survives across sessions with no conversation history | `.scratch/features/<id>-<slug>/GRILL_SESSION.md`          |
+| 3    | `to-prd`             | **PRD (HLD)** — problem statement, user stories, implementation decisions, testing decisions, out-of-scope, plus a **feature registry** mapping to existing features | Refines the resolved grilling session into the single source of truth for _what_ we're building and _why_. Drops the Q&A; keeps conclusions | `.scratch/features/<id>-<slug>/PRD.md`                    |
+| 4    | `to-issues`          | **Vertical-slice issues** — each with acceptance criteria, complexity, blocked-by, HITL/AFK label              | Independently grabbable work units. Tracer bullets through all layers. The CLI regenerates `issues-status.json` from these files   | `.scratch/features/<id>-<slug>/issues/<NN>-<slug>.md`     |
+| 5    | `do-issue`           | **Implemented code** — production code, tests, type definitions                                                 | The actual deliverable. Each issue's acceptance criteria are verifiable                                                            | `src/`, `scripts/`, test files                            |
+| 6    | `review-feature`     | **Feature review report** — pass/fail per acceptance criterion, QA results, orphan detection, downstream impact | Automated gate between implementation and human sign-off. Catches integration gaps, dead code, and scope misses                    | `.scratch/features/<id>-<slug>/reviews/<NN>-review.md`    |
+| 7    | _(manual)_           | **Human sign-off** — approval or list of changes needed; feature transitioned to `archived` + `finalStatus: done` via the CLI | Final authority. Human verifies the _experience_, not the plumbing                                                                 | `features-status.json` (via `features-cli update-feature`) |
 
 ### Naming conventions
 
-- **Session state files**: `tmp/<slug>.grilling-session-state.md` — slug is a short kebab-case topic identifier
-- **Feature directories**: `.scratch/<feature-name>/` — one directory per feature, contains HLD section, LLD, and slice issues
-- **Feature review reports**: `.scratch/features/<feature-dir>/reviews/<N>-review.md` — auto-incrementing numbered reviews (01, 02, …) stored in the feature directory
+- **Feature directories**: `.scratch/features/<id>-<slug>/` — `<id>` is the 3-digit zero-padded feature ID; one directory holds the brief, grilling session, PRD, issues, and reviews
+- **Briefs**: `BRIEF.md` — one per feature directory
+- **Grilling session state**: `GRILL_SESSION.md` — one per feature directory (per-branch responses, when used, go in `grill-responses/N<N>-response.md`)
+- **PRD**: `PRD.md` — one per feature directory
+- **Issues**: `issues/<NN>-<slug>.md` — `<NN>` zero-padded sequential index, which is also the issue ID; the CLI derives `issues-status.json` from these
+- **Feature review reports**: `reviews/<NN>-review.md` — auto-incrementing numbered reviews (01, 02, …)
 - **ADRs**: `docs/adr/<NNNN>-<topic>.md` — numbered, auto-incrementing
+- **CONTEXT.md**: repo-root glossary — updated inline during grilling
 
 ### Artifact lifecycle
 
-- `tmp/` files are session-scoped — disposable after the pipeline moves past them
-- `.scratch/` files live until the feature is shipped and verified — then they're archival
-- Feature review reports in `.scratch/features/<feature-dir>/reviews/` are archival alongside the feature's other artifacts
+- `.scratch/features/<id>-<slug>/` artifacts live until the feature is shipped and verified — then they're archival
+- Feature review reports in `reviews/` are archival alongside the feature's other artifacts
 - `CONTEXT.md` and ADRs are permanent — they accumulate across features
 
 ### Flow between features
 
-After step 7 (human sign-off), the pipeline loops back to step 3 for the next feature in the registry. Steps 1–2 (vision grilling → HLD) only repeat when starting a new product area or major phase.
+Steps 2–7 run once per feature. After step 7 (human sign-off), pick up the next feature from the registry — `pnpm features-cli get-feature` / `status` shows what's actionable — and re-enter at step 2 (`grill-with-docs`). Step 1 (`milestone-to-briefs`) only repeats when starting a new roadmap milestone.
 
 ### Key rules
 
 - Every step must produce its named artifact before the next step begins
-- If implementation (step 5) reveals a bad decision, go back to the LLD grilling (step 3) — do not patch around it silently
+- The feature directory is the unit of work — every artifact for a feature lives under `.scratch/features/<id>-<slug>/`
+- Never hand-edit `features-status.json` or `issues-status.json` — always go through `pnpm features-cli`
+- If implementation (step 5) reveals a bad decision, go back to the grilling session (step 2) and re-run `to-prd` — do not patch around it silently
 - Feature review (step 6) runs against the feature brief's acceptance criteria — not against "does the code look nice"
 - Human sign-off (step 7) is always the final gate, never skipped

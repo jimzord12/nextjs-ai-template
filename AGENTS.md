@@ -2,7 +2,7 @@
 
 - See [docs/WORKING_WITH_ME.md](docs/WORKING_WITH_ME.md) for behavioral rules. Read it before starting work.
 - See [docs/CONVENTIONS.md](docs/CONVENTIONS.md) for project conventions.
-- See [docs/ROUTINES.md](docs/ROUTINES.md) for recurring project routines, **including the 7-step Feature Delivery Pipeline** (grill-with-docs → to-prd → grill-with-docs → to-issues → do-issue → review-feature → manual sign-off).
+- See [docs/ROUTINES.md](docs/ROUTINES.md) for recurring project routines, **including the 7-step Feature Delivery Pipeline** (milestone-to-briefs → grill-with-docs → to-prd → to-issues → do-issue → review-feature → manual sign-off).
 - See [docs/RULES.md](docs/RULES.md) for documentation maintenance rules.
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for available scripts, code style, and PR requirements.
 
